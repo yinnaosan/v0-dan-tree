@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Send, Bot, User, Paperclip, MoreHorizontal, Copy, RefreshCw, Sparkles } from "lucide-react"
+import { Send, Bot, User, Paperclip, MoreHorizontal, Copy, RefreshCw, Sparkles, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface Message {
@@ -54,35 +54,47 @@ export function DiscussionPanel() {
   }
 
   return (
-    <aside className="w-[380px] h-full bg-card border-l border-border/30 flex flex-col">
-      {/* Header - More breathing room */}
-      <div className="px-6 py-5 border-b border-border/40 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-primary/80" />
+    <aside className="w-[420px] h-full bg-card flex flex-col border-l border-border/40">
+      {/* Header - Clean and minimal */}
+      <div className="px-7 py-6 border-b border-border/30 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-2xl bg-primary/12 flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <span className="text-base font-semibold text-foreground">Co-Pilot</span>
-            <span className="text-sm text-muted-foreground/70 ml-2.5">讨论区</span>
+            <h2 className="text-lg font-semibold text-foreground">Co-Pilot</h2>
+            <p className="text-sm text-muted-foreground">决策讨论区</p>
           </div>
         </div>
-        <button className="p-2 rounded-lg hover:bg-secondary/30 transition-colors">
-          <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+        <button className="p-2.5 rounded-xl hover:bg-secondary/40 transition-colors">
+          <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
         </button>
       </div>
 
-      {/* Messages - Much more generous spacing */}
-      <div className="flex-1 overflow-y-auto px-6 py-8">
-        <div className="space-y-10">
-          {messages.map((message) => (
-            <MessageBubble key={message.id} message={message} />
+      {/* Messages Area - Premium reading experience */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-7 py-10 space-y-12">
+          {messages.map((message, index) => (
+            <MessageBubble 
+              key={message.id} 
+              message={message} 
+              isLatest={index === messages.length - 1 && message.role === "assistant"}
+            />
           ))}
         </div>
       </div>
 
-      {/* Input - Spacious and comfortable */}
-      <div className="p-5 border-t border-border/40">
-        <div className="bg-secondary/20 rounded-2xl p-5">
+      {/* Scroll Indicator */}
+      <div className="px-7 py-2 border-t border-border/20 flex justify-center">
+        <button className="flex items-center gap-1.5 text-sm text-muted-foreground/50 hover:text-muted-foreground transition-colors">
+          <ChevronDown className="w-4 h-4" />
+          <span>继续对话</span>
+        </button>
+      </div>
+
+      {/* Input Area - Spacious and comfortable like ChatGPT */}
+      <div className="p-6 bg-card border-t border-border/30">
+        <div className="bg-secondary/25 rounded-3xl p-6 shadow-sm">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -92,25 +104,27 @@ export function DiscussionPanel() {
                 handleSend()
               }
             }}
-            placeholder="输入问题或想法..."
-            className="w-full bg-transparent text-base text-foreground placeholder:text-muted-foreground/40 resize-none focus:outline-none min-h-[80px] leading-loose"
-            rows={3}
+            placeholder="输入您的问题或想法..."
+            className="w-full bg-transparent text-base text-foreground placeholder:text-muted-foreground/50 resize-none focus:outline-none min-h-[100px] leading-relaxed"
+            rows={4}
           />
-          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/25">
-            <button className="p-2.5 rounded-xl hover:bg-secondary/40 transition-colors">
-              <Paperclip className="w-4.5 h-4.5 text-muted-foreground/50" />
-            </button>
+          <div className="flex items-center justify-between mt-5 pt-5 border-t border-border/20">
+            <div className="flex items-center gap-2">
+              <button className="p-3 rounded-xl hover:bg-secondary/50 transition-colors">
+                <Paperclip className="w-5 h-5 text-muted-foreground/60" />
+              </button>
+            </div>
             <button
               onClick={handleSend}
               disabled={!input.trim()}
               className={cn(
-                "flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-6 py-3 rounded-2xl text-base font-semibold transition-all",
                 input.trim()
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-secondary/40 text-muted-foreground/40 cursor-not-allowed"
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md"
+                  : "bg-secondary/50 text-muted-foreground/50 cursor-not-allowed"
               )}
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-5 h-5" />
               发送
             </button>
           </div>
@@ -120,36 +134,46 @@ export function DiscussionPanel() {
   )
 }
 
-function MessageBubble({ message }: { message: Message }) {
+function MessageBubble({ message, isLatest }: { message: Message; isLatest?: boolean }) {
   const isUser = message.role === "user"
 
   return (
     <div className={cn(
       "relative",
-      message.isKeyPoint && !isUser && "pl-5 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:rounded-full before:bg-primary/40"
+      message.isKeyPoint && !isUser && "pl-6 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:rounded-full before:bg-primary/50",
+      isLatest && !isUser && "ring-2 ring-primary/20 rounded-3xl -mx-2 px-2 py-4 bg-primary/5"
     )}>
-      <div className={cn("flex gap-4", isUser && "flex-row-reverse")}>
-        {/* Avatar */}
+      <div className={cn("flex gap-5", isUser && "flex-row-reverse")}>
+        {/* Avatar - Larger */}
         <div className={cn(
-          "w-9 h-9 rounded-xl flex items-center justify-center shrink-0",
-          isUser ? "bg-secondary/40" : "bg-primary/10"
+          "w-11 h-11 rounded-2xl flex items-center justify-center shrink-0",
+          isUser ? "bg-secondary/50" : "bg-primary/15"
         )}>
           {isUser ? (
-            <User className="w-4.5 h-4.5 text-foreground/60" />
+            <User className="w-5 h-5 text-foreground/70" />
           ) : (
-            <Bot className="w-4.5 h-4.5 text-primary/70" />
+            <Bot className="w-5 h-5 text-primary" />
           )}
         </div>
 
         {/* Content */}
         <div className={cn("flex-1 min-w-0", isUser && "flex flex-col items-end")}>
+          {/* Role Label */}
+          <div className={cn("mb-2", isUser && "text-right")}>
+            <span className="text-sm font-medium text-muted-foreground">
+              {isUser ? "你" : "Co-Pilot"}
+            </span>
+            <span className="text-sm text-muted-foreground/50 ml-2">{message.timestamp}</span>
+          </div>
+
+          {/* Message Content - MUCH LARGER TEXT */}
           <div className={cn(
-            "px-5 py-4 rounded-2xl",
+            "px-6 py-5 rounded-3xl",
             isUser
-              ? "bg-primary/8 text-foreground rounded-tr-lg max-w-[90%]"
-              : "bg-secondary/25 text-foreground rounded-tl-lg"
+              ? "bg-primary/10 rounded-tr-lg max-w-[95%]"
+              : "bg-secondary/30 rounded-tl-lg"
           )}>
-            <div className="text-[15px] leading-[1.85] whitespace-pre-wrap tracking-wide">
+            <div className="text-[16px] leading-[2] whitespace-pre-wrap text-foreground/90">
               {message.content.split("\n").map((line, i) => {
                 const parts = line.split(/(\*\*[^*]+\*\*)/)
                 return (
@@ -157,7 +181,7 @@ function MessageBubble({ message }: { message: Message }) {
                     {parts.map((part, j) => {
                       if (part.startsWith("**") && part.endsWith("**")) {
                         return (
-                          <span key={j} className="font-semibold text-foreground">
+                          <span key={j} className="font-bold text-foreground">
                             {part.slice(2, -2)}
                           </span>
                         )
@@ -171,23 +195,19 @@ function MessageBubble({ message }: { message: Message }) {
             </div>
           </div>
           
-          {/* Meta - More breathing room */}
-          <div className={cn(
-            "flex items-center gap-4 mt-3",
-            isUser && "flex-row-reverse"
-          )}>
-            <span className="text-xs text-muted-foreground/50">{message.timestamp}</span>
-            {!isUser && (
-              <div className="flex items-center gap-1.5">
-                <button className="p-2 rounded-lg hover:bg-secondary/30 transition-colors">
-                  <Copy className="w-3.5 h-3.5 text-muted-foreground/40" />
-                </button>
-                <button className="p-2 rounded-lg hover:bg-secondary/30 transition-colors">
-                  <RefreshCw className="w-3.5 h-3.5 text-muted-foreground/40" />
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Actions - More visible */}
+          {!isUser && (
+            <div className="flex items-center gap-2 mt-4">
+              <button className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-secondary/40 transition-colors text-sm text-muted-foreground/60 hover:text-muted-foreground">
+                <Copy className="w-4 h-4" />
+                复制
+              </button>
+              <button className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-secondary/40 transition-colors text-sm text-muted-foreground/60 hover:text-muted-foreground">
+                <RefreshCw className="w-4 h-4" />
+                重新生成
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

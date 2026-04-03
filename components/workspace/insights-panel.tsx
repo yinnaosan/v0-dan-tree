@@ -3,205 +3,216 @@
 import { 
   TrendingUp, 
   TrendingDown, 
-  ExternalLink, 
   AlertCircle,
   CheckCircle2,
   ArrowRight,
   Sparkles,
-  Link2
+  Link2,
+  Eye,
+  Zap,
+  Shield
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-// Curated context that matters for THIS decision, not generic info
-interface ContextualInsight {
+// Curated insights that MATTER for THIS decision
+interface DecisionInsight {
   id: string
-  type: "confirmation" | "contradiction" | "catalyst" | "risk"
-  headline: string
-  explanation: string
+  type: "supports" | "challenges" | "catalyst" | "monitor"
+  title: string
+  why: string
   source: string
   time: string
-  impact: "high" | "medium"
+  priority: "critical" | "high" | "medium"
 }
 
-interface LinkedSignal {
+interface WatchItem {
   symbol: string
+  name: string
   relationship: string
-  direction: "aligned" | "divergent"
-  detail: string
+  status: "aligned" | "diverging" | "neutral"
+  signal: string
 }
 
-// Pre-filtered, decision-relevant insights
-const contextualInsights: ContextualInsight[] = [
+const curatedInsights: DecisionInsight[] = [
   {
     id: "1",
-    type: "confirmation",
-    headline: "Blackwell 供应链信号强劲",
-    explanation: "TSM 产能预订超出预期，验证 NVDA 需求预测。这支持当前看多论点。",
-    source: "Supply Chain Analysis",
+    type: "supports",
+    title: "台积电产能扩张超预期",
+    why: "验证 H200 供应链可行性，支持看多论点",
+    source: "供应链分析",
     time: "2h",
-    impact: "high",
+    priority: "critical",
   },
   {
     id: "2",
     type: "catalyst",
-    headline: "Azure AI 基础设施投资",
-    explanation: "微软确认 $50B+ AI 基础设施投资，NVDA 是主要受益者。下季度订单能见度提升。",
+    title: "微软 Azure $50B+ AI 投资",
+    why: "NVDA 是核心受益者，提升下季订单能见度",
     source: "Bloomberg",
     time: "4h",
-    impact: "high",
+    priority: "high",
   },
   {
     id: "3",
-    type: "risk",
-    headline: "中国市场准入不确定性",
-    explanation: "新出口限制可能影响 15% 收入。需要监控政策动向。",
-    source: "Policy Watch",
+    type: "monitor",
+    title: "中国出口限制不确定性",
+    why: "可能影响 15% 收入，需持续监控政策",
+    source: "政策追踪",
     time: "1d",
-    impact: "medium",
+    priority: "medium",
   },
 ]
 
-// Signals from related assets that confirm or challenge the thesis
-const linkedSignals: LinkedSignal[] = [
+const watchItems: WatchItem[] = [
   { 
     symbol: "TSM", 
+    name: "台积电",
     relationship: "核心供应商",
-    direction: "aligned",
-    detail: "+1.5% — 产能扩张预期"
+    status: "aligned",
+    signal: "+1.5% 产能扩张"
   },
   { 
     symbol: "AMD", 
+    name: "超威半导体",
     relationship: "竞争对手",
-    direction: "aligned",
-    detail: "+2.3% — AI GPU 板块共振"
+    status: "aligned",
+    signal: "+2.3% 板块共振"
   },
   { 
-    symbol: "SMCI", 
-    relationship: "服务器合作伙伴",
-    direction: "divergent",
-    detail: "-1.2% — 财报审计延迟"
+    symbol: "MSFT", 
+    name: "微软",
+    relationship: "大客户",
+    status: "aligned",
+    signal: "AI CapEx 上调"
   },
 ]
 
-// Key technical levels that matter for execution
-const executionContext = {
-  support: "$890",
-  resistance: "$965",
-  volumeProfile: "Above average",
-  volatility: "Normal",
-}
-
 export function InsightsPanel() {
   return (
-    <aside className="w-56 h-full bg-[oklch(0.055_0.002_250)] border-l border-border/10 flex flex-col">
-      {/* Header - Purpose Statement */}
-      <div className="px-4 py-4 border-b border-border/10">
-        <div className="flex items-center gap-2 mb-1">
-          <Sparkles className="w-3.5 h-3.5 text-primary/50" />
-          <span className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">
-            Decision Context
+    <aside className="w-64 h-full bg-[oklch(0.07_0.003_250)] border-l border-border/15 flex flex-col">
+      {/* Header */}
+      <div className="px-5 py-5 border-b border-border/15">
+        <div className="flex items-center gap-2.5 mb-2">
+          <Sparkles className="w-4 h-4 text-primary/60" />
+          <span className="text-sm font-semibold text-foreground/80 tracking-wide">
+            决策情报
           </span>
         </div>
-        <p className="text-[11px] text-muted-foreground/50 leading-relaxed">
-          Pre-filtered signals relevant to your current NVDA decision
+        <p className="text-sm text-muted-foreground/60 leading-relaxed">
+          针对当前 NVDA 决策预筛的相关信号
         </p>
       </div>
 
-      {/* Main Content - Scrollable */}
+      {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
         
-        {/* Section 1: What Confirms or Challenges the Thesis */}
-        <div className="p-4 border-b border-border/8">
-          <div className="text-[10px] font-semibold text-muted-foreground/40 uppercase tracking-widest mb-3">
-            Thesis Check
+        {/* Section 1: What Supports or Challenges */}
+        <div className="p-5 border-b border-border/10">
+          <div className="flex items-center gap-2 mb-4">
+            <Eye className="w-4 h-4 text-muted-foreground/50" />
+            <span className="text-sm font-semibold text-foreground/70">
+              论点验证
+            </span>
           </div>
-          <div className="space-y-3">
-            {contextualInsights.map((insight) => (
+          <div className="space-y-4">
+            {curatedInsights.map((insight) => (
               <InsightCard key={insight.id} insight={insight} />
             ))}
           </div>
         </div>
 
-        {/* Section 2: Linked Asset Signals */}
-        <div className="p-4 border-b border-border/8">
-          <div className="text-[10px] font-semibold text-muted-foreground/40 uppercase tracking-widest mb-3">
-            Related Signals
+        {/* Section 2: Related Assets to Watch */}
+        <div className="p-5 border-b border-border/10">
+          <div className="flex items-center gap-2 mb-4">
+            <Link2 className="w-4 h-4 text-muted-foreground/50" />
+            <span className="text-sm font-semibold text-foreground/70">
+              关联监控
+            </span>
           </div>
-          <div className="space-y-2">
-            {linkedSignals.map((signal) => (
-              <LinkedSignalRow key={signal.symbol} signal={signal} />
+          <div className="space-y-3">
+            {watchItems.map((item) => (
+              <WatchItemRow key={item.symbol} item={item} />
             ))}
           </div>
         </div>
 
-        {/* Section 3: Execution Context */}
-        <div className="p-4">
-          <div className="text-[10px] font-semibold text-muted-foreground/40 uppercase tracking-widest mb-3">
-            Execution Levels
+        {/* Section 3: Key Levels */}
+        <div className="p-5">
+          <div className="flex items-center gap-2 mb-4">
+            <Shield className="w-4 h-4 text-muted-foreground/50" />
+            <span className="text-sm font-semibold text-foreground/70">
+              执行参考
+            </span>
           </div>
-          <div className="bg-secondary/8 rounded-lg p-3 space-y-2">
+          <div className="bg-secondary/15 rounded-xl p-4 space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-[11px] text-muted-foreground/50">Support</span>
-              <span className="text-xs font-medium text-foreground/60">{executionContext.support}</span>
+              <span className="text-sm text-muted-foreground/70">支撑位</span>
+              <span className="text-base font-semibold text-foreground/80">$890</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-[11px] text-muted-foreground/50">Resistance</span>
-              <span className="text-xs font-medium text-foreground/60">{executionContext.resistance}</span>
+              <span className="text-sm text-muted-foreground/70">阻力位</span>
+              <span className="text-base font-semibold text-foreground/80">$965</span>
             </div>
-            <div className="h-px bg-border/8 my-1" />
+            <div className="h-px bg-border/15 my-2" />
             <div className="flex justify-between items-center">
-              <span className="text-[11px] text-muted-foreground/50">Volume</span>
-              <span className="text-[11px] text-success/60">{executionContext.volumeProfile}</span>
+              <span className="text-sm text-muted-foreground/70">成交量</span>
+              <span className="text-sm font-medium text-success/80">高于均值</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-[11px] text-muted-foreground/50">Volatility</span>
-              <span className="text-[11px] text-muted-foreground/50">{executionContext.volatility}</span>
+              <span className="text-sm text-muted-foreground/70">波动率</span>
+              <span className="text-sm font-medium text-muted-foreground/60">正常</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Footer - Expand Action */}
-      <div className="p-3 border-t border-border/8">
-        <button className="w-full flex items-center justify-center gap-2 py-2.5 text-xs text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors rounded-lg hover:bg-secondary/10">
-          <span>Full Intelligence View</span>
-          <ArrowRight className="w-3 h-3" />
+      {/* Footer */}
+      <div className="p-4 border-t border-border/10">
+        <button className="w-full flex items-center justify-center gap-2 py-3 text-sm font-medium text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors rounded-xl hover:bg-secondary/15">
+          <span>查看完整情报</span>
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </aside>
   )
 }
 
-function InsightCard({ insight }: { insight: ContextualInsight }) {
+function InsightCard({ insight }: { insight: DecisionInsight }) {
   const typeConfig = {
-    confirmation: { 
+    supports: { 
       icon: CheckCircle2, 
-      color: "text-success/70", 
-      bgColor: "bg-success/8",
-      borderColor: "border-success/20",
-      label: "Confirms"
+      color: "text-success", 
+      bgColor: "bg-success/10",
+      borderColor: "border-success/25",
+      label: "支持"
     },
-    contradiction: { 
+    challenges: { 
       icon: AlertCircle, 
-      color: "text-danger/70", 
-      bgColor: "bg-danger/8",
-      borderColor: "border-danger/20",
-      label: "Contradicts"
+      color: "text-danger", 
+      bgColor: "bg-danger/10",
+      borderColor: "border-danger/25",
+      label: "挑战"
     },
     catalyst: { 
-      icon: TrendingUp, 
-      color: "text-primary/70", 
-      bgColor: "bg-primary/8",
-      borderColor: "border-primary/20",
-      label: "Catalyst"
+      icon: Zap, 
+      color: "text-primary", 
+      bgColor: "bg-primary/10",
+      borderColor: "border-primary/25",
+      label: "催化"
     },
-    risk: { 
-      icon: AlertCircle, 
-      color: "text-warning/70", 
-      bgColor: "bg-warning/8",
-      borderColor: "border-warning/20",
-      label: "Risk"
+    monitor: { 
+      icon: Eye, 
+      color: "text-warning", 
+      bgColor: "bg-warning/10",
+      borderColor: "border-warning/25",
+      label: "监控"
     },
+  }
+
+  const priorityConfig = {
+    critical: "bg-danger/20 text-danger",
+    high: "bg-warning/20 text-warning",
+    medium: "bg-secondary/40 text-muted-foreground",
   }
 
   const config = typeConfig[insight.type]
@@ -209,36 +220,37 @@ function InsightCard({ insight }: { insight: ContextualInsight }) {
 
   return (
     <div className={cn(
-      "p-3 rounded-lg border transition-colors cursor-pointer",
+      "p-4 rounded-xl border transition-colors cursor-pointer hover:border-opacity-50",
       config.bgColor,
-      config.borderColor,
-      "hover:border-opacity-40"
+      config.borderColor
     )}>
-      {/* Type Badge */}
-      <div className="flex items-center gap-1.5 mb-2">
-        <Icon className={cn("w-3 h-3", config.color)} />
-        <span className={cn("text-[10px] font-semibold uppercase tracking-wider", config.color)}>
-          {config.label}
-        </span>
-        {insight.impact === "high" && (
-          <span className="ml-auto text-[9px] font-medium text-foreground/40 bg-foreground/5 px-1.5 py-0.5 rounded">
-            High Impact
+      {/* Header */}
+      <div className="flex items-center justify-between mb-2.5">
+        <div className="flex items-center gap-2">
+          <Icon className={cn("w-4 h-4", config.color)} />
+          <span className={cn("text-sm font-semibold", config.color)}>
+            {config.label}
+          </span>
+        </div>
+        {insight.priority === "critical" && (
+          <span className={cn("text-xs font-semibold px-2 py-1 rounded-md", priorityConfig[insight.priority])}>
+            关键
           </span>
         )}
       </div>
 
-      {/* Headline */}
-      <h4 className="text-xs font-medium text-foreground/75 leading-snug mb-1.5">
-        {insight.headline}
+      {/* Title - LARGER */}
+      <h4 className="text-base font-semibold text-foreground/85 leading-snug mb-2">
+        {insight.title}
       </h4>
 
-      {/* Explanation - Why it matters */}
-      <p className="text-[11px] text-muted-foreground/55 leading-relaxed mb-2">
-        {insight.explanation}
+      {/* Why it matters - READABLE */}
+      <p className="text-sm text-muted-foreground/70 leading-relaxed mb-3">
+        {insight.why}
       </p>
 
       {/* Meta */}
-      <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/35">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground/50">
         <span>{insight.source}</span>
         <span>·</span>
         <span>{insight.time}</span>
@@ -247,28 +259,28 @@ function InsightCard({ insight }: { insight: ContextualInsight }) {
   )
 }
 
-function LinkedSignalRow({ signal }: { signal: LinkedSignal }) {
-  const isAligned = signal.direction === "aligned"
+function WatchItemRow({ item }: { item: WatchItem }) {
+  const statusConfig = {
+    aligned: { color: "bg-success/50", text: "text-success/80" },
+    diverging: { color: "bg-warning/50", text: "text-warning/80" },
+    neutral: { color: "bg-muted-foreground/30", text: "text-muted-foreground/60" },
+  }
+
+  const config = statusConfig[item.status]
 
   return (
-    <div className="flex items-start gap-2.5 p-2 rounded-md hover:bg-secondary/8 transition-colors cursor-pointer group">
-      {/* Alignment Indicator */}
-      <div className={cn(
-        "w-1 h-8 rounded-full shrink-0 mt-0.5",
-        isAligned ? "bg-success/40" : "bg-warning/40"
-      )} />
+    <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-secondary/15 transition-colors cursor-pointer">
+      {/* Status Indicator */}
+      <div className={cn("w-1.5 h-10 rounded-full shrink-0 mt-0.5", config.color)} />
       
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-0.5">
-          <span className="text-sm font-semibold text-foreground/70">{signal.symbol}</span>
-          <Link2 className="w-2.5 h-2.5 text-muted-foreground/30" />
-          <span className="text-[10px] text-muted-foreground/45">{signal.relationship}</span>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-base font-bold text-foreground/80">{item.symbol}</span>
+          <span className="text-sm text-muted-foreground/50">{item.name}</span>
         </div>
-        <p className={cn(
-          "text-[11px] leading-snug",
-          isAligned ? "text-success/60" : "text-warning/60"
-        )}>
-          {signal.detail}
+        <p className="text-sm text-muted-foreground/60 mb-1">{item.relationship}</p>
+        <p className={cn("text-sm font-medium", config.text)}>
+          {item.signal}
         </p>
       </div>
     </div>
