@@ -1,9 +1,11 @@
 "use client"
 
-import { SessionRail } from "@/components/workspace/session-rail"
-import { DecisionCanvas } from "@/components/workspace/decision-canvas"
-import { DiscussionPanel } from "@/components/workspace/discussion-panel"
-import { InsightsPanel } from "@/components/workspace/insights-panel"
+import dynamic from "next/dynamic"
+
+const SessionRail = dynamic(() => import("@/components/workspace/session-rail").then(mod => ({ default: mod.SessionRail })), { ssr: false })
+const DecisionCanvas = dynamic(() => import("@/components/workspace/decision-canvas").then(mod => ({ default: mod.DecisionCanvas })), { ssr: false })
+const DiscussionPanel = dynamic(() => import("@/components/workspace/discussion-panel").then(mod => ({ default: mod.DiscussionPanel })), { ssr: false })
+const InsightsPanel = dynamic(() => import("@/components/workspace/insights-panel").then(mod => ({ default: mod.InsightsPanel })), { ssr: false })
 
 export default function WorkspacePage() {
   return (
