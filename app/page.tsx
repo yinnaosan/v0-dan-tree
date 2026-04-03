@@ -1,12 +1,11 @@
 "use client"
 
-// DanTree Investment Decision Workspace - Fxology glass style
 import { useState, useEffect } from "react"
 import { SessionRail } from "@/components/workspace/session-rail"
 import { DecisionCanvas } from "@/components/workspace/decision-canvas"
 import { DiscussionPanel } from "@/components/workspace/discussion-panel"
-import { InsightsPanel } from "@/components/workspace/insights-panel"
 import { AssetHeader } from "@/components/workspace/asset-header"
+import { InsightsPanel } from "@/components/workspace/insights-panel"
 
 export default function WorkspacePage() {
   const [mounted, setMounted] = useState(false)
