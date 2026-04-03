@@ -21,8 +21,8 @@ export default function WorkspacePage() {
         <div className="flex-1 flex overflow-hidden">
           <div className="w-52 h-full bg-sidebar border-r border-border/20" />
           <div className="flex-1 h-full bg-background" />
-          <div className="w-72 h-full bg-card border-l border-border/30" />
-          <div className="w-56 h-full bg-[oklch(0.065_0.003_250)] border-l border-border/10" />
+          <div className="flex-1 min-w-[280px] max-w-[360px] h-full bg-card border-l border-border/30" />
+          <div className="w-56 h-full bg-[oklch(0.065_0.003_250)] border-l border-border/10 shrink-0" />
         </div>
       </div>
     )

@@ -46,7 +46,7 @@ const keyLevels = [
 
 export function InsightsPanel() {
   return (
-    <aside className="w-56 h-full bg-[oklch(0.065_0.003_250)] border-l border-border/8 flex flex-col">
+    <aside className="w-56 shrink-0 h-full bg-[oklch(0.065_0.003_250)] border-l border-border/8 flex flex-col">
       {/* Header */}
       <div className="px-4 py-3.5 border-b border-border/6">
         <div className="flex items-center gap-2 mb-0.5">
