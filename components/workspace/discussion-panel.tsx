@@ -49,7 +49,7 @@ export function DiscussionPanel() {
   }
 
   return (
-    <aside className="flex-1 min-w-[280px] max-w-[360px] h-full bg-card/95 flex flex-col border-l border-border/20">
+    <aside className="flex-1 min-w-[280px] h-full bg-card/95 flex flex-col border-l border-border/20">
       {/* Clean Header */}
       <div className="px-4 py-3 border-b border-border/15 flex items-center justify-between">
         <div>
