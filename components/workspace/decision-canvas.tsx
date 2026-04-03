@@ -16,9 +16,9 @@ import { cn } from "@/lib/utils"
 
 export function DecisionCanvas() {
   return (
-    <main className="flex-1 min-w-0 h-full bg-background overflow-y-auto">
-      <div className="px-4 py-3">
-        <div className="space-y-4">
+    <main className="flex-1 min-w-0 max-w-2xl h-full bg-background overflow-y-auto">
+      <div className="px-3 py-2.5">
+        <div className="space-y-3">
           <ThesisBlock />
           <TimingBlock />
           <RiskBlock />
@@ -32,7 +32,7 @@ export function DecisionCanvas() {
 function ThesisBlock() {
   return (
     <section className="bg-card rounded-lg border border-border/50 overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-border/30 flex items-center justify-between">
+      <div className="px-3 py-2 border-b border-border/30 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Target className="w-3.5 h-3.5 text-primary" />
           <h2 className="text-sm font-semibold text-foreground">Thesis</h2>
@@ -42,12 +42,12 @@ function ThesisBlock() {
         </button>
       </div>
 
-      <div className="px-4 py-3">
-        <p className="text-sm text-foreground leading-relaxed mb-4">
+      <div className="px-3 py-2.5">
+        <p className="text-sm text-foreground leading-relaxed mb-3">
           NVIDIA 作为 AI 基础设施的核心供应商，在数据中心 GPU 市场占据主导地位。H100/H200 产能持续扩张，云厂商 CapEx 支出强劲支撑需求。长期看好 AI 训练与推理双轮驱动的增长逻辑。
         </p>
 
-        <div className="grid grid-cols-4 gap-2.5 mb-4">
+        <div className="grid grid-cols-4 gap-2 mb-3">
           <EvidenceCard label="Evidence" value="Strong" status="positive" detail="12/15 指标正向" />
           <EvidenceCard label="Gate" value="Passed" status="positive" detail="4/4 门槛通过" />
           <EvidenceCard label="Source" value="Verified" status="neutral" detail="8 来源确认" />
@@ -83,18 +83,18 @@ function EvidenceCard({ label, value, status, detail }: {
 }) {
   return (
     <div className={cn(
-      "p-2.5 rounded-md border",
+      "p-2 rounded-md border",
       status === "positive" ? "bg-success/4 border-success/15" :
       status === "negative" ? "bg-danger/4 border-danger/15" :
       "bg-secondary/20 border-border/40"
     )}>
-      <div className="text-[10px] text-muted-foreground/60 mb-0.5 uppercase tracking-wider">{label}</div>
+      <div className="text-[9px] text-muted-foreground/60 mb-0.5 uppercase tracking-wider">{label}</div>
       <div className={cn(
-        "text-sm font-bold mb-0.5",
+        "text-sm font-bold",
         status === "positive" ? "text-success" :
         status === "negative" ? "text-danger" : "text-foreground"
       )}>{value}</div>
-      <div className="text-[10px] text-muted-foreground/50">{detail}</div>
+      <div className="text-[9px] text-muted-foreground/50">{detail}</div>
     </div>
   )
 }
@@ -102,7 +102,7 @@ function EvidenceCard({ label, value, status, detail }: {
 function TimingBlock() {
   return (
     <section className="bg-card rounded-lg border border-border/50 overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-border/30 flex items-center justify-between">
+      <div className="px-3 py-2 border-b border-border/30 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Clock className="w-3.5 h-3.5 text-accent" />
           <h2 className="text-sm font-semibold text-foreground">Timing</h2>
@@ -112,8 +112,8 @@ function TimingBlock() {
         </div>
       </div>
 
-      <div className="px-4 py-3">
-        <div className="grid grid-cols-3 gap-2.5 mb-4">
+      <div className="px-3 py-2.5">
+        <div className="grid grid-cols-3 gap-2 mb-3">
           <div className="p-2.5 rounded-md bg-success/5 border border-success/15 text-center">
             <div className="text-xl font-bold text-success mb-0.5">72</div>
             <div className="text-[9px] text-muted-foreground/60 uppercase tracking-wide">Readiness</div>
