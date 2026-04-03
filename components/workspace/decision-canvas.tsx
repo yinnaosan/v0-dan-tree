@@ -385,129 +385,268 @@ function AlertBlock() {
   const criticalCount = alerts.filter(a => a.severity === "critical").length
   const highCount = alerts.filter(a => a.severity === "high").length
 
+  // Decision discipline checklist
+  const disciplineChecklist = [
+    { id: "stop_loss", label: "止损线已设定", checked: true, detail: "$800 (-10%)" },
+    { id: "position_size", label: "仓位符合风险预算", checked: true, detail: "5% 组合占比" },
+    { id: "catalyst_aware", label: "催化剂风险已评估", checked: true, detail: "Q4 财报前" },
+    { id: "thesis_invalidation", label: "论点失效条件已定义", checked: false, detail: "待完善" },
+  ]
+
+  // Risk-adjusted position guidance
+  const positionGuidance = {
+    riskScore: 68,
+    maxPosition: "5%",
+    suggestedEntry: "分 3 批建仓",
+    riskRewardRatio: "1:2.5",
+    confidenceLevel: "中高",
+  }
+
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden">
-      {/* Header */}
+      {/* Header - Enhanced with severity indicator */}
       <div className="px-5 py-4 border-b border-border">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center">
-              <Shield className="w-4 h-4 text-warning" />
+            <div className="relative">
+              <div className="w-10 h-10 rounded-lg bg-warning/15 flex items-center justify-center">
+                <Shield className="w-5 h-5 text-warning" />
+              </div>
+              {criticalCount > 0 && (
+                <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-danger flex items-center justify-center">
+                  <span className="text-[9px] font-bold text-white">{criticalCount}</span>
+                </div>
+              )}
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-foreground">Risk Control</h2>
-              <p className="text-[10px] text-muted-foreground">风险纪律与预警管理</p>
+              <h2 className="text-base font-semibold text-foreground">Risk Control</h2>
+              <p className="text-[11px] text-muted-foreground">决策纪律 · 风险预警 · 仓位管理</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {criticalCount > 0 && (
-              <span className="text-[10px] px-2 py-1 rounded-md bg-danger/15 text-danger font-semibold">
-                {criticalCount} Critical
-              </span>
-            )}
-            {highCount > 0 && (
-              <span className="text-[10px] px-2 py-1 rounded-md bg-warning/15 text-warning font-semibold">
-                {highCount} High
-              </span>
-            )}
-            <span className="text-[10px] px-2 py-1 rounded-md bg-secondary text-muted-foreground font-medium">
-              {alerts.length} Total
-            </span>
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-2">
+              {criticalCount > 0 && (
+                <span className="text-[10px] px-2 py-1 rounded-md bg-danger/15 text-danger font-semibold animate-pulse">
+                  {criticalCount} Critical
+                </span>
+              )}
+              {highCount > 0 && (
+                <span className="text-[10px] px-2 py-1 rounded-md bg-warning/15 text-warning font-semibold">
+                  {highCount} High
+                </span>
+              )}
+            </div>
+            <span className="text-[9px] text-muted-foreground">总计 {alerts.length} 项风险</span>
           </div>
         </div>
 
-        {/* Risk Summary Bar */}
-        <div className="flex gap-1 h-1.5 rounded-full overflow-hidden bg-secondary/50">
-          <div className="bg-danger h-full" style={{ width: `${criticalCount / alerts.length * 100}%` }} />
-          <div className="bg-warning h-full" style={{ width: `${highCount / alerts.length * 100}%` }} />
-          <div className="bg-accent h-full" style={{ width: `${alerts.filter(a => a.severity === "medium").length / alerts.length * 100}%` }} />
-          <div className="bg-muted-foreground/30 h-full flex-1" />
+        {/* Overall Risk Assessment Bar */}
+        <div className="bg-secondary/30 rounded-lg p-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">整体风险评估</span>
+            <div className="flex items-center gap-2">
+              <span className={cn(
+                "text-xs font-bold",
+                positionGuidance.riskScore >= 70 ? "text-warning" : positionGuidance.riskScore >= 50 ? "text-accent" : "text-success"
+              )}>
+                {positionGuidance.riskScore}/100
+              </span>
+              <span className="text-[10px] text-muted-foreground">中等偏高</span>
+            </div>
+          </div>
+          <div className="h-2 rounded-full bg-secondary/50 overflow-hidden">
+            <div 
+              className={cn(
+                "h-full rounded-full transition-all",
+                positionGuidance.riskScore >= 70 ? "bg-warning" : positionGuidance.riskScore >= 50 ? "bg-accent" : "bg-success"
+              )}
+              style={{ width: `${positionGuidance.riskScore}%` }}
+            />
+          </div>
+          <div className="flex justify-between mt-1.5">
+            <span className="text-[9px] text-success">低风险</span>
+            <span className="text-[9px] text-warning">中风险</span>
+            <span className="text-[9px] text-danger">高风险</span>
+          </div>
         </div>
       </div>
 
-      {/* Risk Matrix Overview */}
-      <div className="px-5 py-4 border-b border-border bg-secondary/10">
-        <div className="grid grid-cols-4 gap-3">
-          <div className="text-center">
-            <div className="text-xl font-bold text-foreground mb-0.5">68</div>
-            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">综合风险分</div>
+      {/* Risk Matrix Overview - Redesigned */}
+      <div className="px-5 py-4 border-b border-border">
+        <div className="grid grid-cols-2 gap-4">
+          {/* Risk Metrics */}
+          <div className="space-y-3">
+            <div className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider">风险指标</div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-3 bg-secondary/20 rounded-lg">
+                <div className="text-lg font-bold text-danger mb-0.5">$180</div>
+                <div className="text-[9px] text-muted-foreground">最大损失预估</div>
+              </div>
+              <div className="p-3 bg-secondary/20 rounded-lg">
+                <div className="text-lg font-bold text-foreground mb-0.5">1:2.5</div>
+                <div className="text-[9px] text-muted-foreground">风险回报比</div>
+              </div>
+              <div className="p-3 bg-secondary/20 rounded-lg">
+                <div className="text-lg font-bold text-warning mb-0.5">3</div>
+                <div className="text-[9px] text-muted-foreground">待观察风险</div>
+              </div>
+              <div className="p-3 bg-secondary/20 rounded-lg">
+                <div className="text-lg font-bold text-success mb-0.5">2</div>
+                <div className="text-[9px] text-muted-foreground">已缓解风险</div>
+              </div>
+            </div>
           </div>
-          <div className="text-center border-l border-border">
-            <div className="text-xl font-bold text-danger mb-0.5">$180</div>
-            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">最大损失</div>
+
+          {/* Position Guidance */}
+          <div className="space-y-3">
+            <div className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider">仓位指导</div>
+            <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] text-muted-foreground">建议仓位</span>
+                <span className="text-sm font-bold text-primary">{positionGuidance.maxPosition}</span>
+              </div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] text-muted-foreground">建仓策略</span>
+                <span className="text-xs font-medium text-foreground">{positionGuidance.suggestedEntry}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground">置信水平</span>
+                <span className="text-xs font-medium text-success">{positionGuidance.confidenceLevel}</span>
+              </div>
+            </div>
           </div>
-          <div className="text-center border-l border-border">
-            <div className="text-xl font-bold text-warning mb-0.5">3</div>
-            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">待观察</div>
+        </div>
+      </div>
+
+      {/* Decision Discipline Checklist */}
+      <div className="px-5 py-4 border-b border-border bg-secondary/5">
+        <div className="flex items-center justify-between mb-3">
+          <div className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider">决策纪律检查</div>
+          <span className="text-[10px] text-success font-medium">
+            {disciplineChecklist.filter(c => c.checked).length}/{disciplineChecklist.length} 已确认
+          </span>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          {disciplineChecklist.map((item) => (
+            <div
+              key={item.id}
+              className={cn(
+                "flex items-center gap-2.5 p-2.5 rounded-lg border transition-all",
+                item.checked 
+                  ? "bg-success/5 border-success/20" 
+                  : "bg-warning/5 border-warning/20"
+              )}
+            >
+              <div className={cn(
+                "w-5 h-5 rounded-full flex items-center justify-center shrink-0",
+                item.checked ? "bg-success/20" : "bg-warning/20"
+              )}>
+                {item.checked ? (
+                  <CheckCircle2 className="w-3 h-3 text-success" />
+                ) : (
+                  <AlertTriangle className="w-3 h-3 text-warning" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[11px] font-medium text-foreground truncate">{item.label}</div>
+                <div className={cn(
+                  "text-[9px]",
+                  item.checked ? "text-success" : "text-warning"
+                )}>{item.detail}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Risk Severity Distribution */}
+      <div className="px-5 py-3 border-b border-border">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-danger" />
+            <span className="text-[9px] text-muted-foreground">Critical ({criticalCount})</span>
           </div>
-          <div className="text-center border-l border-border">
-            <div className="text-xl font-bold text-success mb-0.5">2</div>
-            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">已缓解</div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-warning" />
+            <span className="text-[9px] text-muted-foreground">High ({highCount})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-accent" />
+            <span className="text-[9px] text-muted-foreground">Medium ({alerts.filter(a => a.severity === "medium").length})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-muted-foreground/30" />
+            <span className="text-[9px] text-muted-foreground">Low ({alerts.filter(a => a.severity === "low").length})</span>
           </div>
         </div>
       </div>
 
       {/* Alert Cards */}
       <div className="p-5 space-y-4">
+        <div className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
+          风险明细
+        </div>
         {alerts.map((alert, i) => {
           const config = severityConfig[alert.severity]
           return (
             <div
               key={i}
               className={cn(
-                "rounded-lg border-l-3 p-4 transition-all hover:translate-x-0.5",
+                "rounded-lg p-4 transition-all hover:translate-x-0.5 border-l-[3px]",
                 config.bg,
-                `border-l-[3px]`,
                 config.border
               )}
             >
               {/* Alert Header */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-start gap-3">
-                  <div className={cn("w-7 h-7 rounded-md flex items-center justify-center shrink-0", config.icon)}>
-                    <AlertTriangle className={cn("w-3.5 h-3.5", config.text)} />
+                  <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", config.icon)}>
+                    <AlertTriangle className={cn("w-4 h-4", config.text)} />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className={cn("text-[9px] font-bold uppercase tracking-wider", config.text)}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={cn("text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded", config.badge)}>
                         {alert.severity}
                       </span>
-                      <span className="text-[9px] text-muted-foreground">·</span>
                       <span className="text-[9px] text-muted-foreground">{alert.category}</span>
                     </div>
                     <h3 className="text-sm font-semibold text-foreground">{alert.title}</h3>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="text-right">
-                    <div className={cn("text-sm font-bold", config.text)}>{alert.probability}%</div>
-                    <div className="text-[9px] text-muted-foreground">概率</div>
-                  </div>
+                <div className="flex flex-col items-end gap-1">
+                  <div className={cn("text-lg font-bold", config.text)}>{alert.probability}%</div>
+                  <div className="text-[9px] text-muted-foreground">发生概率</div>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-xs text-secondary-foreground mb-3 leading-relaxed pl-10">
+              <p className="text-xs text-secondary-foreground mb-4 leading-relaxed pl-11">
                 {alert.description}
               </p>
 
               {/* Impact & Mitigation */}
-              <div className="pl-10 grid grid-cols-2 gap-3 mb-3">
-                <div className="p-2.5 bg-background/50 rounded-md">
-                  <div className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1">潜在影响</div>
-                  <p className="text-[11px] text-foreground font-medium">{alert.impact}</p>
+              <div className="pl-11 grid grid-cols-2 gap-3 mb-4">
+                <div className="p-3 bg-background/60 rounded-lg border border-border/50">
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <ArrowDownRight className="w-3 h-3 text-danger" />
+                    <span className="text-[9px] text-muted-foreground uppercase tracking-wider">潜在影响</span>
+                  </div>
+                  <p className="text-[11px] text-foreground font-medium leading-relaxed">{alert.impact}</p>
                 </div>
-                <div className="p-2.5 bg-background/50 rounded-md">
-                  <div className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1">应对策略</div>
-                  <p className="text-[11px] text-foreground font-medium">{alert.mitigation}</p>
+                <div className="p-3 bg-background/60 rounded-lg border border-border/50">
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <Shield className="w-3 h-3 text-primary" />
+                    <span className="text-[9px] text-muted-foreground uppercase tracking-wider">应对策略</span>
+                  </div>
+                  <p className="text-[11px] text-foreground font-medium leading-relaxed">{alert.mitigation}</p>
                 </div>
               </div>
 
               {/* Triggers */}
-              <div className="pl-10 flex items-center gap-2 flex-wrap">
-                <span className="text-[9px] text-muted-foreground">触发条件:</span>
+              <div className="pl-11 flex items-center gap-2 flex-wrap">
+                <span className="text-[9px] text-muted-foreground font-medium">触发条件:</span>
                 {alert.triggers.map((trigger, j) => (
-                  <span key={j} className="text-[10px] px-2 py-0.5 rounded-full bg-background/80 text-secondary-foreground border border-border">
+                  <span key={j} className="text-[10px] px-2 py-1 rounded-md bg-background/80 text-secondary-foreground border border-border">
                     {trigger}
                   </span>
                 ))}
@@ -519,14 +658,20 @@ function AlertBlock() {
       </div>
 
       {/* Footer Actions */}
-      <div className="px-5 py-3 border-t border-border bg-secondary/10 flex items-center justify-between">
-        <button className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-          <Shield className="w-3 h-3" />
-          风险设置
-        </button>
-        <button className="text-[10px] text-primary hover:text-primary/80 transition-colors flex items-center gap-1 font-medium">
+      <div className="px-5 py-4 border-t border-border bg-secondary/10 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <button className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+            <Shield className="w-3.5 h-3.5" />
+            风险设置
+          </button>
+          <button className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+            <Target className="w-3.5 h-3.5" />
+            设置预警
+          </button>
+        </div>
+        <button className="text-[10px] text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5 font-semibold px-3 py-1.5 bg-primary/10 rounded-md">
           生成风险报告
-          <ChevronRight className="w-3 h-3" />
+          <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
