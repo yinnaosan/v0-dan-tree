@@ -1,5 +1,6 @@
 "use client"
 
+// Decision Intelligence Panel - Fxology glass style
 import { Eye, CheckCircle2, Zap, AlertCircle, TrendingUp, ArrowRight, Target } from "lucide-react"
 import { cn } from "@/lib/utils"
 
