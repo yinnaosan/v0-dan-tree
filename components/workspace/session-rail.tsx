@@ -1,7 +1,7 @@
 "use client"
 
+// Session navigation rail
 import { useState } from "react"
-
 import { Search, Plus, Pin, Clock, TrendingUp, AlertTriangle, Target, Lightbulb } from "lucide-react"
 import { cn } from "@/lib/utils"
 

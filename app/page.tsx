@@ -1,5 +1,6 @@
 "use client"
 
+// DanTree Investment Decision Workspace
 import { useState, useEffect } from "react"
 import { SessionRail } from "@/components/workspace/session-rail"
 import { DecisionCanvas } from "@/components/workspace/decision-canvas"
@@ -17,12 +18,13 @@ export default function WorkspacePage() {
   if (!mounted) {
     return (
       <div className="h-screen w-full flex flex-col overflow-hidden bg-background">
-        <div className="h-10 w-full bg-[oklch(0.055_0.002_250)] border-b border-border/15" />
+        {/* Fixed top bar skeleton */}
+        <div className="h-14 w-full bg-[oklch(0.06_0.003_250)] border-b border-border/20 sticky top-0 z-50" />
         <div className="flex-1 flex overflow-hidden">
           <div className="w-56 h-full bg-sidebar border-r border-border/20" />
           <div className="flex-1 h-full bg-background" />
           <div className="w-[420px] h-full bg-card border-l border-border/30" />
-          <div className="w-64 h-full bg-[oklch(0.07_0.003_250)] border-l border-border/15" />
+          <div className="w-52 h-full bg-[oklch(0.075_0.003_250)] border-l border-border/15" />
         </div>
       </div>
     )
@@ -30,7 +32,10 @@ export default function WorkspacePage() {
 
   return (
     <div className="h-screen w-full flex flex-col overflow-hidden bg-background">
+      {/* Fixed Decision Control Strip - Always visible */}
       <GlobalTopBar />
+      
+      {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden">
         <SessionRail />
         <DecisionCanvas />
