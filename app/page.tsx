@@ -23,7 +23,7 @@ export default function WorkspacePage() {
           <div className="w-52 h-full border-r border-white/[0.03]" style={{ background: '#070a0d' }} />
           <div className="flex-1 max-w-[680px] h-full" style={{ background: '#0c0f14' }} />
           <div className="flex-1 min-w-[320px] h-full border-l border-white/[0.03]" style={{ background: '#0f1218' }} />
-          <div className="w-48 h-full border-l border-white/[0.03] shrink-0" style={{ background: '#070a0d' }} />
+          <div className="w-64 h-full border-l border-white/[0.06] shrink-0" style={{ background: '#0c1015' }} />
         </div>
       </div>
     )
