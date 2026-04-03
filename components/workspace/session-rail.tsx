@@ -84,7 +84,7 @@ export function SessionRail() {
   const [activeSession, setActiveSession] = useState("1")
 
   return (
-    <aside className="w-56 h-full bg-sidebar border-r border-border/20 flex flex-col">
+    <aside className="w-52 h-full bg-sidebar border-r border-border/15 flex flex-col">
       {/* Search + New */}
       <div className="px-3 py-3 flex items-center gap-2">
         <div className="relative flex-1">
