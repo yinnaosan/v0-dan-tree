@@ -1,926 +1,277 @@
 "use client"
 
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Minus, 
-  AlertTriangle, 
-  CheckCircle2, 
-  Clock, 
-  ArrowUpRight, 
-  ArrowDownRight,
-  Shield,
-  Target,
-  Zap,
-  BarChart3,
-  FileText,
-  ExternalLink,
-  ChevronRight,
-  MoreHorizontal
-} from "lucide-react"
+import { TrendingUp, AlertTriangle, CheckCircle2, Clock, ArrowUpRight, Shield, Target, Zap, ChevronRight, Activity } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function DecisionCanvas() {
   return (
-    <div className="flex-1 min-w-0 h-full bg-background overflow-y-auto">
-      <div className="max-w-4xl mx-auto px-8 py-6">
-        {/* Decision Header */}
-        <DecisionHeader />
-        
-        {/* Decision Spine - 5-Part Workflow */}
-        <div className="mt-6 space-y-4">
-          {/* 1. Thesis - Core investment logic */}
+    <main className="flex-1 min-w-0 max-w-[680px] h-full bg-background overflow-y-auto">
+      <div className="px-5 py-4">
+        <div className="space-y-4">
           <ThesisBlock />
-          {/* 2. Timing - When to act */}
           <TimingBlock />
-          {/* 3. Alert - Risk discipline */}
-          <AlertBlock />
-          {/* 4. History - Decision evolution */}
+          <RiskBlock />
           <HistoryBlock />
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 
-function DecisionHeader() {
-  return (
-    <div className="bg-card border border-border rounded-lg p-5">
-      {/* Top Row */}
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-4">
-          {/* Asset Badge */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
-              <span className="text-lg font-bold text-success">N</span>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-lg font-semibold text-foreground">NVDA</h1>
-                <span className="text-xs text-muted-foreground">NASDAQ</span>
-              </div>
-              <p className="text-xs text-muted-foreground">NVIDIA Corporation</p>
-            </div>
-          </div>
-          
-          {/* Session Type */}
-          <div className="h-6 w-px bg-border" />
-          <div className="flex items-center gap-1.5">
-            <Target className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-medium text-foreground">Thesis 会话</span>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex items-center gap-2">
-          <button className="p-1.5 rounded-md hover:bg-secondary transition-colors">
-            <ExternalLink className="w-4 h-4 text-muted-foreground" />
-          </button>
-          <button className="p-1.5 rounded-md hover:bg-secondary transition-colors">
-            <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
-          </button>
-        </div>
-      </div>
-
-      {/* Status Row */}
-      <div className="mt-5 flex items-center gap-6">
-        {/* Thesis Stance */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-success/10">
-            <TrendingUp className="w-3.5 h-3.5 text-success" />
-            <span className="text-xs font-semibold text-success">Bullish</span>
-          </div>
-          <span className="text-[10px] text-muted-foreground">Thesis 立场</span>
-        </div>
-
-        {/* Readiness */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5">
-            <div className="flex gap-0.5">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    "w-1.5 h-4 rounded-sm",
-                    i <= 4 ? "bg-primary" : "bg-secondary"
-                  )}
-                />
-              ))}
-            </div>
-            <span className="text-xs font-medium text-foreground">4/5</span>
-          </div>
-          <span className="text-[10px] text-muted-foreground">Readiness</span>
-        </div>
-
-        {/* Action Bias */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10">
-            <Zap className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-medium text-primary">加仓</span>
-          </div>
-          <span className="text-[10px] text-muted-foreground">Action Bias</span>
-        </div>
-
-        {/* Alert Level */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-warning/10">
-            <AlertTriangle className="w-3.5 h-3.5 text-warning" />
-            <span className="text-xs font-medium text-warning">Medium</span>
-          </div>
-          <span className="text-[10px] text-muted-foreground">Alert</span>
-        </div>
-
-        {/* Change Marker */}
-        <div className="flex items-center gap-2 ml-auto">
-          <div className="flex items-center gap-1 text-success">
-            <ArrowUpRight className="w-3.5 h-3.5" />
-            <span className="text-xs font-medium">+12%</span>
-          </div>
-          <span className="text-[10px] text-muted-foreground">vs 上周</span>
-        </div>
-      </div>
-
-      {/* Last Updated */}
-      <div className="mt-4 pt-4 border-t border-border flex items-center gap-1.5 text-muted-foreground">
-        <Clock className="w-3 h-3" />
-        <span className="text-[10px]">最近更新: 今天 14:32 · 由 AI 自动更新</span>
-      </div>
-    </div>
-  )
-}
-
+/* ============================================
+   THESIS BLOCK - Core Investment Argument
+   ============================================ */
 function ThesisBlock() {
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden">
+    <section className="bg-card rounded-lg border border-border/40">
       {/* Header */}
-      <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Target className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Thesis</h2>
+      <div className="px-4 py-3 border-b border-border/25 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-md bg-primary/10 flex items-center justify-center">
+            <Target className="w-4 h-4 text-primary" />
+          </div>
+          <h2 className="text-[15px] font-bold text-foreground tracking-tight">Thesis</h2>
         </div>
-        <button className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-          详细分析
-          <ChevronRight className="w-3 h-3" />
+        <button className="flex items-center gap-1 text-[12px] text-muted-foreground/60 hover:text-foreground transition-colors">
+          详细分析 <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </div>
 
       {/* Content */}
-      <div className="p-5">
-        {/* Key Thesis Summary */}
-        <div className="mb-5">
-          <p className="text-sm text-foreground leading-relaxed">
-            NVIDIA 作为 AI 基础设施的核心供应商，在数据中心 GPU 市场占据主导地位。
-            H100/H200 产能持续扩张，云厂商 CapEx 支出强劲支撑需求。
-            长期看好 AI 训练与推理双轮驱动的增长逻辑。
-          </p>
+      <div className="px-4 py-4">
+        {/* Main Thesis Statement */}
+        <p className="text-[14px] text-foreground/90 leading-[1.7] mb-4">
+          NVIDIA 作为 AI 基础设施的核心供应商，在数据中心 GPU 市场占据主导地位。H100/H200 产能持续扩张，云厂商 CapEx 支出强劲支撑需求。长期看好 AI 训练与推理双轮驱动的增长逻辑。
+        </p>
+
+        {/* Evidence Cards */}
+        <div className="grid grid-cols-4 gap-2.5 mb-4">
+          <EvidenceCard label="EVIDENCE" value="Strong" status="positive" detail="12/15 指标正向" />
+          <EvidenceCard label="GATE" value="Passed" status="positive" detail="4/4 门槛通过" />
+          <EvidenceCard label="SOURCE" value="Verified" status="neutral" detail="8 来源确认" />
+          <EvidenceCard label="FRAGILITY" value="Low" status="positive" detail="稳定性 87%" />
         </div>
 
-        {/* Evidence Units */}
-        <div className="grid grid-cols-4 gap-3">
-          <StatusUnit
-            label="Evidence"
-            value="Strong"
-            status="positive"
-            icon={CheckCircle2}
-            detail="12/15 指标正向"
-          />
-          <StatusUnit
-            label="Gate"
-            value="Passed"
-            status="positive"
-            icon={Shield}
-            detail="4/4 门槛通过"
-          />
-          <StatusUnit
-            label="Source"
-            value="Verified"
-            status="neutral"
-            icon={FileText}
-            detail="8 来源确认"
-          />
-          <StatusUnit
-            label="Fragility"
-            value="Low"
-            status="positive"
-            icon={BarChart3}
-            detail="稳定性 87%"
-          />
-        </div>
-
-        {/* Key Evidence Points */}
-        <div className="mt-5 pt-4 border-t border-border">
-          <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            关键证据
-          </div>
-          <div className="space-y-2">
+        {/* Key Evidence */}
+        <div className="pt-4 border-t border-border/20">
+          <h3 className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider mb-3">关键证据</h3>
+          <div className="space-y-2.5">
             {[
-              { text: "Q3 数据中心收入同比增长 279%", trend: "up" },
-              { text: "H200 供不应求，交付周期 6-9 个月", trend: "up" },
-              { text: "主要云厂商 2024 CapEx 指引上调", trend: "up" },
-              { text: "竞品 AMD MI300X 份额仍低于预期", trend: "neutral" },
+              { icon: ArrowUpRight, text: "Q3 数据中心收入同比增长 279%", positive: true },
+              { icon: ArrowUpRight, text: "H200 供不应求，交付周期 6-9 个月", positive: true },
+              { icon: ArrowUpRight, text: "主要云厂商 2024 CapEx 指引上调", positive: true },
+              { icon: Activity, text: "竞品 AMD MI300X 份额仍低于预期", positive: false },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2">
-                {item.trend === "up" ? (
-                  <ArrowUpRight className="w-3 h-3 text-success shrink-0" />
-                ) : (
-                  <Minus className="w-3 h-3 text-muted-foreground shrink-0" />
-                )}
-                <span className="text-xs text-secondary-foreground">{item.text}</span>
+              <div key={i} className="flex items-center gap-2.5">
+                <item.icon className={cn("w-4 h-4", item.positive ? "text-success" : "text-muted-foreground/50")} />
+                <span className={cn("text-[13px] leading-relaxed", item.positive ? "text-foreground/85" : "text-muted-foreground/60")}>{item.text}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
+    </section>
+  )
+}
+
+function EvidenceCard({ label, value, status, detail }: { label: string; value: string; status: "positive" | "neutral" | "negative"; detail: string }) {
+  return (
+    <div className={cn(
+      "p-2.5 rounded-md border",
+      status === "positive" ? "bg-success/5 border-success/15" : status === "negative" ? "bg-danger/5 border-danger/15" : "bg-secondary/20 border-border/30"
+    )}>
+      <div className="text-[9px] font-semibold text-muted-foreground/50 uppercase tracking-wider mb-1">{label}</div>
+      <div className={cn("text-[14px] font-bold", status === "positive" ? "text-success" : status === "negative" ? "text-danger" : "text-foreground")}>{value}</div>
+      <div className="text-[10px] text-muted-foreground/45 mt-0.5">{detail}</div>
     </div>
   )
 }
 
+/* ============================================
+   TIMING BLOCK - Entry & Catalyst
+   ============================================ */
 function TimingBlock() {
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden">
-      {/* Header */}
-      <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Timing</h2>
+    <section className="bg-card rounded-lg border border-border/40">
+      <div className="px-4 py-3 border-b border-border/25 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center">
+            <Clock className="w-4 h-4 text-accent" />
+          </div>
+          <h2 className="text-[15px] font-bold text-foreground tracking-tight">Timing</h2>
         </div>
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-success/10">
-          <span className="text-[10px] font-semibold text-success">适合介入</span>
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-success/8 border border-success/15">
+          <span className="text-[12px] font-bold text-success">适合介入</span>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-5">
-        {/* Timing Indicators */}
-        <div className="grid grid-cols-3 gap-4 mb-5">
-          <div className="text-center p-3 bg-secondary/30 rounded-lg">
-            <div className="text-2xl font-bold text-success mb-1">72</div>
-            <div className="text-[10px] text-muted-foreground">Readiness Score</div>
+      <div className="px-4 py-4">
+        {/* Key Metrics */}
+        <div className="grid grid-cols-3 gap-2.5 mb-4">
+          <div className="p-3 rounded-md bg-success/6 border border-success/12 text-center">
+            <div className="text-2xl font-bold text-success tabular-nums">72</div>
+            <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wide mt-0.5">Readiness</div>
           </div>
-          <div className="text-center p-3 bg-secondary/30 rounded-lg">
-            <div className="text-2xl font-bold text-foreground mb-1">$890</div>
-            <div className="text-[10px] text-muted-foreground">Entry Zone</div>
+          <div className="p-3 rounded-md bg-secondary/15 text-center">
+            <div className="text-2xl font-bold text-foreground tabular-nums">$890</div>
+            <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wide mt-0.5">Entry Zone</div>
           </div>
-          <div className="text-center p-3 bg-secondary/30 rounded-lg">
-            <div className="text-2xl font-bold text-warning mb-1">14d</div>
-            <div className="text-[10px] text-muted-foreground">Next Catalyst</div>
+          <div className="p-3 rounded-md bg-warning/6 border border-warning/12 text-center">
+            <div className="text-2xl font-bold text-warning tabular-nums">14d</div>
+            <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wide mt-0.5">Catalyst</div>
           </div>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-border" />
-          <div className="space-y-4">
+        {/* Catalyst Timeline */}
+        <div>
+          <h3 className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider mb-3">催化剂时间线</h3>
+          <div className="space-y-2">
             {[
-              { date: "2024-02-21", event: "Q4 财报发布", status: "upcoming", importance: "high" },
-              { date: "2024-03-18", event: "GTC 大会", status: "upcoming", importance: "high" },
-              { date: "2024-01-08", event: "CES 主题演讲", status: "passed", importance: "medium" },
+              { date: "2024-02-21", event: "Q4 财报发布", important: true, days: "14天" },
+              { date: "2024-03-18", event: "GTC 大会", important: true, days: "39天" },
+              { date: "2024-01-08", event: "CES 主题演讲", important: false, days: "已过", passed: true },
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 relative">
-                <div className={cn(
-                  "w-[15px] h-[15px] rounded-full border-2 shrink-0 z-10",
-                  item.status === "upcoming" 
-                    ? "bg-primary/20 border-primary" 
-                    : "bg-secondary border-border"
-                )} />
-                <div className="flex-1 -mt-0.5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-foreground">{item.event}</span>
-                    {item.importance === "high" && (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-warning/10 text-warning font-medium">
-                        重要
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-[10px] text-muted-foreground">{item.date}</span>
-                </div>
+              <div key={i} className="flex items-center gap-3 py-1">
+                <div className={cn("w-2 h-2 rounded-full shrink-0", item.passed ? "bg-muted-foreground/20" : "bg-primary")} />
+                <span className={cn("text-[13px] flex-1", item.passed ? "text-muted-foreground/40" : "text-foreground/85")}>{item.event}</span>
+                {item.important && !item.passed && (
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-warning/12 text-warning font-semibold">重要</span>
+                )}
+                <span className="text-[11px] text-muted-foreground/40 w-20">{item.date}</span>
+                <span className={cn("text-[13px] font-semibold w-12 text-right tabular-nums", item.passed ? "text-muted-foreground/30" : "text-primary")}>{item.days}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
-function AlertBlock() {
-  const alerts = [
-    {
-      severity: "critical" as const,
-      title: "估值风险",
-      category: "Valuation",
-      description: "当前 Forward P/E 65x 处于历史 95 分位，隐含增长预期极高",
-      impact: "下行空间 20-30%，若增速放缓",
-      probability: 35,
-      mitigation: "设置 $800 止损线，分批建仓降低成本基础",
-      triggers: ["Q4 收入增速 < 80%", "2024 指引不及预期"],
-      lastUpdated: "2h ago",
-    },
-    {
-      severity: "high" as const,
-      title: "地缘政治风险",
-      category: "Geopolitical",
-      description: "中美半导体出口管制持续升级，H20 芯片面临潜在禁令",
-      impact: "中国区收入占比 20%，约 $10B 收入面临风险",
-      probability: 45,
-      mitigation: "关注政策进展，设置地缘事件触发的仓位调整规则",
-      triggers: ["新一轮出口管制", "中国客户订单取消"],
-      lastUpdated: "1d ago",
-    },
-    {
-      severity: "medium" as const,
-      title: "竞争格局变化",
-      category: "Competition",
-      description: "AMD MI300X 开始获得云厂商订单，长期份额存在被蚕食风险",
-      impact: "市场份额可能从 90% 下降至 70-80%",
-      probability: 25,
-      mitigation: "跟踪 AMD 季度出货量和客户反馈",
-      triggers: ["AMD 大单公告", "客户公开切换供应商"],
-      lastUpdated: "3d ago",
-    },
-    {
-      severity: "low" as const,
-      title: "供应链集中度",
-      category: "Supply Chain",
-      description: "台积电 CoWoS 产能瓶颈，单一供应商依赖",
-      impact: "产能受限可能影响交付节奏",
-      probability: 15,
-      mitigation: "关注台积电产能扩张计划",
-      triggers: ["台积电产能公告", "交付周期延长"],
-      lastUpdated: "1w ago",
-    },
+/* ============================================
+   RISK BLOCK - Discipline & Control
+   ============================================ */
+function RiskBlock() {
+  const risks = [
+    { severity: "high", title: "估值风险", desc: "当前 Forward P/E 65x 处于历史 95 分位", prob: 35, action: "设置 $800 止损线" },
+    { severity: "medium", title: "地缘政治", desc: "中美半导体出口管制持续升级", prob: 45, action: "关注政策进展" },
   ]
-
-  const severityConfig = {
-    critical: {
-      bg: "bg-danger/8",
-      border: "border-danger",
-      text: "text-danger",
-      badge: "bg-danger/15 text-danger",
-      icon: "bg-danger/20",
-    },
-    high: {
-      bg: "bg-warning/8",
-      border: "border-warning",
-      text: "text-warning",
-      badge: "bg-warning/15 text-warning",
-      icon: "bg-warning/20",
-    },
-    medium: {
-      bg: "bg-accent/5",
-      border: "border-accent/50",
-      text: "text-accent",
-      badge: "bg-accent/10 text-accent",
-      icon: "bg-accent/15",
-    },
-    low: {
-      bg: "bg-secondary/30",
-      border: "border-border",
-      text: "text-muted-foreground",
-      badge: "bg-secondary text-muted-foreground",
-      icon: "bg-secondary",
-    },
-  }
-
-  const criticalCount = alerts.filter(a => a.severity === "critical").length
-  const highCount = alerts.filter(a => a.severity === "high").length
 
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-border">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center">
-              <Shield className="w-4 h-4 text-warning" />
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold text-foreground">Risk Control</h2>
-              <p className="text-[10px] text-muted-foreground">风险纪律与预警管理</p>
-            </div>
+    <section className="bg-card rounded-lg border border-border/40">
+      <div className="px-4 py-3 border-b border-border/25 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-md bg-warning/10 flex items-center justify-center">
+            <Shield className="w-4 h-4 text-warning" />
           </div>
-          <div className="flex items-center gap-2">
-            {criticalCount > 0 && (
-              <span className="text-[10px] px-2 py-1 rounded-md bg-danger/15 text-danger font-semibold">
-                {criticalCount} Critical
-              </span>
-            )}
-            {highCount > 0 && (
-              <span className="text-[10px] px-2 py-1 rounded-md bg-warning/15 text-warning font-semibold">
-                {highCount} High
-              </span>
-            )}
-            <span className="text-[10px] px-2 py-1 rounded-md bg-secondary text-muted-foreground font-medium">
-              {alerts.length} Total
-            </span>
-          </div>
+          <h2 className="text-[15px] font-bold text-foreground tracking-tight">Risk</h2>
         </div>
-
-        {/* Risk Summary Bar */}
-        <div className="flex gap-1 h-1.5 rounded-full overflow-hidden bg-secondary/50">
-          <div className="bg-danger h-full" style={{ width: `${criticalCount / alerts.length * 100}%` }} />
-          <div className="bg-warning h-full" style={{ width: `${highCount / alerts.length * 100}%` }} />
-          <div className="bg-accent h-full" style={{ width: `${alerts.filter(a => a.severity === "medium").length / alerts.length * 100}%` }} />
-          <div className="bg-muted-foreground/30 h-full flex-1" />
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-danger/12 text-danger font-semibold">1 Critical</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-warning/12 text-warning font-semibold">1 High</span>
         </div>
       </div>
 
-      {/* Risk Matrix Overview */}
-      <div className="px-5 py-4 border-b border-border bg-secondary/10">
-        <div className="grid grid-cols-4 gap-3">
-          <div className="text-center">
-            <div className="text-xl font-bold text-foreground mb-0.5">68</div>
-            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">综合风险分</div>
-          </div>
-          <div className="text-center border-l border-border">
-            <div className="text-xl font-bold text-danger mb-0.5">$180</div>
-            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">最大损失</div>
-          </div>
-          <div className="text-center border-l border-border">
-            <div className="text-xl font-bold text-warning mb-0.5">3</div>
-            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">待观察</div>
-          </div>
-          <div className="text-center border-l border-border">
-            <div className="text-xl font-bold text-success mb-0.5">2</div>
-            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">已缓解</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Alert Cards */}
-      <div className="p-5 space-y-4">
-        {alerts.map((alert, i) => {
-          const config = severityConfig[alert.severity]
-          return (
-            <div
-              key={i}
-              className={cn(
-                "rounded-lg border-l-3 p-4 transition-all hover:translate-x-0.5",
-                config.bg,
-                `border-l-[3px]`,
-                config.border
-              )}
-            >
-              {/* Alert Header */}
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-start gap-3">
-                  <div className={cn("w-7 h-7 rounded-md flex items-center justify-center shrink-0", config.icon)}>
-                    <AlertTriangle className={cn("w-3.5 h-3.5", config.text)} />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className={cn("text-[9px] font-bold uppercase tracking-wider", config.text)}>
-                        {alert.severity}
-                      </span>
-                      <span className="text-[9px] text-muted-foreground">·</span>
-                      <span className="text-[9px] text-muted-foreground">{alert.category}</span>
-                    </div>
-                    <h3 className="text-sm font-semibold text-foreground">{alert.title}</h3>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="text-right">
-                    <div className={cn("text-sm font-bold", config.text)}>{alert.probability}%</div>
-                    <div className="text-[9px] text-muted-foreground">概率</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Description */}
-              <p className="text-xs text-secondary-foreground mb-3 leading-relaxed pl-10">
-                {alert.description}
-              </p>
-
-              {/* Impact & Mitigation */}
-              <div className="pl-10 grid grid-cols-2 gap-3 mb-3">
-                <div className="p-2.5 bg-background/50 rounded-md">
-                  <div className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1">潜在影响</div>
-                  <p className="text-[11px] text-foreground font-medium">{alert.impact}</p>
-                </div>
-                <div className="p-2.5 bg-background/50 rounded-md">
-                  <div className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1">应对策略</div>
-                  <p className="text-[11px] text-foreground font-medium">{alert.mitigation}</p>
-                </div>
-              </div>
-
-              {/* Triggers */}
-              <div className="pl-10 flex items-center gap-2 flex-wrap">
-                <span className="text-[9px] text-muted-foreground">触发条件:</span>
-                {alert.triggers.map((trigger, j) => (
-                  <span key={j} className="text-[10px] px-2 py-0.5 rounded-full bg-background/80 text-secondary-foreground border border-border">
-                    {trigger}
-                  </span>
-                ))}
-                <span className="text-[9px] text-muted-foreground ml-auto">更新: {alert.lastUpdated}</span>
-              </div>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Footer Actions */}
-      <div className="px-5 py-3 border-t border-border bg-secondary/10 flex items-center justify-between">
-        <button className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-          <Shield className="w-3 h-3" />
-          风险设置
-        </button>
-        <button className="text-[10px] text-primary hover:text-primary/80 transition-colors flex items-center gap-1 font-medium">
-          生成风险报告
-          <ChevronRight className="w-3 h-3" />
-        </button>
-      </div>
-    </div>
-  )
-}
-
-function HistoryBlock() {
-  // Thesis evolution data showing progression over time
-  const thesisEvolution = {
-    stages: [
-      { date: "2023-12-01", stance: "Neutral", confidence: 45 },
-      { date: "2023-12-15", stance: "Neutral", confidence: 55 },
-      { date: "2024-01-05", stance: "Bullish", confidence: 68 },
-      { date: "2024-01-15", stance: "Bullish", confidence: 82 },
-    ],
-    reason: "核心逻辑: AI 需求验证 → 竞争格局确认 → 产能扩张可见性",
-  }
-
-  // Previous vs Current comparison - the core comparison view
-  const comparison = {
-    previous: {
-      label: "30 天前",
-      date: "2023-12-15",
-      stance: "Neutral",
-      readiness: 2,
-      alertLevel: "High",
-      evidenceScore: 5,
-      evidenceTotal: 12,
-      actionBias: "观察",
-      keyThesis: "AI 需求可持续性存疑，估值过高",
-      mainRisks: ["估值风险", "需求可持续性", "竞争加剧"],
-    },
-    current: {
-      label: "当前",
-      date: "2024-01-15",
-      stance: "Bullish",
-      readiness: 4,
-      alertLevel: "Medium",
-      evidenceScore: 12,
-      evidenceTotal: 15,
-      actionBias: "加仓",
-      keyThesis: "AI 基础设施核心供应商，护城河验证",
-      mainRisks: ["估值风险", "地缘政治"],
-    },
-  }
-
-  // State evolution tracking - shows how each metric changed
-  const stateEvolution = [
-    {
-      metric: "Thesis Stance",
-      icon: Target,
-      history: [
-        { date: "12-01", value: "Neutral", color: "text-muted-foreground" },
-        { date: "12-15", value: "Neutral", color: "text-muted-foreground" },
-        { date: "01-05", value: "Bullish", color: "text-success", isChange: true },
-        { date: "01-15", value: "Bullish", color: "text-success" },
-      ],
-    },
-    {
-      metric: "Readiness",
-      icon: Zap,
-      history: [
-        { date: "12-01", value: "1/5", color: "text-muted-foreground" },
-        { date: "12-15", value: "2/5", color: "text-muted-foreground", isChange: true },
-        { date: "01-05", value: "3/5", color: "text-foreground", isChange: true },
-        { date: "01-15", value: "4/5", color: "text-primary", isChange: true },
-      ],
-    },
-    {
-      metric: "Alert Level",
-      icon: AlertTriangle,
-      history: [
-        { date: "12-01", value: "High", color: "text-danger" },
-        { date: "12-15", value: "High", color: "text-danger" },
-        { date: "01-05", value: "High", color: "text-danger" },
-        { date: "01-15", value: "Medium", color: "text-warning", isChange: true },
-      ],
-    },
-    {
-      metric: "Action Bias",
-      icon: ArrowUpRight,
-      history: [
-        { date: "12-01", value: "回避", color: "text-danger" },
-        { date: "12-15", value: "观察", color: "text-muted-foreground", isChange: true },
-        { date: "01-05", value: "观望", color: "text-foreground", isChange: true },
-        { date: "01-15", value: "加仓", color: "text-success", isChange: true },
-      ],
-    },
-  ]
-
-  // Key decision change markers
-  const changeMarkers = [
-    {
-      date: "2024-01-05",
-      type: "thesis_upgrade" as const,
-      title: "Thesis 立场升级",
-      from: "Neutral",
-      to: "Bullish",
-      trigger: "Q3 财报超预期 + 云厂商 CapEx 指引上调",
-      rationale: "数据中心需求可持续性得到验证，AI 训练需求远超市场预期",
-      confidence: "+23%",
-    },
-    {
-      date: "2024-01-12",
-      type: "alert_downgrade" as const,
-      title: "风险等级下调",
-      from: "High",
-      to: "Medium",
-      trigger: "估值回调至合理区间 + 竞品威胁减弱",
-      rationale: "股价回调 12% 后估值压力缓解，AMD MI300X 首季出货低于预期",
-      confidence: "风险降低",
-    },
-    {
-      date: "2024-01-10",
-      type: "action_upgrade" as const,
-      title: "行动建议升级",
-      from: "观望",
-      to: "加仓",
-      trigger: "Readiness 达到 4/5 + 时机窗口确认",
-      rationale: "Q4 财报前窗口期，技术面支撑位确认，建议开始分批建仓",
-      confidence: "执行就绪",
-    },
-  ]
-
-  const changeTypeConfig = {
-    thesis_upgrade: { icon: TrendingUp, color: "text-success", bg: "bg-success/10", border: "border-success/30" },
-    thesis_downgrade: { icon: TrendingDown, color: "text-danger", bg: "bg-danger/10", border: "border-danger/30" },
-    alert_downgrade: { icon: Shield, color: "text-success", bg: "bg-success/10", border: "border-success/30" },
-    alert_upgrade: { icon: Shield, color: "text-danger", bg: "bg-danger/10", border: "border-danger/30" },
-    action_upgrade: { icon: Zap, color: "text-primary", bg: "bg-primary/10", border: "border-primary/30" },
-    action_downgrade: { icon: Zap, color: "text-warning", bg: "bg-warning/10", border: "border-warning/30" },
-  }
-
-  return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-border">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Clock className="w-4 h-4 text-primary" />
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold text-foreground">Decision History</h2>
-              <p className="text-[10px] text-muted-foreground">决策演化与状态追踪</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] px-2 py-1 rounded-md bg-success/15 text-success font-semibold">
-              3 关键变更
-            </span>
-            <span className="text-[10px] px-2 py-1 rounded-md bg-secondary text-muted-foreground font-medium">
-              45 天周期
-            </span>
-          </div>
-        </div>
-
-        {/* Thesis Evolution Bar */}
-        <div className="bg-secondary/30 rounded-lg p-3">
+      <div className="px-4 py-4">
+        {/* Risk Score */}
+        <div className="mb-4 p-3 rounded-md bg-secondary/10">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Thesis 置信度演化</span>
-            <span className="text-[10px] text-primary font-semibold">
-              {thesisEvolution.stages[0].confidence}% → {thesisEvolution.stages[thesisEvolution.stages.length - 1].confidence}%
-            </span>
+            <span className="text-[12px] font-medium text-foreground/75">整体风险评估</span>
+            <span className="text-lg font-bold text-warning tabular-nums">68<span className="text-[11px] text-muted-foreground/45 font-normal">/100</span></span>
           </div>
-          <div className="flex items-end gap-1 h-8 mb-2">
-            {thesisEvolution.stages.map((stage, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <div 
-                  className={cn(
-                    "w-full rounded-sm transition-all",
-                    stage.stance === "Bullish" ? "bg-success" : stage.stance === "Bearish" ? "bg-danger" : "bg-muted-foreground/50"
-                  )}
-                  style={{ height: `${stage.confidence * 0.35}px` }}
-                />
-                <span className="text-[8px] text-muted-foreground">{stage.date.slice(5)}</span>
+          <div className="h-1.5 rounded-full bg-secondary/30 overflow-hidden">
+            <div className="h-full rounded-full bg-warning" style={{ width: "68%" }} />
+          </div>
+        </div>
+
+        {/* Risk Items */}
+        <div className="space-y-2.5 mb-4">
+          {risks.map((risk, i) => (
+            <div key={i} className={cn("p-3 rounded-md border", risk.severity === "high" ? "bg-danger/4 border-danger/15" : "bg-warning/4 border-warning/15")}>
+              <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className={cn("w-4 h-4", risk.severity === "high" ? "text-danger" : "text-warning")} />
+                  <span className="text-[13px] font-bold text-foreground">{risk.title}</span>
+                </div>
+                <span className={cn("text-[10px] px-1.5 py-0.5 rounded font-semibold", risk.severity === "high" ? "bg-danger/12 text-danger" : "bg-warning/12 text-warning")}>P: {risk.prob}%</span>
+              </div>
+              <p className="text-[12px] text-muted-foreground/65 mb-2 leading-relaxed">{risk.desc}</p>
+              <div className="flex items-center gap-1.5 text-[12px] text-primary">
+                <Shield className="w-3.5 h-3.5" />
+                <span className="font-medium">{risk.action}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Discipline Checklist */}
+        <div className="pt-3 border-t border-border/20">
+          <h3 className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider mb-2.5">决策纪律</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { label: "止损线已设定", checked: true, detail: "$800" },
+              { label: "仓位符合预算", checked: true, detail: "5%" },
+              { label: "催化剂已评估", checked: true, detail: "Q4财报前" },
+              { label: "失效条件已定义", checked: false, detail: "待完善" },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-2 p-2.5 rounded-md bg-secondary/10">
+                {item.checked ? <CheckCircle2 className="w-4 h-4 text-success shrink-0" /> : <AlertTriangle className="w-4 h-4 text-warning shrink-0" />}
+                <span className="text-[12px] text-foreground/80">{item.label}</span>
+                <span className="text-[10px] text-muted-foreground/40 ml-auto">{item.detail}</span>
               </div>
             ))}
           </div>
-          <p className="text-[10px] text-secondary-foreground">{thesisEvolution.reason}</p>
         </div>
       </div>
-
-      {/* Previous vs Current - Main Comparison */}
-      <div className="px-5 py-4 border-b border-border">
-        <div className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider mb-4">
-          Previous vs Current
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          {/* Previous State */}
-          <div className="p-4 bg-secondary/20 rounded-lg border border-border">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-semibold text-muted-foreground">{comparison.previous.label}</span>
-              <span className="text-[9px] text-muted-foreground">{comparison.previous.date}</span>
-            </div>
-            <div className="flex items-center gap-2 mb-3">
-              <Minus className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-semibold text-foreground">{comparison.previous.stance}</span>
-            </div>
-            <div className="space-y-2 mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground">Readiness</span>
-                <div className="flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className={cn("w-1.5 h-3 rounded-sm", i <= comparison.previous.readiness ? "bg-muted-foreground" : "bg-secondary")} />
-                  ))}
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground">Alert</span>
-                <span className="text-[10px] font-medium text-danger">{comparison.previous.alertLevel}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground">Evidence</span>
-                <span className="text-[10px] font-medium text-foreground">{comparison.previous.evidenceScore}/{comparison.previous.evidenceTotal}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground">Action</span>
-                <span className="text-[10px] font-medium text-muted-foreground">{comparison.previous.actionBias}</span>
-              </div>
-            </div>
-            <div className="pt-3 border-t border-border">
-              <p className="text-[10px] text-muted-foreground leading-relaxed">{comparison.previous.keyThesis}</p>
-            </div>
-          </div>
-
-          {/* Current State */}
-          <div className="p-4 bg-primary/5 rounded-lg border border-primary/30">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] font-semibold text-primary">{comparison.current.label}</span>
-              <span className="text-[9px] text-muted-foreground">{comparison.current.date}</span>
-            </div>
-            <div className="flex items-center gap-2 mb-3">
-              <TrendingUp className="w-4 h-4 text-success" />
-              <span className="text-sm font-semibold text-foreground">{comparison.current.stance}</span>
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-success/15 text-success font-medium">升级</span>
-            </div>
-            <div className="space-y-2 mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground">Readiness</span>
-                <div className="flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className={cn("w-1.5 h-3 rounded-sm", i <= comparison.current.readiness ? "bg-primary" : "bg-secondary")} />
-                  ))}
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground">Alert</span>
-                <span className="text-[10px] font-medium text-warning">{comparison.current.alertLevel}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground">Evidence</span>
-                <span className="text-[10px] font-medium text-foreground">{comparison.current.evidenceScore}/{comparison.current.evidenceTotal}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-muted-foreground">Action</span>
-                <span className="text-[10px] font-medium text-success">{comparison.current.actionBias}</span>
-              </div>
-            </div>
-            <div className="pt-3 border-t border-primary/20">
-              <p className="text-[10px] text-foreground leading-relaxed">{comparison.current.keyThesis}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* State Evolution Matrix */}
-      <div className="px-5 py-4 border-b border-border bg-secondary/5">
-        <div className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider mb-4">
-          状态演化矩阵
-        </div>
-        <div className="space-y-3">
-          {stateEvolution.map((row, idx) => {
-            const MetricIcon = row.icon
-            return (
-              <div key={idx} className="flex items-center gap-3">
-                <div className="w-24 flex items-center gap-2 shrink-0">
-                  <MetricIcon className="w-3 h-3 text-muted-foreground" />
-                  <span className="text-[10px] text-secondary-foreground">{row.metric}</span>
-                </div>
-                <div className="flex-1 flex items-center">
-                  {row.history.map((point, i, arr) => (
-                    <div key={i} className="flex items-center flex-1">
-                      <div className={cn(
-                        "flex-1 flex flex-col items-center gap-1 py-1.5 px-2 rounded-md transition-all",
-                        point.isChange ? "bg-primary/10" : "bg-transparent"
-                      )}>
-                        <span className={cn("text-[10px] font-semibold", point.color)}>{point.value}</span>
-                        <span className="text-[8px] text-muted-foreground">{point.date}</span>
-                      </div>
-                      {i < arr.length - 1 && (
-                        <ChevronRight className="w-3 h-3 text-muted-foreground/30 shrink-0" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Key Decision Change Markers */}
-      <div className="p-5">
-        <div className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider mb-4">
-          关键决策变更
-        </div>
-        <div className="space-y-4">
-          {changeMarkers.map((marker, i) => {
-            const config = changeTypeConfig[marker.type]
-            const MarkerIcon = config.icon
-            return (
-              <div key={i} className={cn("p-4 rounded-lg border", config.bg, config.border)}>
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-start gap-3">
-                    <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", config.bg)}>
-                      <MarkerIcon className={cn("w-4 h-4", config.color)} />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-xs font-semibold text-foreground">{marker.title}</span>
-                        <span className="text-[9px] text-muted-foreground">{marker.date}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] text-muted-foreground line-through">{marker.from}</span>
-                        <ArrowUpRight className={cn("w-3 h-3", config.color)} />
-                        <span className={cn("text-[10px] font-semibold", config.color)}>{marker.to}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <span className={cn("text-[10px] font-semibold px-2 py-1 rounded-md", config.bg, config.color)}>
-                    {marker.confidence}
-                  </span>
-                </div>
-                <div className="pl-11 space-y-2">
-                  <div>
-                    <span className="text-[9px] text-muted-foreground uppercase tracking-wider">触发因素</span>
-                    <p className="text-[11px] text-foreground mt-0.5">{marker.trigger}</p>
-                  </div>
-                  <div>
-                    <span className="text-[9px] text-muted-foreground uppercase tracking-wider">决策依据</span>
-                    <p className="text-[11px] text-secondary-foreground mt-0.5 leading-relaxed">{marker.rationale}</p>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Footer Actions */}
-      <div className="px-5 py-3 border-t border-border bg-secondary/10 flex items-center justify-between">
-        <button className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-          <BarChart3 className="w-3 h-3" />
-          完整历史记录
-        </button>
-        <button className="text-[10px] text-primary hover:text-primary/80 transition-colors flex items-center gap-1 font-medium">
-          导出演化报告
-          <ChevronRight className="w-3 h-3" />
-        </button>
-      </div>
-    </div>
+    </section>
   )
 }
 
-function StatusUnit({
-  label,
-  value,
-  status,
-  icon: Icon,
-  detail,
-}: {
-  label: string
-  value: string
-  status: "positive" | "negative" | "neutral"
-  icon: React.ElementType
-  detail: string
-}) {
-  const statusColors = {
-    positive: "text-success bg-success/10",
-    negative: "text-danger bg-danger/10",
-    neutral: "text-muted-foreground bg-secondary/50",
-  }
+/* ============================================
+   HISTORY BLOCK - Evolution Track
+   ============================================ */
+function HistoryBlock() {
+  const history = [
+    { date: "2024-02-07", action: "上调准备度", from: "3/5", to: "4/5", reason: "Q3 业绩超预期" },
+    { date: "2024-01-15", action: "新增风险点", detail: "地缘政治风险", reason: "出口管制升级" },
+    { date: "2024-01-08", action: "建立 Thesis", detail: "Bullish", reason: "初始分析完成" },
+  ]
 
   return (
-    <div className="p-3 bg-secondary/30 rounded-lg">
-      <div className="flex items-center gap-1.5 mb-2">
-        <Icon className={cn("w-3.5 h-3.5", status === "positive" ? "text-success" : status === "negative" ? "text-danger" : "text-muted-foreground")} />
-        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">{label}</span>
+    <section className="bg-card rounded-lg border border-border/40">
+      <div className="px-4 py-3 border-b border-border/25 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-md bg-secondary/20 flex items-center justify-center">
+            <Clock className="w-4 h-4 text-muted-foreground/60" />
+          </div>
+          <h2 className="text-[15px] font-bold text-foreground tracking-tight">演化追踪</h2>
+        </div>
+        <button className="flex items-center gap-1 text-[12px] text-muted-foreground/60 hover:text-foreground transition-colors">
+          全部历史 <ChevronRight className="w-3.5 h-3.5" />
+        </button>
       </div>
-      <div className={cn("text-xs font-semibold px-2 py-0.5 rounded inline-block", statusColors[status])}>
-        {value}
+
+      <div className="px-4 py-4">
+        <div className="space-y-3">
+          {history.map((item, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <span className="text-[10px] text-muted-foreground/40 w-20 pt-0.5 shrink-0 tabular-nums">{item.date}</span>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-[13px] font-semibold text-foreground/85">{item.action}</span>
+                  {item.from && item.to && (
+                    <span className="text-[13px] text-muted-foreground/55">{item.from} → <span className="text-success font-medium">{item.to}</span></span>
+                  )}
+                  {item.detail && !item.from && (
+                    <span className="text-[13px] text-primary font-medium">{item.detail}</span>
+                  )}
+                </div>
+                <span className="text-[11px] text-muted-foreground/45">{item.reason}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="text-[10px] text-muted-foreground mt-1.5">{detail}</div>
-    </div>
+    </section>
   )
 }

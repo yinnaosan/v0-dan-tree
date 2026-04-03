@@ -1,22 +1,29 @@
 "use client"
 
 import { useState } from "react"
-import { Send, Bot, User, Paperclip, MoreHorizontal, Copy, RefreshCw } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Send, Sparkles, User, MoreHorizontal, ArrowRight } from "lucide-react"
 
 interface Message {
   id: string
   role: "user" | "assistant"
   content: string
   timestamp: string
+  keyPoints?: string[]
+  suggestedNext?: string
 }
 
 const initialMessages: Message[] = [
   {
     id: "1",
     role: "assistant",
-    content: "基于当前 NVDA 的 Thesis 分析，我注意到几个关键点需要讨论：\n\n1. **H200 产能** - 虽然需求强劲，但台积电 CoWoS 产能是否能跟上？\n\n2. **竞争格局** - AMD MI300X 和 Intel Gaudi3 的威胁程度如何评估？\n\n3. **估值锚定** - 当前 65x P/E 的合理性需要重新审视。\n\n您希望先深入讨论哪个方向？",
+    content: "基于当前 NVDA 的 Thesis 分析，我注意到几个关键点需要讨论：",
     timestamp: "14:28",
+    keyPoints: [
+      "H200 产能 - 虽然需求强劲，但台积电 CoWoS 产能是否能跟上？",
+      "竞争格局 - AMD MI300X 和 Intel Gaudi3 的威胁程度如何评估？",
+      "估值锚定 - 当前 65x P/E 的合理性需要重新审视。"
+    ],
+    suggestedNext: "您希望先深入讨论哪个方向？"
   },
   {
     id: "2",
@@ -27,154 +34,117 @@ const initialMessages: Message[] = [
   {
     id: "3",
     role: "assistant",
-    content: "从几个角度来看当前估值的合理性：\n\n**增长率支撑**\n- 数据中心业务 YoY 279% 增长\n- 预计 FY25 仍有 50%+ 增速\n- PEG 约 1.1x，增长调整后并不离谱\n\n**市场地位溢价**\n- AI 训练市场 >80% 份额\n- CUDA 生态护城河深厚\n- 领先竞品 12-18 个月\n\n**但需要注意**\n- 估值已 price in 完美执行\n- 任何增速放缓都会带来多杀多\n- 建议关注每季度 guidance 的边际变化\n\n我的建议是：估值虽高但有基本面支撑，关键是要设置好风控边界。",
+    content: "从几个角度来看当前估值的合理性：",
     timestamp: "14:32",
+    keyPoints: [
+      "增长率支撑 - 数据中心 YoY 279%，PEG 约 1.1x",
+      "市场地位溢价 - AI 训练市场 >80% 份额，CUDA 护城河深厚",
+      "但需注意 - 估值已 price in 完美执行，任何放缓都会多杀多"
+    ],
+    suggestedNext: "建议关注每季度 guidance 的边际变化"
   },
 ]
 
 export function DiscussionPanel() {
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
+  const [messages] = useState<Message[]>(initialMessages)
   const [input, setInput] = useState("")
 
-  const handleSend = () => {
-    if (!input.trim()) return
-    
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content: input,
-      timestamp: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }),
-    }
-    
-    setMessages([...messages, newMessage])
-    setInput("")
-  }
-
   return (
-    <div className="w-[340px] h-full bg-card border-l border-border flex flex-col">
+    <aside className="flex-1 min-w-[320px] h-full flex flex-col" style={{ background: 'linear-gradient(180deg, #12161c 0%, #0e1117 100%)' }}>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold text-foreground">Discussion</h2>
-          <p className="text-[10px] text-muted-foreground">AI 辅助决策讨论</p>
+      <div className="px-5 py-3.5 border-b border-white/[0.04] shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-white/70">Discussion</h2>
+            <span className="text-[10px] text-white/25">AI 辅助</span>
+          </div>
+          <button className="p-1.5 rounded-md hover:bg-white/[0.04] transition-colors">
+            <MoreHorizontal className="w-3.5 h-3.5 text-white/20" />
+          </button>
         </div>
-        <button className="p-1.5 rounded-md hover:bg-secondary transition-colors">
-          <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
-        </button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
-        ))}
+      {/* Messages - Generous spacing, clear hierarchy */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="py-6 space-y-6">
+          {messages.map((message, index) => (
+            <MessageItem 
+              key={message.id} 
+              message={message} 
+              isLatest={index === messages.length - 1 && message.role === "assistant"} 
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Input */}
-      <div className="p-3 border-t border-border">
-        <div className="bg-secondary/50 rounded-lg p-2">
+      {/* Input Area */}
+      <div className="p-4 shrink-0">
+        <div 
+          className="relative rounded-xl border border-white/[0.06] transition-all focus-within:border-white/[0.12]"
+          style={{ background: 'rgba(255,255,255,0.02)' }}
+        >
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                handleSend()
-              }
-            }}
             placeholder="讨论 Thesis、Timing 或 Risk..."
-            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none min-h-[60px]"
-            rows={2}
+            className="w-full bg-transparent px-4 py-3 pr-12 text-[14px] text-white/85 placeholder:text-white/20 resize-none focus:outline-none min-h-[48px] max-h-[120px] leading-relaxed"
+            rows={1}
           />
-          <div className="flex items-center justify-between mt-2">
-            <button className="p-1.5 rounded-md hover:bg-secondary transition-colors">
-              <Paperclip className="w-4 h-4 text-muted-foreground" />
-            </button>
-            <button
-              onClick={handleSend}
-              disabled={!input.trim()}
-              className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors",
-                input.trim()
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-secondary text-muted-foreground cursor-not-allowed"
-              )}
-            >
-              <Send className="w-3.5 h-3.5" />
-              发送
-            </button>
-          </div>
+          <button
+            disabled={!input.trim()}
+            className={`absolute right-3 bottom-3 p-2 rounded-lg transition-all ${
+              input.trim() 
+                ? "bg-emerald-500/90 text-white" 
+                : "bg-white/[0.04] text-white/15"
+            }`}
+          >
+            <Send className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
-    </div>
+    </aside>
   )
 }
 
-function MessageBubble({ message }: { message: Message }) {
+function MessageItem({ message, isLatest }: { message: Message; isLatest?: boolean }) {
   const isUser = message.role === "user"
 
   return (
-    <div className={cn("flex gap-2.5", isUser && "flex-row-reverse")}>
-      {/* Avatar */}
-      <div className={cn(
-        "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
-        isUser ? "bg-secondary" : "bg-primary/10"
-      )}>
-        {isUser ? (
-          <User className="w-3.5 h-3.5 text-secondary-foreground" />
-        ) : (
-          <Bot className="w-3.5 h-3.5 text-primary" />
-        )}
-      </div>
-
-      {/* Content */}
-      <div className={cn("flex-1 min-w-0", isUser && "flex flex-col items-end")}>
-        <div className={cn(
-          "px-3 py-2.5 rounded-lg max-w-[calc(100%-24px)]",
-          isUser
-            ? "bg-primary/10 text-foreground"
-            : "bg-secondary/50 text-foreground"
-        )}>
-          <div className="text-xs leading-relaxed whitespace-pre-wrap">
-            {message.content.split("\n").map((line, i) => {
-              // Handle bold text
-              const parts = line.split(/(\*\*[^*]+\*\*)/)
-              return (
-                <span key={i}>
-                  {parts.map((part, j) => {
-                    if (part.startsWith("**") && part.endsWith("**")) {
-                      return (
-                        <span key={j} className="font-semibold text-foreground">
-                          {part.slice(2, -2)}
-                        </span>
-                      )
-                    }
-                    return part
-                  })}
-                  {i < message.content.split("\n").length - 1 && <br />}
-                </span>
-              )
-            })}
-          </div>
-        </div>
-        
-        {/* Meta */}
-        <div className={cn(
-          "flex items-center gap-2 mt-1.5",
-          isUser && "flex-row-reverse"
-        )}>
-          <span className="text-[10px] text-muted-foreground">{message.timestamp}</span>
-          {!isUser && (
-            <div className="flex items-center gap-1">
-              <button className="p-1 rounded hover:bg-secondary transition-colors">
-                <Copy className="w-3 h-3 text-muted-foreground" />
-              </button>
-              <button className="p-1 rounded hover:bg-secondary transition-colors">
-                <RefreshCw className="w-3 h-3 text-muted-foreground" />
-              </button>
-            </div>
+    <div className={`px-5 py-4 ${isLatest ? 'border-l-2 border-emerald-500/30' : ''}`}>
+      <div className="flex items-center gap-2.5 mb-2.5">
+        <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${
+          isUser ? "bg-white/[0.05]" : "bg-emerald-500/10"
+        }`}>
+          {isUser ? (
+            <User className="w-3 h-3 text-white/40" />
+          ) : (
+            <Sparkles className="w-3 h-3 text-emerald-400/70" />
           )}
         </div>
+        <span className="text-xs font-medium text-white/50">{isUser ? "你" : "助手"}</span>
+        <span className="text-[10px] text-white/20">{message.timestamp}</span>
+      </div>
+
+      <div className="pl-8">
+        <p className="text-[14px] text-white/70 leading-[1.7]">{message.content}</p>
+        
+        {message.keyPoints && (
+          <div className="mt-4 space-y-2">
+            {message.keyPoints.map((point, i) => (
+              <div key={i} className="flex items-start gap-3 py-2.5 px-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                <span className="text-xs font-semibold text-emerald-400/60 mt-0.5">{i + 1}.</span>
+                <span className="text-[13px] text-white/55 leading-relaxed">{point}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {message.suggestedNext && (
+          <div className="mt-4 flex items-center gap-2 py-2.5 px-3 rounded-lg" style={{ background: 'rgba(16,185,129,0.04)' }}>
+            <ArrowRight className="w-3 h-3 text-emerald-400/50 shrink-0" />
+            <span className="text-[13px] text-emerald-400/60">{message.suggestedNext}</span>
+          </div>
+        )}
       </div>
     </div>
   )
