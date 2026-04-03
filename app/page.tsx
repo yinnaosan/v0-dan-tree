@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { AssetHeader } from "@/components/workspace/asset-header"
 import { SessionRail } from "@/components/workspace/session-rail"
 import { DecisionCanvas } from "@/components/workspace/decision-canvas"
 import { DiscussionPanel } from "@/components/workspace/discussion-panel"
-import { AssetHeader } from "@/components/workspace/asset-header"
 import { InsightsPanel } from "@/components/workspace/insights-panel"
 
 export default function WorkspacePage() {
