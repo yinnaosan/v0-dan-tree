@@ -5,6 +5,7 @@ import { SessionRail } from "@/components/workspace/session-rail"
 import { DecisionCanvas } from "@/components/workspace/decision-canvas"
 import { DiscussionPanel } from "@/components/workspace/discussion-panel"
 import { InsightsPanel } from "@/components/workspace/insights-panel"
+import { GlobalTopBar } from "@/components/workspace/global-top-bar"
 
 export default function WorkspacePage() {
   const [mounted, setMounted] = useState(false)
@@ -15,21 +16,27 @@ export default function WorkspacePage() {
 
   if (!mounted) {
     return (
-      <div className="h-screen w-full flex overflow-hidden bg-background">
-        <div className="w-[220px] h-full bg-[oklch(0.08_0.005_250)] border-r border-border/50" />
-        <div className="flex-1 h-full bg-background" />
-        <div className="w-[300px] h-full bg-card border-l border-border/50" />
-        <div className="w-[220px] h-full bg-[oklch(0.08_0.005_250)] border-l border-border/50" />
+      <div className="h-screen w-full flex flex-col overflow-hidden bg-background">
+        <div className="h-10 w-full bg-[oklch(0.07_0.003_250)] border-b border-border/30" />
+        <div className="flex-1 flex overflow-hidden">
+          <div className="w-[200px] h-full bg-[oklch(0.06_0.003_250)] border-r border-border/30" />
+          <div className="flex-1 h-full bg-background" />
+          <div className="w-[280px] h-full bg-card/50 border-l border-border/30" />
+          <div className="w-[200px] h-full bg-[oklch(0.055_0.002_250)] border-l border-border/20" />
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="h-screen w-full flex overflow-hidden bg-background">
-      <SessionRail />
-      <DecisionCanvas />
-      <DiscussionPanel />
-      <InsightsPanel />
+    <div className="h-screen w-full flex flex-col overflow-hidden bg-background">
+      <GlobalTopBar />
+      <div className="flex-1 flex overflow-hidden">
+        <SessionRail />
+        <DecisionCanvas />
+        <DiscussionPanel />
+        <InsightsPanel />
+      </div>
     </div>
   )
 }

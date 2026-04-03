@@ -78,12 +78,12 @@ const signals = [
 
 export function InsightsPanel() {
   return (
-    <div className="w-[220px] h-full bg-[oklch(0.08_0.005_250)] border-l border-border/50 flex flex-col">
-      {/* Header */}
-      <div className="px-3 py-2 border-b border-border/30 flex items-center justify-between">
-        <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider">Insights</span>
-        <button className="p-1 rounded-md hover:bg-secondary/30 transition-colors">
-          <Bell className="w-3 h-3 text-muted-foreground/50" />
+    <div className="w-[200px] h-full bg-[oklch(0.055_0.002_250)] border-l border-border/20 flex flex-col">
+      {/* Header - Minimal */}
+      <div className="px-2.5 py-2 border-b border-border/15 flex items-center justify-between">
+        <span className="text-[9px] font-medium text-muted-foreground/40 uppercase tracking-wider">Insights</span>
+        <button className="p-1 rounded hover:bg-secondary/20 transition-colors">
+          <Bell className="w-2.5 h-2.5 text-muted-foreground/30" />
         </button>
       </div>
 
