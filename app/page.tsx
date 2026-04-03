@@ -1,6 +1,5 @@
 "use client"
 
-// DanTree Investment Decision Workspace
 import { useState, useEffect } from "react"
 import { SessionRail } from "@/components/workspace/session-rail"
 import { DecisionCanvas } from "@/components/workspace/decision-canvas"
@@ -22,7 +21,7 @@ export default function WorkspacePage() {
         <div className="flex-1 flex overflow-hidden">
           <div className="w-56 h-full bg-sidebar border-r border-border/20" />
           <div className="flex-1 h-full bg-background" />
-          <div className="w-80 h-full bg-card border-l border-border/30" />
+          <div className="w-[380px] h-full bg-card border-l border-border/30" />
           <div className="w-52 h-full bg-[oklch(0.065_0.002_250)] border-l border-border/15" />
         </div>
       </div>

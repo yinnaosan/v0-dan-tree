@@ -2,6 +2,7 @@
 
 import { Settings, Bell, Search, Wifi, Activity } from "lucide-react"
 
+
 export function GlobalTopBar() {
   return (
     <header className="h-10 w-full bg-[oklch(0.055_0.002_250)] border-b border-border/15 flex items-center justify-between px-4">

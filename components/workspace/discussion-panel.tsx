@@ -54,35 +54,35 @@ export function DiscussionPanel() {
   }
 
   return (
-    <aside className="w-80 h-full bg-card border-l border-border/30 flex flex-col">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-border/50 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+    <aside className="w-[380px] h-full bg-card border-l border-border/30 flex flex-col">
+      {/* Header - More breathing room */}
+      <div className="px-6 py-5 border-b border-border/40 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-primary/80" />
           </div>
           <div>
-            <span className="text-sm font-semibold text-foreground">Co-Pilot</span>
-            <span className="text-xs text-muted-foreground ml-2">讨论区</span>
+            <span className="text-base font-semibold text-foreground">Co-Pilot</span>
+            <span className="text-sm text-muted-foreground/70 ml-2.5">讨论区</span>
           </div>
         </div>
-        <button className="p-1.5 rounded-md hover:bg-secondary/30 transition-colors">
+        <button className="p-2 rounded-lg hover:bg-secondary/30 transition-colors">
           <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
         </button>
       </div>
 
-      {/* Messages - Comfortable spacing */}
-      <div className="flex-1 overflow-y-auto px-5 py-6">
-        <div className="space-y-8">
+      {/* Messages - Much more generous spacing */}
+      <div className="flex-1 overflow-y-auto px-6 py-8">
+        <div className="space-y-10">
           {messages.map((message) => (
             <MessageBubble key={message.id} message={message} />
           ))}
         </div>
       </div>
 
-      {/* Input - Spacious */}
-      <div className="p-4 border-t border-border/50">
-        <div className="bg-secondary/25 rounded-xl p-4">
+      {/* Input - Spacious and comfortable */}
+      <div className="p-5 border-t border-border/40">
+        <div className="bg-secondary/20 rounded-2xl p-5">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -93,21 +93,21 @@ export function DiscussionPanel() {
               }
             }}
             placeholder="输入问题或想法..."
-            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 resize-none focus:outline-none min-h-[60px] leading-relaxed"
+            className="w-full bg-transparent text-base text-foreground placeholder:text-muted-foreground/40 resize-none focus:outline-none min-h-[80px] leading-loose"
             rows={3}
           />
-          <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/30">
-            <button className="p-2 rounded-lg hover:bg-secondary/40 transition-colors">
-              <Paperclip className="w-4 h-4 text-muted-foreground/60" />
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/25">
+            <button className="p-2.5 rounded-xl hover:bg-secondary/40 transition-colors">
+              <Paperclip className="w-4.5 h-4.5 text-muted-foreground/50" />
             </button>
             <button
               onClick={handleSend}
               disabled={!input.trim()}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors",
                 input.trim()
                   ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-secondary/40 text-muted-foreground/50 cursor-not-allowed"
+                  : "bg-secondary/40 text-muted-foreground/40 cursor-not-allowed"
               )}
             >
               <Send className="w-4 h-4" />
@@ -126,30 +126,30 @@ function MessageBubble({ message }: { message: Message }) {
   return (
     <div className={cn(
       "relative",
-      message.isKeyPoint && !isUser && "pl-4 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:rounded-full before:bg-primary/50"
+      message.isKeyPoint && !isUser && "pl-5 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:rounded-full before:bg-primary/40"
     )}>
-      <div className={cn("flex gap-3", isUser && "flex-row-reverse")}>
+      <div className={cn("flex gap-4", isUser && "flex-row-reverse")}>
         {/* Avatar */}
         <div className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-          isUser ? "bg-secondary/50" : "bg-primary/10"
+          "w-9 h-9 rounded-xl flex items-center justify-center shrink-0",
+          isUser ? "bg-secondary/40" : "bg-primary/10"
         )}>
           {isUser ? (
-            <User className="w-4 h-4 text-foreground/70" />
+            <User className="w-4.5 h-4.5 text-foreground/60" />
           ) : (
-            <Bot className="w-4 h-4 text-primary/80" />
+            <Bot className="w-4.5 h-4.5 text-primary/70" />
           )}
         </div>
 
         {/* Content */}
         <div className={cn("flex-1 min-w-0", isUser && "flex flex-col items-end")}>
           <div className={cn(
-            "px-4 py-3 rounded-2xl max-w-[calc(100%-20px)]",
+            "px-5 py-4 rounded-2xl",
             isUser
-              ? "bg-primary/10 text-foreground rounded-tr-md"
-              : "bg-secondary/30 text-foreground rounded-tl-md"
+              ? "bg-primary/8 text-foreground rounded-tr-lg max-w-[90%]"
+              : "bg-secondary/25 text-foreground rounded-tl-lg"
           )}>
-            <div className="text-sm leading-7 whitespace-pre-wrap">
+            <div className="text-[15px] leading-[1.85] whitespace-pre-wrap tracking-wide">
               {message.content.split("\n").map((line, i) => {
                 const parts = line.split(/(\*\*[^*]+\*\*)/)
                 return (
@@ -171,19 +171,19 @@ function MessageBubble({ message }: { message: Message }) {
             </div>
           </div>
           
-          {/* Meta */}
+          {/* Meta - More breathing room */}
           <div className={cn(
-            "flex items-center gap-3 mt-2",
+            "flex items-center gap-4 mt-3",
             isUser && "flex-row-reverse"
           )}>
-            <span className="text-xs text-muted-foreground/60">{message.timestamp}</span>
+            <span className="text-xs text-muted-foreground/50">{message.timestamp}</span>
             {!isUser && (
-              <div className="flex items-center gap-1">
-                <button className="p-1.5 rounded-md hover:bg-secondary/30 transition-colors">
-                  <Copy className="w-3.5 h-3.5 text-muted-foreground/50" />
+              <div className="flex items-center gap-1.5">
+                <button className="p-2 rounded-lg hover:bg-secondary/30 transition-colors">
+                  <Copy className="w-3.5 h-3.5 text-muted-foreground/40" />
                 </button>
-                <button className="p-1.5 rounded-md hover:bg-secondary/30 transition-colors">
-                  <RefreshCw className="w-3.5 h-3.5 text-muted-foreground/50" />
+                <button className="p-2 rounded-lg hover:bg-secondary/30 transition-colors">
+                  <RefreshCw className="w-3.5 h-3.5 text-muted-foreground/40" />
                 </button>
               </div>
             )}
