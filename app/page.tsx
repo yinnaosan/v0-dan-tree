@@ -1,25 +1,34 @@
 "use client"
 
-import dynamic from "next/dynamic"
-
-const SessionRail = dynamic(() => import("@/components/workspace/session-rail").then(mod => ({ default: mod.SessionRail })), { ssr: false })
-const DecisionCanvas = dynamic(() => import("@/components/workspace/decision-canvas").then(mod => ({ default: mod.DecisionCanvas })), { ssr: false })
-const DiscussionPanel = dynamic(() => import("@/components/workspace/discussion-panel").then(mod => ({ default: mod.DiscussionPanel })), { ssr: false })
-const InsightsPanel = dynamic(() => import("@/components/workspace/insights-panel").then(mod => ({ default: mod.InsightsPanel })), { ssr: false })
+import { useState, useEffect } from "react"
+import { SessionRail } from "@/components/workspace/session-rail"
+import { DecisionCanvas } from "@/components/workspace/decision-canvas"
+import { DiscussionPanel } from "@/components/workspace/discussion-panel"
+import { InsightsPanel } from "@/components/workspace/insights-panel"
 
 export default function WorkspacePage() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="h-screen w-full flex overflow-hidden bg-background">
+        <div className="w-[220px] h-full bg-[oklch(0.08_0.005_250)] border-r border-border/50" />
+        <div className="flex-1 h-full bg-background" />
+        <div className="w-[300px] h-full bg-card border-l border-border/50" />
+        <div className="w-[220px] h-full bg-[oklch(0.08_0.005_250)] border-l border-border/50" />
+      </div>
+    )
+  }
+
   return (
     <div className="h-screen w-full flex overflow-hidden bg-background">
-      {/* Column 1: Session Rail - Narrow control rail */}
       <SessionRail />
-      
-      {/* Column 2: Decision Canvas - Main dominant column */}
       <DecisionCanvas />
-      
-      {/* Column 3: Discussion - Supporting panel */}
       <DiscussionPanel />
-      
-      {/* Column 4: Insights - Narrowest, secondary */}
       <InsightsPanel />
     </div>
   )
