@@ -51,15 +51,17 @@ export function DiscussionPanel() {
   const [input, setInput] = useState("")
 
   return (
-    <aside className="flex-1 min-w-[300px] h-full bg-[oklch(0.115_0.004_250)] flex flex-col border-l border-border/15">
+    <aside className="flex-1 min-w-[300px] h-full bg-gradient-to-b from-[oklch(0.10_0.008_260)] to-[oklch(0.085_0.006_260)] flex flex-col border-l border-white/[0.04]">
       {/* Header */}
-      <div className="px-5 py-3 border-b border-border/10 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-2">
-          <MessageCircle className="w-4 h-4 text-primary/60" />
-          <h2 className="text-sm font-bold text-foreground">Discussion</h2>
+      <div className="px-5 py-3.5 glass-subtle border-b border-white/[0.03] flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/15 flex items-center justify-center">
+            <MessageCircle className="w-4 h-4 text-primary" />
+          </div>
+          <h2 className="text-[15px] font-bold text-foreground">Discussion</h2>
         </div>
-        <button className="p-1.5 rounded-md hover:bg-secondary/20 transition-colors">
-          <MoreHorizontal className="w-4 h-4 text-muted-foreground/35" />
+        <button className="p-2 rounded-lg hover:bg-white/[0.04] transition-colors">
+          <MoreHorizontal className="w-4 h-4 text-muted-foreground/30" />
         </button>
       </div>
 
@@ -77,20 +79,20 @@ export function DiscussionPanel() {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-border/10 shrink-0">
-        <div className="relative bg-secondary/15 rounded-xl border border-border/15 focus-within:border-primary/20 focus-within:bg-secondary/20 transition-all">
+      <div className="p-4 border-t border-white/[0.03] shrink-0">
+        <div className="relative glass-card rounded-2xl focus-within:shadow-[0_0_0_1px] focus-within:shadow-primary/20 transition-all">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="讨论 Thesis、Timing 或 Risk..."
-            className="w-full bg-transparent px-4 py-3 pr-12 text-sm text-foreground placeholder:text-muted-foreground/30 resize-none focus:outline-none min-h-[48px] max-h-[100px] leading-relaxed"
+            className="w-full bg-transparent px-5 py-4 pr-14 text-[14px] text-foreground placeholder:text-muted-foreground/25 resize-none focus:outline-none min-h-[56px] max-h-[120px] leading-relaxed"
             rows={1}
           />
           <button
             disabled={!input.trim()}
             className={cn(
-              "absolute right-2.5 bottom-2.5 p-2 rounded-lg transition-all",
-              input.trim() ? "bg-primary text-primary-foreground" : "bg-secondary/25 text-muted-foreground/20"
+              "absolute right-3 bottom-3 p-2.5 rounded-xl transition-all",
+              input.trim() ? "bg-primary text-primary-foreground shadow-[0_0_20px_-4px] shadow-primary/40" : "bg-white/[0.04] text-muted-foreground/20"
             )}
           >
             <Send className="w-4 h-4" />
@@ -106,37 +108,37 @@ function MessageItem({ message, isLatest }: { message: Message; isLatest?: boole
 
   return (
     <div className={cn(
-      "px-5 py-4",
-      !isUser && "bg-secondary/5",
-      isLatest && "bg-primary/[0.03] border-l-2 border-primary/30"
+      "px-5 py-4 transition-all",
+      !isUser && "bg-white/[0.015]",
+      isLatest && "bg-gradient-to-r from-primary/[0.04] to-transparent border-l-2 border-primary/40"
     )}>
       {/* Header */}
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center gap-2.5 mb-2.5">
         <div className={cn(
-          "w-6 h-6 rounded-md flex items-center justify-center",
-          isUser ? "bg-secondary/25" : "bg-primary/10"
+          "w-7 h-7 rounded-lg flex items-center justify-center transition-all",
+          isUser ? "bg-white/[0.05] border border-white/[0.06]" : "bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/15"
         )}>
           {isUser ? (
-            <User className="w-3.5 h-3.5 text-foreground/50" />
+            <User className="w-4 h-4 text-foreground/45" />
           ) : (
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
+            <Sparkles className="w-4 h-4 text-primary" />
           )}
         </div>
-        <span className="text-xs font-semibold text-foreground/65">{isUser ? "你" : "助手"}</span>
-        <span className="text-[10px] text-muted-foreground/30">{message.timestamp}</span>
+        <span className="text-[13px] font-semibold text-foreground/65">{isUser ? "你" : "助手"}</span>
+        <span className="text-[11px] text-muted-foreground/25">{message.timestamp}</span>
       </div>
 
       {/* Content */}
-      <div className="pl-8">
-        <p className="text-sm text-foreground/80 leading-relaxed">{message.content}</p>
+      <div className="pl-9">
+        <p className="text-[14px] text-foreground/80 leading-[1.7]">{message.content}</p>
         
         {/* Key Points - Structured List */}
         {message.keyPoints && (
-          <div className="mt-3 space-y-2">
+          <div className="mt-4 space-y-2.5">
             {message.keyPoints.map((point, i) => (
-              <div key={i} className="flex items-start gap-2.5 py-1.5 px-3 rounded-md bg-secondary/10 border border-border/8">
-                <span className="text-xs font-bold text-primary/60 mt-0.5">{i + 1}.</span>
-                <span className="text-sm text-foreground/75 leading-relaxed">{point}</span>
+              <div key={i} className="flex items-start gap-3 py-2.5 px-3.5 rounded-lg glass-subtle">
+                <span className="text-[12px] font-bold text-primary/70 mt-0.5 w-5">{i + 1}.</span>
+                <span className="text-[13px] text-foreground/75 leading-relaxed flex-1">{point}</span>
               </div>
             ))}
           </div>
@@ -144,9 +146,9 @@ function MessageItem({ message, isLatest }: { message: Message; isLatest?: boole
 
         {/* Suggested Next Action */}
         {message.suggestedNext && (
-          <div className="mt-3 flex items-center gap-2 text-sm text-primary/70">
-            <ArrowRight className="w-3.5 h-3.5" />
-            <span className="font-medium">{message.suggestedNext}</span>
+          <div className="mt-4 flex items-center gap-2.5 text-[13px] text-primary/80">
+            <ArrowRight className="w-4 h-4" />
+            <span className="font-semibold">{message.suggestedNext}</span>
           </div>
         )}
       </div>

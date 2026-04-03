@@ -16,20 +16,20 @@ export default function WorkspacePage() {
 
   if (!mounted) {
     return (
-      <div className="h-screen w-full flex flex-col overflow-hidden bg-background">
-        <div className="h-16 w-full bg-[oklch(0.085_0.004_250)] border-b border-border/15 shrink-0" />
+      <div className="h-screen w-full flex flex-col overflow-hidden bg-[oklch(0.08_0.008_260)]">
+        <div className="h-16 w-full glass border-b border-white/[0.04] shrink-0" />
         <div className="flex-1 flex overflow-hidden">
-          <div className="w-52 h-full bg-sidebar border-r border-sidebar-border/40" />
-          <div className="flex-1 max-w-[680px] h-full bg-background" />
-          <div className="flex-1 min-w-[300px] h-full bg-[oklch(0.115_0.004_250)] border-l border-border/15" />
-          <div className="w-56 h-full bg-[oklch(0.062_0.002_250)] border-l border-border/6 shrink-0" />
+          <div className="w-52 h-full bg-gradient-to-b from-[oklch(0.055_0.006_260)] to-[oklch(0.045_0.005_260)] border-r border-white/[0.04]" />
+          <div className="flex-1 max-w-[680px] h-full bg-gradient-to-b from-[oklch(0.08_0.008_260)] to-[oklch(0.07_0.006_260)]" />
+          <div className="flex-1 min-w-[300px] h-full bg-gradient-to-b from-[oklch(0.10_0.008_260)] to-[oklch(0.085_0.006_260)] border-l border-white/[0.04]" />
+          <div className="w-56 h-full bg-gradient-to-b from-[oklch(0.055_0.004_260)] to-[oklch(0.045_0.003_260)] border-l border-white/[0.03] shrink-0" />
         </div>
       </div>
     )
   }
 
   return (
-    <div className="h-screen w-full flex flex-col overflow-hidden bg-background">
+    <div className="h-screen w-full flex flex-col overflow-hidden bg-[oklch(0.08_0.008_260)]">
       {/* Fixed Full-Width Global Decision Control Strip */}
       <AssetHeader />
       
