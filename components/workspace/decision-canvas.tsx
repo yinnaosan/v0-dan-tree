@@ -17,8 +17,8 @@ import { cn } from "@/lib/utils"
 export function DecisionCanvas() {
   return (
     <main className="flex-1 min-w-0 h-full bg-background overflow-y-auto">
-      <div className="px-5 py-4">
-        <div className="space-y-5">
+      <div className="px-4 py-3">
+        <div className="space-y-4">
           <ThesisBlock />
           <TimingBlock />
           <RiskBlock />
@@ -31,23 +31,23 @@ export function DecisionCanvas() {
 
 function ThesisBlock() {
   return (
-    <section className="bg-card rounded-xl border border-border/60 overflow-hidden">
-      <div className="px-5 py-3.5 border-b border-border/40 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <Target className="w-4 h-4 text-primary" />
+    <section className="bg-card rounded-lg border border-border/50 overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-border/30 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Target className="w-3.5 h-3.5 text-primary" />
           <h2 className="text-sm font-semibold text-foreground">Thesis</h2>
         </div>
         <button className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-          详细分析 <ChevronRight className="w-3.5 h-3.5" />
+          详细分析 <ChevronRight className="w-3 h-3" />
         </button>
       </div>
 
-      <div className="px-5 py-4">
-        <p className="text-sm text-foreground leading-relaxed mb-5">
+      <div className="px-4 py-3">
+        <p className="text-sm text-foreground leading-relaxed mb-4">
           NVIDIA 作为 AI 基础设施的核心供应商，在数据中心 GPU 市场占据主导地位。H100/H200 产能持续扩张，云厂商 CapEx 支出强劲支撑需求。长期看好 AI 训练与推理双轮驱动的增长逻辑。
         </p>
 
-        <div className="grid grid-cols-4 gap-3 mb-5">
+        <div className="grid grid-cols-4 gap-2.5 mb-4">
           <EvidenceCard label="Evidence" value="Strong" status="positive" detail="12/15 指标正向" />
           <EvidenceCard label="Gate" value="Passed" status="positive" detail="4/4 门槛通过" />
           <EvidenceCard label="Source" value="Verified" status="neutral" detail="8 来源确认" />
@@ -83,14 +83,14 @@ function EvidenceCard({ label, value, status, detail }: {
 }) {
   return (
     <div className={cn(
-      "p-3 rounded-lg border",
+      "p-2.5 rounded-md border",
       status === "positive" ? "bg-success/4 border-success/15" :
       status === "negative" ? "bg-danger/4 border-danger/15" :
       "bg-secondary/20 border-border/40"
     )}>
       <div className="text-[10px] text-muted-foreground/60 mb-0.5 uppercase tracking-wider">{label}</div>
       <div className={cn(
-        "text-base font-bold mb-0.5",
+        "text-sm font-bold mb-0.5",
         status === "positive" ? "text-success" :
         status === "negative" ? "text-danger" : "text-foreground"
       )}>{value}</div>
@@ -101,30 +101,30 @@ function EvidenceCard({ label, value, status, detail }: {
 
 function TimingBlock() {
   return (
-    <section className="bg-card rounded-xl border border-border/60 overflow-hidden">
-      <div className="px-5 py-3.5 border-b border-border/40 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <Clock className="w-4 h-4 text-accent" />
+    <section className="bg-card rounded-lg border border-border/50 overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-border/30 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Clock className="w-3.5 h-3.5 text-accent" />
           <h2 className="text-sm font-semibold text-foreground">Timing</h2>
         </div>
-        <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-success/8 border border-success/15">
+        <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-success/8 border border-success/15">
           <span className="text-xs font-semibold text-success">适合介入</span>
         </div>
       </div>
 
-      <div className="px-5 py-4">
-        <div className="grid grid-cols-3 gap-3 mb-5">
-          <div className="p-3.5 rounded-lg bg-success/5 border border-success/15 text-center">
-            <div className="text-2xl font-bold text-success mb-0.5">72</div>
-            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wide">Readiness Score</div>
+      <div className="px-4 py-3">
+        <div className="grid grid-cols-3 gap-2.5 mb-4">
+          <div className="p-2.5 rounded-md bg-success/5 border border-success/15 text-center">
+            <div className="text-xl font-bold text-success mb-0.5">72</div>
+            <div className="text-[9px] text-muted-foreground/60 uppercase tracking-wide">Readiness</div>
           </div>
-          <div className="p-3.5 rounded-lg bg-secondary/20 text-center">
-            <div className="text-2xl font-bold text-foreground mb-0.5">$890</div>
-            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wide">Entry Zone</div>
+          <div className="p-2.5 rounded-md bg-secondary/20 text-center">
+            <div className="text-xl font-bold text-foreground mb-0.5">$890</div>
+            <div className="text-[9px] text-muted-foreground/60 uppercase tracking-wide">Entry</div>
           </div>
-          <div className="p-3.5 rounded-lg bg-warning/5 border border-warning/15 text-center">
-            <div className="text-2xl font-bold text-warning mb-0.5">14d</div>
-            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wide">Next Catalyst</div>
+          <div className="p-2.5 rounded-md bg-warning/5 border border-warning/15 text-center">
+            <div className="text-xl font-bold text-warning mb-0.5">14d</div>
+            <div className="text-[9px] text-muted-foreground/60 uppercase tracking-wide">Catalyst</div>
           </div>
         </div>
 
@@ -160,20 +160,20 @@ function RiskBlock() {
   ]
 
   return (
-    <section className="bg-card rounded-xl border border-border/60 overflow-hidden">
-      <div className="px-5 py-3.5 border-b border-border/40 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <Shield className="w-4 h-4 text-warning" />
-          <h2 className="text-sm font-semibold text-foreground">Risk Discipline</h2>
+    <section className="bg-card rounded-lg border border-border/50 overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-border/30 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Shield className="w-3.5 h-3.5 text-warning" />
+          <h2 className="text-sm font-semibold text-foreground">Risk</h2>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-danger/10 text-danger font-medium">1 Critical</span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-warning/10 text-warning font-medium">1 High</span>
+        <div className="flex items-center gap-1">
+          <span className="text-[9px] px-1.5 py-0.5 rounded bg-danger/10 text-danger font-medium">1 Critical</span>
+          <span className="text-[9px] px-1.5 py-0.5 rounded bg-warning/10 text-warning font-medium">1 High</span>
         </div>
       </div>
 
-      <div className="px-5 py-4">
-        <div className="mb-4 p-3 rounded-lg bg-secondary/15">
+      <div className="px-4 py-3">
+        <div className="mb-3 p-2.5 rounded-md bg-secondary/15">
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-xs font-medium text-foreground/80">整体风险评估</span>
             <span className="text-base font-bold text-warning">68<span className="text-xs text-muted-foreground/50 font-normal">/100</span></span>
@@ -183,47 +183,47 @@ function RiskBlock() {
           </div>
         </div>
 
-        <div className="space-y-2.5 mb-4">
+        <div className="space-y-2 mb-3">
           {risks.map((risk, i) => (
             <div key={i} className={cn(
-              "p-3.5 rounded-lg border",
+              "p-2.5 rounded-md border",
               risk.severity === "high" ? "bg-danger/3 border-danger/15" : "bg-warning/3 border-warning/15"
             )}>
-              <div className="flex items-center justify-between mb-1.5">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className={cn("w-3.5 h-3.5", risk.severity === "high" ? "text-danger" : "text-warning")} />
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-1.5">
+                  <AlertTriangle className={cn("w-3 h-3", risk.severity === "high" ? "text-danger" : "text-warning")} />
                   <span className="text-sm font-semibold text-foreground">{risk.title}</span>
                 </div>
-                <span className={cn("text-[10px] px-1.5 py-0.5 rounded font-medium", 
+                <span className={cn("text-[9px] px-1.5 py-0.5 rounded font-medium", 
                   risk.severity === "high" ? "bg-danger/12 text-danger" : "bg-warning/12 text-warning"
                 )}>P: {risk.prob}%</span>
               </div>
-              <p className="text-sm text-muted-foreground/70 mb-1.5">{risk.desc}</p>
-              <div className="flex items-center gap-1.5 text-sm text-primary">
-                <Shield className="w-3 h-3" />
+              <p className="text-xs text-muted-foreground/70 mb-1">{risk.desc}</p>
+              <div className="flex items-center gap-1 text-xs text-primary">
+                <Shield className="w-2.5 h-2.5" />
                 <span>{risk.action}</span>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="pt-4 border-t border-border/40">
-          <h3 className="text-xs font-semibold text-foreground/80 mb-2.5 uppercase tracking-wide">决策纪律检查</h3>
-          <div className="grid grid-cols-2 gap-2">
+        <div className="pt-3 border-t border-border/30">
+          <h3 className="text-[10px] font-semibold text-foreground/60 mb-2 uppercase tracking-wide">决策纪律</h3>
+          <div className="grid grid-cols-2 gap-1.5">
             {[
               { label: "止损线已设定", checked: true, detail: "$800" },
               { label: "仓位符合预算", checked: true, detail: "5%" },
               { label: "催化剂已评估", checked: true, detail: "Q4财报前" },
               { label: "失效条件已定义", checked: false, detail: "待完善" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2 p-2.5 rounded-lg bg-secondary/15">
+              <div key={i} className="flex items-center gap-1.5 p-2 rounded-md bg-secondary/15">
                 {item.checked ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-success" />
+                  <CheckCircle2 className="w-3 h-3 text-success" />
                 ) : (
-                  <AlertTriangle className="w-3.5 h-3.5 text-warning" />
+                  <AlertTriangle className="w-3 h-3 text-warning" />
                 )}
-                <span className="text-sm text-foreground/80">{item.label}</span>
-                <span className="text-[10px] text-muted-foreground/50 ml-auto">{item.detail}</span>
+                <span className="text-xs text-foreground/80">{item.label}</span>
+                <span className="text-[9px] text-muted-foreground/50 ml-auto">{item.detail}</span>
               </div>
             ))}
           </div>
@@ -241,19 +241,19 @@ function HistoryBlock() {
   ]
 
   return (
-    <section className="bg-card rounded-xl border border-border/60 overflow-hidden">
-      <div className="px-5 py-3.5 border-b border-border/40 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <Clock className="w-4 h-4 text-muted-foreground/60" />
+    <section className="bg-card rounded-lg border border-border/50 overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-border/30 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Clock className="w-3.5 h-3.5 text-muted-foreground/60" />
           <h2 className="text-sm font-semibold text-foreground">演化追踪</h2>
         </div>
         <button className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-          全部历史 <ChevronRight className="w-3.5 h-3.5" />
+          全部历史 <ChevronRight className="w-3 h-3" />
         </button>
       </div>
 
-      <div className="px-5 py-4">
-        <div className="space-y-3">
+      <div className="px-4 py-3">
+        <div className="space-y-2.5">
           {history.map((item, i) => (
             <div key={i} className="flex items-start gap-3">
               <span className="text-[10px] text-muted-foreground/50 w-18 pt-0.5 shrink-0">{item.date}</span>
