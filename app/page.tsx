@@ -1,5 +1,6 @@
 "use client"
 
+// DanTree Investment Decision Workspace v2
 import { useState, useEffect } from "react"
 import { SessionRail } from "@/components/workspace/session-rail"
 import { DecisionCanvas } from "@/components/workspace/decision-canvas"
