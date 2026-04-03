@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Search, Plus, Pin, Clock, TrendingUp, AlertTriangle, Target, Lightbulb } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -80,6 +80,26 @@ const stanceColors = {
 export function SessionRail() {
   const [searchQuery, setSearchQuery] = useState("")
   const [activeSession, setActiveSession] = useState("1")
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="w-[220px] h-full bg-[oklch(0.08_0.005_250)] border-r border-border/50 flex flex-col">
+        <div className="px-3 py-3 border-b border-border/30">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center">
+              <TrendingUp className="w-3.5 h-3.5 text-primary" />
+            </div>
+            <span className="text-xs font-semibold text-foreground/90 tracking-tight">DanTree</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-[220px] h-full bg-[oklch(0.08_0.005_250)] border-r border-border/50 flex flex-col">
