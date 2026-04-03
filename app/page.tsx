@@ -17,20 +17,20 @@ export default function WorkspacePage() {
 
   if (!mounted) {
     return (
-      <div className="h-screen w-full flex flex-col overflow-hidden bg-[oklch(0.08_0.008_260)]">
-        <div className="h-16 w-full bg-[oklch(0.09_0.01_260)/80] backdrop-blur-xl border-b border-white/[0.04] shrink-0" />
+      <div className="h-screen w-full flex flex-col overflow-hidden" style={{ background: '#0a0d11' }}>
+        <div className="h-14 w-full border-b border-white/[0.06] shrink-0" style={{ background: 'linear-gradient(180deg, rgba(18,22,28,0.98) 0%, rgba(14,17,23,0.98) 100%)' }} />
         <div className="flex-1 flex overflow-hidden">
-          <div className="w-52 h-full bg-gradient-to-b from-[oklch(0.055_0.006_260)] to-[oklch(0.045_0.005_260)] border-r border-white/[0.04]" />
-          <div className="flex-1 max-w-[680px] h-full bg-gradient-to-b from-[oklch(0.08_0.008_260)] to-[oklch(0.07_0.006_260)]" />
-          <div className="flex-1 min-w-[300px] h-full bg-gradient-to-b from-[oklch(0.10_0.008_260)] to-[oklch(0.085_0.006_260)] border-l border-white/[0.04]" />
-          <div className="w-56 h-full bg-gradient-to-b from-[oklch(0.055_0.004_260)] to-[oklch(0.045_0.003_260)] border-l border-white/[0.03] shrink-0" />
+          <div className="w-52 h-full border-r border-white/[0.04]" style={{ background: 'linear-gradient(180deg, #0a0d11 0%, #070a0d 100%)' }} />
+          <div className="flex-1 max-w-[680px] h-full" style={{ background: 'linear-gradient(180deg, #0e1117 0%, #0a0d11 100%)' }} />
+          <div className="flex-1 min-w-[320px] h-full border-l border-white/[0.04]" style={{ background: 'linear-gradient(180deg, #12161c 0%, #0e1117 100%)' }} />
+          <div className="w-60 h-full border-l border-white/[0.04] shrink-0" style={{ background: 'linear-gradient(180deg, #0a0d11 0%, #070a0d 100%)' }} />
         </div>
       </div>
     )
   }
 
   return (
-    <div className="h-screen w-full flex flex-col overflow-hidden bg-[oklch(0.08_0.008_260)]">
+    <div className="h-screen w-full flex flex-col overflow-hidden" style={{ background: '#0a0d11' }}>
       <AssetHeader />
       <div className="flex-1 flex overflow-hidden">
         <SessionRail />

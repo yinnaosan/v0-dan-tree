@@ -1,95 +1,119 @@
 "use client"
 
 import { TrendingUp, AlertTriangle, Zap, ArrowUpRight, Clock, Leaf } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 export function AssetHeader() {
   return (
-    <header className="h-16 shrink-0 w-full bg-[oklch(0.085_0.004_250)] border-b border-border/15 flex items-center justify-between px-5 sticky top-0 z-50">
+    <header 
+      className="h-14 shrink-0 w-full flex items-center justify-between px-5 sticky top-0 z-50 border-b border-white/[0.06]"
+      style={{ background: 'linear-gradient(180deg, rgba(18,22,28,0.98) 0%, rgba(14,17,23,0.98) 100%)', backdropFilter: 'blur(12px)' }}
+    >
       {/* Left: Brand + Asset */}
-      <div className="flex items-center gap-6">
-        {/* Brand Mark */}
+      <div className="flex items-center gap-5">
+        {/* Brand Mark - Subtle */}
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-primary/12 flex items-center justify-center">
-            <Leaf className="w-4.5 h-4.5 text-primary" />
+          <div 
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.15)' }}
+          >
+            <Leaf className="w-4 h-4 text-emerald-400" />
           </div>
-          <span className="text-[15px] font-bold text-foreground tracking-tight">DanTree</span>
+          <span className="text-[15px] font-bold text-white/80 tracking-tight">DanTree</span>
         </div>
 
-        <div className="w-px h-8 bg-border/20" />
+        <div className="w-px h-7 bg-white/[0.08]" />
 
-        {/* Current Asset */}
+        {/* Current Asset - Clear anchor */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
-            <span className="text-base font-bold text-success">N</span>
+          <div 
+            className="w-9 h-9 rounded-lg flex items-center justify-center"
+            style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.12)' }}
+          >
+            <span className="text-sm font-bold text-emerald-400">N</span>
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-foreground">NVDA</span>
-              <span className="text-xs text-muted-foreground/50">NASDAQ</span>
+              <span className="text-[15px] font-bold text-white/90">NVDA</span>
+              <span className="text-[11px] text-white/30">NASDAQ</span>
             </div>
-            <span className="text-xs text-muted-foreground/40">NVIDIA Corporation</span>
+            <span className="text-[11px] text-white/25 -mt-0.5">NVIDIA Corporation</span>
           </div>
         </div>
       </div>
 
-      {/* Center: Decision Control Strip */}
-      <div className="flex items-center gap-5">
-        {/* Stance */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-success/8 border border-success/15">
-          <TrendingUp className="w-4 h-4 text-success" />
-          <span className="text-sm font-semibold text-success">Bullish</span>
+      {/* Center: Decision Control Strip - Calm, stable, always visible */}
+      <div className="flex items-center gap-4">
+        {/* Stance Badge */}
+        <div 
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg"
+          style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.15)' }}
+        >
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="text-[13px] font-semibold text-emerald-400">Bullish</span>
         </div>
 
-        {/* Thesis Stance */}
-        <div className="flex flex-col items-center">
-          <span className="text-xs text-muted-foreground/50">Thesis 立场</span>
-          <span className="text-sm font-bold text-foreground">强看多</span>
+        {/* Thesis */}
+        <div className="flex flex-col items-center px-2">
+          <span className="text-[10px] text-white/30 uppercase tracking-wide">Thesis</span>
+          <span className="text-[13px] font-bold text-white/70">强看多</span>
         </div>
 
         {/* Readiness */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 px-2">
           <div className="flex gap-[3px]">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className={cn("w-1.5 h-4 rounded-sm", i <= 4 ? "bg-foreground/80" : "bg-muted-foreground/20")} />
+              <div 
+                key={i} 
+                className="w-1.5 h-4 rounded-sm"
+                style={{ background: i <= 4 ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.12)' }}
+              />
             ))}
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-foreground tabular-nums">4/5</span>
-            <span className="text-[10px] text-muted-foreground/40 -mt-0.5">Readiness</span>
+            <span className="text-[13px] font-bold text-white/80 tabular-nums">4/5</span>
+            <span className="text-[9px] text-white/25 -mt-0.5 uppercase">Ready</span>
           </div>
         </div>
 
         {/* Action Bias */}
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-success/12 border border-success/20">
-          <Zap className="w-4 h-4 text-success" />
-          <span className="text-sm font-bold text-success">+加仓</span>
+        <div 
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
+          style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.2)' }}
+        >
+          <Zap className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="text-[13px] font-bold text-emerald-400">+加仓</span>
         </div>
 
-        {/* Alert */}
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-warning/8 border border-warning/15">
-          <AlertTriangle className="w-4 h-4 text-warning" />
-          <span className="text-sm font-semibold text-warning">Medium</span>
+        {/* Alert Level */}
+        <div 
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
+          style={{ background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.12)' }}
+        >
+          <AlertTriangle className="w-3.5 h-3.5 text-amber-400/80" />
+          <span className="text-[13px] font-semibold text-amber-400/80">Medium</span>
         </div>
 
         {/* Delta */}
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-success/6 border border-success/12">
-          <ArrowUpRight className="w-4 h-4 text-success" />
-          <span className="text-sm font-bold text-success tabular-nums">+12%</span>
-          <span className="text-xs text-muted-foreground/40">vs 上周</span>
+        <div 
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
+          style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.1)' }}
+        >
+          <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400/70" />
+          <span className="text-[13px] font-bold text-emerald-400/80 tabular-nums">+12%</span>
+          <span className="text-[10px] text-white/25">vs 上周</span>
         </div>
 
         {/* Entry Zone */}
-        <div className="flex flex-col items-center">
-          <span className="text-xs text-muted-foreground/50">Entry Zone</span>
-          <span className="text-sm font-bold text-foreground tabular-nums">$880-900</span>
+        <div className="flex flex-col items-center px-2">
+          <span className="text-[10px] text-white/30 uppercase tracking-wide">Entry</span>
+          <span className="text-[13px] font-bold text-white/70 tabular-nums">$880-900</span>
         </div>
       </div>
 
-      {/* Right: Meta */}
-      <div className="flex items-center gap-2 text-muted-foreground/40">
+      {/* Right: Meta - Subtle timestamp */}
+      <div className="flex items-center gap-2 text-white/25">
         <Clock className="w-3.5 h-3.5" />
-        <span className="text-xs">今天 14:32 更新</span>
+        <span className="text-[11px]">今天 14:32 更新</span>
       </div>
     </header>
   )

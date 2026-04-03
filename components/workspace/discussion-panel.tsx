@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Send, Sparkles, User, MoreHorizontal, MessageCircle, ArrowRight } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Send, Sparkles, User, MoreHorizontal, ArrowRight } from "lucide-react"
 
 interface Message {
   id: string
@@ -51,23 +50,23 @@ export function DiscussionPanel() {
   const [input, setInput] = useState("")
 
   return (
-    <aside className="flex-1 min-w-[300px] h-full bg-gradient-to-b from-[oklch(0.10_0.008_260)] to-[oklch(0.085_0.006_260)] flex flex-col border-l border-white/[0.04]">
-      {/* Header */}
-      <div className="px-5 py-3.5 glass-subtle border-b border-white/[0.03] flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/15 flex items-center justify-center">
-            <MessageCircle className="w-4 h-4 text-primary" />
+    <aside className="flex-1 min-w-[320px] h-full flex flex-col" style={{ background: 'linear-gradient(180deg, #12161c 0%, #0e1117 100%)' }}>
+      {/* Header - Clean and minimal */}
+      <div className="px-6 py-4 border-b border-white/[0.06] shrink-0">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-semibold text-white/90">Discussion</h2>
+            <p className="text-xs text-white/30 mt-0.5">AI 辅助决策讨论</p>
           </div>
-          <h2 className="text-[15px] font-bold text-foreground">Discussion</h2>
+          <button className="p-2 rounded-lg hover:bg-white/[0.04] transition-colors">
+            <MoreHorizontal className="w-4 h-4 text-white/25" />
+          </button>
         </div>
-        <button className="p-2 rounded-lg hover:bg-white/[0.04] transition-colors">
-          <MoreHorizontal className="w-4 h-4 text-muted-foreground/30" />
-        </button>
       </div>
 
-      {/* Messages */}
+      {/* Messages - Generous spacing, clear hierarchy */}
       <div className="flex-1 overflow-y-auto">
-        <div className="py-4 space-y-1">
+        <div className="py-6 space-y-6">
           {messages.map((message, index) => (
             <MessageItem 
               key={message.id} 
@@ -78,22 +77,26 @@ export function DiscussionPanel() {
         </div>
       </div>
 
-      {/* Input */}
-      <div className="p-4 border-t border-white/[0.03] shrink-0">
-        <div className="relative glass-card rounded-2xl focus-within:shadow-[0_0_0_1px] focus-within:shadow-primary/20 transition-all">
+      {/* Input Area - ChatGPT-like ergonomics: large, calm, breathable */}
+      <div className="p-5 shrink-0">
+        <div 
+          className="relative rounded-2xl border border-white/[0.08] transition-all focus-within:border-emerald-500/30 focus-within:shadow-[0_0_20px_-8px_rgba(16,185,129,0.2)]"
+          style={{ background: 'rgba(255,255,255,0.02)' }}
+        >
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="讨论 Thesis、Timing 或 Risk..."
-            className="w-full bg-transparent px-5 py-4 pr-14 text-[14px] text-foreground placeholder:text-muted-foreground/25 resize-none focus:outline-none min-h-[56px] max-h-[120px] leading-relaxed"
+            className="w-full bg-transparent px-5 py-4 pr-14 text-[15px] text-white/90 placeholder:text-white/20 resize-none focus:outline-none min-h-[60px] max-h-[140px] leading-relaxed"
             rows={1}
           />
           <button
             disabled={!input.trim()}
-            className={cn(
-              "absolute right-3 bottom-3 p-2.5 rounded-xl transition-all",
-              input.trim() ? "bg-primary text-primary-foreground shadow-[0_0_20px_-4px] shadow-primary/40" : "bg-white/[0.04] text-muted-foreground/20"
-            )}
+            className={`absolute right-3.5 bottom-3.5 p-3 rounded-xl transition-all ${
+              input.trim() 
+                ? "bg-emerald-500 text-white shadow-[0_0_24px_-4px_rgba(16,185,129,0.5)]" 
+                : "bg-white/[0.04] text-white/15"
+            }`}
           >
             <Send className="w-4 h-4" />
           </button>
@@ -107,48 +110,51 @@ function MessageItem({ message, isLatest }: { message: Message; isLatest?: boole
   const isUser = message.role === "user"
 
   return (
-    <div className={cn(
-      "px-5 py-4 transition-all",
-      !isUser && "bg-white/[0.015]",
-      isLatest && "bg-gradient-to-r from-primary/[0.04] to-transparent border-l-2 border-primary/40"
-    )}>
-      {/* Header */}
-      <div className="flex items-center gap-2.5 mb-2.5">
-        <div className={cn(
-          "w-7 h-7 rounded-lg flex items-center justify-center transition-all",
-          isUser ? "bg-white/[0.05] border border-white/[0.06]" : "bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/15"
-        )}>
+    <div className={`px-6 py-5 ${isLatest ? 'bg-emerald-500/[0.03] border-l-2 border-emerald-500/50' : ''}`}>
+      {/* Header - Clear role identification */}
+      <div className="flex items-center gap-3 mb-3">
+        <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+          isUser 
+            ? "bg-white/[0.06] border border-white/[0.08]" 
+            : "bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/20"
+        }`}>
           {isUser ? (
-            <User className="w-4 h-4 text-foreground/45" />
+            <User className="w-4 h-4 text-white/50" />
           ) : (
-            <Sparkles className="w-4 h-4 text-primary" />
+            <Sparkles className="w-4 h-4 text-emerald-400" />
           )}
         </div>
-        <span className="text-[13px] font-semibold text-foreground/65">{isUser ? "你" : "助手"}</span>
-        <span className="text-[11px] text-muted-foreground/25">{message.timestamp}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-semibold text-white/70">{isUser ? "你" : "助手"}</span>
+          <span className="text-xs text-white/20">{message.timestamp}</span>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="pl-9">
-        <p className="text-[14px] text-foreground/80 leading-[1.7]">{message.content}</p>
+      {/* Content - Improved readability */}
+      <div className="pl-11">
+        <p className="text-[15px] text-white/75 leading-[1.75]">{message.content}</p>
         
-        {/* Key Points - Structured List */}
+        {/* Key Points - Structured, scannable */}
         {message.keyPoints && (
-          <div className="mt-4 space-y-2.5">
+          <div className="mt-5 space-y-3">
             {message.keyPoints.map((point, i) => (
-              <div key={i} className="flex items-start gap-3 py-2.5 px-3.5 rounded-lg glass-subtle">
-                <span className="text-[12px] font-bold text-primary/70 mt-0.5 w-5">{i + 1}.</span>
-                <span className="text-[13px] text-foreground/75 leading-relaxed flex-1">{point}</span>
+              <div 
+                key={i} 
+                className="flex items-start gap-4 py-3 px-4 rounded-xl"
+                style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}
+              >
+                <span className="text-sm font-bold text-emerald-400/80 mt-0.5 w-5 shrink-0">{i + 1}.</span>
+                <span className="text-[14px] text-white/65 leading-relaxed">{point}</span>
               </div>
             ))}
           </div>
         )}
 
-        {/* Suggested Next Action */}
+        {/* Suggested Next - Clear call to action */}
         {message.suggestedNext && (
-          <div className="mt-4 flex items-center gap-2.5 text-[13px] text-primary/80">
-            <ArrowRight className="w-4 h-4" />
-            <span className="font-semibold">{message.suggestedNext}</span>
+          <div className="mt-5 flex items-center gap-2.5 py-3 px-4 rounded-xl bg-emerald-500/[0.06] border border-emerald-500/10">
+            <ArrowRight className="w-4 h-4 text-emerald-400/70 shrink-0" />
+            <span className="text-[14px] font-medium text-emerald-400/80">{message.suggestedNext}</span>
           </div>
         )}
       </div>
