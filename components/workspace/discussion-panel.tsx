@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Send, Sparkles, User, MoreHorizontal, Copy, RefreshCw } from "lucide-react"
+import { Send, Sparkles, User, MoreHorizontal, MessageCircle, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface Message {
@@ -9,14 +9,22 @@ interface Message {
   role: "user" | "assistant"
   content: string
   timestamp: string
+  keyPoints?: string[]
+  suggestedNext?: string
 }
 
 const initialMessages: Message[] = [
   {
     id: "1",
     role: "assistant",
-    content: "基于当前 NVDA 的 Thesis 分析，我注意到几个关键点需要讨论：\n\n1. **H200 产能** - 虽然需求强劲，但台积电 CoWoS 产能是否能跟上？\n\n2. **竞争格局** - AMD MI300X 和 Intel Gaudi3 的威胁程度如何评估？\n\n3. **估值锚定** - 当前 65x P/E 的合理性需要重新审视。\n\n您希望先深入讨论哪个方向？",
+    content: "基于当前 NVDA 的 Thesis 分析，我注意到几个关键点需要讨论：",
     timestamp: "14:28",
+    keyPoints: [
+      "H200 产能 - 虽然需求强劲，但台积电 CoWoS 产能是否能跟上？",
+      "竞争格局 - AMD MI300X 和 Intel Gaudi3 的威胁程度如何评估？",
+      "估值锚定 - 当前 65x P/E 的合理性需要重新审视。"
+    ],
+    suggestedNext: "您希望先深入讨论哪个方向？"
   },
   {
     id: "2",
@@ -27,71 +35,62 @@ const initialMessages: Message[] = [
   {
     id: "3",
     role: "assistant",
-    content: "从几个角度来看当前估值的合理性：\n\n**增长率支撑**\n- 数据中心业务 YoY 279% 增长\n- 预计 FY25 仍有 50%+ 增速\n- PEG 约 1.1x，增长调整后并不离谱\n\n**市场地位溢价**\n- AI 训练市场 >80% 份额\n- CUDA 生态护城河深厚\n- 领先竞品 12-18 个月\n\n**但需要注意**\n- 估值已 price in 完美执行\n- 任何增速放缓都会带来多杀多\n- 建议关注每季度 guidance 的边际变化",
+    content: "从几个角度来看当前估值的合理性：",
     timestamp: "14:32",
+    keyPoints: [
+      "增长率支撑 - 数据中心 YoY 279%，PEG 约 1.1x",
+      "市场地位溢价 - AI 训练市场 >80% 份额，CUDA 护城河深厚",
+      "但需注意 - 估值已 price in 完美执行，任何放缓都会多杀多"
+    ],
+    suggestedNext: "建议关注每季度 guidance 的边际变化"
   },
 ]
 
 export function DiscussionPanel() {
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
+  const [messages] = useState<Message[]>(initialMessages)
   const [input, setInput] = useState("")
-
-  const handleSend = () => {
-    if (!input.trim()) return
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content: input,
-      timestamp: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }),
-    }
-    setMessages([...messages, newMessage])
-    setInput("")
-  }
 
   return (
     <aside className="flex-1 min-w-[300px] h-full bg-[oklch(0.115_0.004_250)] flex flex-col border-l border-border/15">
       {/* Header */}
-      <div className="px-5 py-3.5 border-b border-border/10 flex items-center justify-between">
-        <div>
-          <h2 className="text-[14px] font-bold text-foreground tracking-tight">Discussion</h2>
-          <p className="text-[11px] text-muted-foreground/45 mt-0.5">AI 辅助决策讨论</p>
+      <div className="px-5 py-3 border-b border-border/10 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2">
+          <MessageCircle className="w-4 h-4 text-primary/60" />
+          <h2 className="text-sm font-bold text-foreground">Discussion</h2>
         </div>
-        <button className="p-1.5 rounded-md hover:bg-secondary/25 transition-colors">
-          <MoreHorizontal className="w-4 h-4 text-muted-foreground/40" />
+        <button className="p-1.5 rounded-md hover:bg-secondary/20 transition-colors">
+          <MoreHorizontal className="w-4 h-4 text-muted-foreground/35" />
         </button>
       </div>
 
-      {/* Messages - Premium Spacing */}
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto">
-        <div className="py-5">
+        <div className="py-4 space-y-1">
           {messages.map((message, index) => (
-            <MessageItem key={message.id} message={message} isLatest={index === messages.length - 1 && message.role === "assistant"} />
+            <MessageItem 
+              key={message.id} 
+              message={message} 
+              isLatest={index === messages.length - 1 && message.role === "assistant"} 
+            />
           ))}
         </div>
       </div>
 
-      {/* Input - ChatGPT-like Premium Feel */}
-      <div className="p-4 border-t border-border/10">
-        <div className="relative bg-secondary/20 rounded-2xl border border-border/20 focus-within:border-primary/25 focus-within:bg-secondary/25 transition-all">
+      {/* Input */}
+      <div className="p-4 border-t border-border/10 shrink-0">
+        <div className="relative bg-secondary/15 rounded-xl border border-border/15 focus-within:border-primary/20 focus-within:bg-secondary/20 transition-all">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                handleSend()
-              }
-            }}
             placeholder="讨论 Thesis、Timing 或 Risk..."
-            className="w-full bg-transparent px-4 py-3.5 pr-12 text-[14px] text-foreground placeholder:text-muted-foreground/35 resize-none focus:outline-none min-h-[52px] max-h-[120px] leading-relaxed"
+            className="w-full bg-transparent px-4 py-3 pr-12 text-sm text-foreground placeholder:text-muted-foreground/30 resize-none focus:outline-none min-h-[48px] max-h-[100px] leading-relaxed"
             rows={1}
           />
           <button
-            onClick={handleSend}
             disabled={!input.trim()}
             className={cn(
-              "absolute right-3 bottom-3 p-2 rounded-xl transition-all",
-              input.trim() ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-secondary/30 text-muted-foreground/25"
+              "absolute right-2.5 bottom-2.5 p-2 rounded-lg transition-all",
+              input.trim() ? "bg-primary text-primary-foreground" : "bg-secondary/25 text-muted-foreground/20"
             )}
           >
             <Send className="w-4 h-4" />
@@ -104,55 +103,52 @@ export function DiscussionPanel() {
 
 function MessageItem({ message, isLatest }: { message: Message; isLatest?: boolean }) {
   const isUser = message.role === "user"
-  const [showActions, setShowActions] = useState(false)
 
   return (
-    <div
-      className={cn("px-5 py-4 transition-colors", !isUser && "bg-secondary/8", isLatest && !isUser && "bg-primary/4")}
-      onMouseEnter={() => setShowActions(true)}
-      onMouseLeave={() => setShowActions(false)}
-    >
+    <div className={cn(
+      "px-5 py-4",
+      !isUser && "bg-secondary/5",
+      isLatest && "bg-primary/[0.03] border-l-2 border-primary/30"
+    )}>
       {/* Header */}
-      <div className="flex items-center gap-2.5 mb-2.5">
-        <div className={cn("w-6 h-6 rounded-lg flex items-center justify-center", isUser ? "bg-secondary/30" : "bg-primary/12")}>
-          {isUser ? <User className="w-3.5 h-3.5 text-foreground/60" /> : <Sparkles className="w-3.5 h-3.5 text-primary" />}
+      <div className="flex items-center gap-2 mb-2">
+        <div className={cn(
+          "w-6 h-6 rounded-md flex items-center justify-center",
+          isUser ? "bg-secondary/25" : "bg-primary/10"
+        )}>
+          {isUser ? (
+            <User className="w-3.5 h-3.5 text-foreground/50" />
+          ) : (
+            <Sparkles className="w-3.5 h-3.5 text-primary" />
+          )}
         </div>
-        <span className="text-[12px] font-semibold text-foreground/70">{isUser ? "你" : "助手"}</span>
-        <span className="text-[11px] text-muted-foreground/35">{message.timestamp}</span>
-
-        {/* Actions */}
-        {!isUser && showActions && (
-          <div className="ml-auto flex items-center gap-1">
-            <button className="p-1.5 rounded-md hover:bg-secondary/25 transition-colors">
-              <Copy className="w-3.5 h-3.5 text-muted-foreground/40" />
-            </button>
-            <button className="p-1.5 rounded-md hover:bg-secondary/25 transition-colors">
-              <RefreshCw className="w-3.5 h-3.5 text-muted-foreground/40" />
-            </button>
-          </div>
-        )}
+        <span className="text-xs font-semibold text-foreground/65">{isUser ? "你" : "助手"}</span>
+        <span className="text-[10px] text-muted-foreground/30">{message.timestamp}</span>
       </div>
 
-      {/* Content - Premium Typography */}
-      <div className="pl-[34px]">
-        <div className="text-[14px] leading-[1.8] text-foreground/85">
-          {message.content.split("\n").map((line, i) => {
-            const parts = line.split(/(\*\*[^*]+\*\*)/)
-            return (
-              <span key={i}>
-                {parts.map((part, j) => {
-                  if (part.startsWith("**") && part.endsWith("**")) {
-                    return (
-                      <span key={j} className="font-semibold text-foreground">{part.slice(2, -2)}</span>
-                    )
-                  }
-                  return part
-                })}
-                {i < message.content.split("\n").length - 1 && <br />}
-              </span>
-            )
-          })}
-        </div>
+      {/* Content */}
+      <div className="pl-8">
+        <p className="text-sm text-foreground/80 leading-relaxed">{message.content}</p>
+        
+        {/* Key Points - Structured List */}
+        {message.keyPoints && (
+          <div className="mt-3 space-y-2">
+            {message.keyPoints.map((point, i) => (
+              <div key={i} className="flex items-start gap-2.5 py-1.5 px-3 rounded-md bg-secondary/10 border border-border/8">
+                <span className="text-xs font-bold text-primary/60 mt-0.5">{i + 1}.</span>
+                <span className="text-sm text-foreground/75 leading-relaxed">{point}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Suggested Next Action */}
+        {message.suggestedNext && (
+          <div className="mt-3 flex items-center gap-2 text-sm text-primary/70">
+            <ArrowRight className="w-3.5 h-3.5" />
+            <span className="font-medium">{message.suggestedNext}</span>
+          </div>
+        )}
       </div>
     </div>
   )
