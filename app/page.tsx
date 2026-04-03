@@ -1,5 +1,6 @@
 "use client"
 
+// DanTree Investment Decision Workspace - Fxology Glass Style
 import { useState, useEffect } from "react"
 import { AssetHeader } from "@/components/workspace/asset-header"
 import { SessionRail } from "@/components/workspace/session-rail"
