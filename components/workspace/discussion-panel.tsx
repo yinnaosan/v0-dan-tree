@@ -51,15 +51,15 @@ export function DiscussionPanel() {
   }
 
   return (
-    <div className="w-[340px] h-full bg-card border-l border-border flex flex-col">
+    <div className="w-[300px] h-full bg-card/80 border-l border-border flex flex-col">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold text-foreground">Discussion</h2>
-          <p className="text-[10px] text-muted-foreground">AI 辅助决策讨论</p>
+      <div className="px-4 py-2.5 border-b border-border/70 flex items-center justify-between bg-background/30">
+        <div className="flex items-center gap-2">
+          <Bot className="w-3.5 h-3.5 text-muted-foreground" />
+          <span className="text-xs font-medium text-muted-foreground">Discussion</span>
         </div>
-        <button className="p-1.5 rounded-md hover:bg-secondary transition-colors">
-          <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+        <button className="p-1 rounded-md hover:bg-secondary/50 transition-colors">
+          <MoreHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
         </button>
       </div>
 
@@ -71,8 +71,8 @@ export function DiscussionPanel() {
       </div>
 
       {/* Input */}
-      <div className="p-3 border-t border-border">
-        <div className="bg-secondary/50 rounded-lg p-2">
+      <div className="p-2.5 border-t border-border/70">
+        <div className="bg-secondary/30 rounded-md p-2">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -82,25 +82,25 @@ export function DiscussionPanel() {
                 handleSend()
               }
             }}
-            placeholder="讨论 Thesis、Timing 或 Risk..."
-            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none min-h-[60px]"
+            placeholder="讨论..."
+            className="w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground/50 resize-none focus:outline-none min-h-[48px]"
             rows={2}
           />
-          <div className="flex items-center justify-between mt-2">
-            <button className="p-1.5 rounded-md hover:bg-secondary transition-colors">
-              <Paperclip className="w-4 h-4 text-muted-foreground" />
+          <div className="flex items-center justify-between mt-1.5">
+            <button className="p-1 rounded hover:bg-secondary/50 transition-colors">
+              <Paperclip className="w-3.5 h-3.5 text-muted-foreground/60" />
             </button>
             <button
               onClick={handleSend}
               disabled={!input.trim()}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors",
+                "flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-medium transition-colors",
                 input.trim()
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-secondary text-muted-foreground cursor-not-allowed"
+                  ? "bg-primary/80 text-primary-foreground hover:bg-primary"
+                  : "bg-secondary/50 text-muted-foreground/50 cursor-not-allowed"
               )}
             >
-              <Send className="w-3.5 h-3.5" />
+              <Send className="w-3 h-3" />
               发送
             </button>
           </div>

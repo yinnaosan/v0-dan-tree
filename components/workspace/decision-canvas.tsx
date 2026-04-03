@@ -45,105 +45,87 @@ export function DecisionCanvas() {
 
 function DecisionHeader() {
   return (
-    <div className="bg-card border border-border rounded-lg p-5">
-      {/* Top Row */}
-      <div className="flex items-start justify-between">
+    <div className="bg-card border border-border rounded-lg overflow-hidden">
+      {/* Compact Control Bar */}
+      <div className="px-5 py-4 flex items-center justify-between">
+        {/* Left: Asset + Session Type */}
         <div className="flex items-center gap-4">
-          {/* Asset Badge */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
-              <span className="text-lg font-bold text-success">N</span>
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-success/15 flex items-center justify-center border border-success/20">
+              <span className="text-base font-bold text-success">N</span>
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-lg font-semibold text-foreground">NVDA</h1>
-                <span className="text-xs text-muted-foreground">NASDAQ</span>
+              <div className="flex items-center gap-1.5">
+                <h1 className="text-base font-semibold text-foreground">NVDA</h1>
+                <span className="text-[10px] text-muted-foreground/70">NASDAQ</span>
               </div>
-              <p className="text-xs text-muted-foreground">NVIDIA Corporation</p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <Target className="w-3 h-3 text-primary/70" />
+                <span className="text-[10px] text-muted-foreground">Thesis</span>
+              </div>
             </div>
           </div>
-          
-          {/* Session Type */}
-          <div className="h-6 w-px bg-border" />
-          <div className="flex items-center gap-1.5">
-            <Target className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-medium text-foreground">Thesis 会话</span>
-          </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-2">
-          <button className="p-1.5 rounded-md hover:bg-secondary transition-colors">
-            <ExternalLink className="w-4 h-4 text-muted-foreground" />
-          </button>
-          <button className="p-1.5 rounded-md hover:bg-secondary transition-colors">
-            <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
-          </button>
-        </div>
-      </div>
-
-      {/* Status Row */}
-      <div className="mt-5 flex items-center gap-6">
-        {/* Thesis Stance */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-success/10">
+        {/* Center: Key Decision Signals */}
+        <div className="flex items-center gap-5">
+          {/* Stance */}
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-success/10 border border-success/20">
             <TrendingUp className="w-3.5 h-3.5 text-success" />
-            <span className="text-xs font-semibold text-success">Bullish</span>
+            <span className="text-xs font-bold text-success">Bullish</span>
           </div>
-          <span className="text-[10px] text-muted-foreground">Thesis 立场</span>
-        </div>
 
-        {/* Readiness */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5">
+          {/* Readiness */}
+          <div className="flex items-center gap-2">
             <div className="flex gap-0.5">
               {[1, 2, 3, 4, 5].map((i) => (
                 <div
                   key={i}
                   className={cn(
-                    "w-1.5 h-4 rounded-sm",
-                    i <= 4 ? "bg-primary" : "bg-secondary"
+                    "w-1.5 h-4 rounded-sm transition-colors",
+                    i <= 4 ? "bg-primary" : "bg-secondary/50"
                   )}
                 />
               ))}
             </div>
-            <span className="text-xs font-medium text-foreground">4/5</span>
+            <span className="text-xs font-semibold text-foreground">4/5</span>
           </div>
-          <span className="text-[10px] text-muted-foreground">Readiness</span>
-        </div>
 
-        {/* Action Bias */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10">
+          {/* Action Bias */}
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-primary/10 border border-primary/20">
             <Zap className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-medium text-primary">加仓</span>
+            <span className="text-xs font-semibold text-primary">加仓</span>
           </div>
-          <span className="text-[10px] text-muted-foreground">Action Bias</span>
-        </div>
 
-        {/* Alert Level */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-warning/10">
+          {/* Alert */}
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-warning/10 border border-warning/20">
             <AlertTriangle className="w-3.5 h-3.5 text-warning" />
-            <span className="text-xs font-medium text-warning">Medium</span>
+            <span className="text-xs font-semibold text-warning">Medium</span>
           </div>
-          <span className="text-[10px] text-muted-foreground">Alert</span>
         </div>
 
-        {/* Change Marker */}
-        <div className="flex items-center gap-2 ml-auto">
-          <div className="flex items-center gap-1 text-success">
-            <ArrowUpRight className="w-3.5 h-3.5" />
-            <span className="text-xs font-medium">+12%</span>
+        {/* Right: Delta + Actions */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-success/5">
+            <ArrowUpRight className="w-3.5 h-3.5 text-success" />
+            <span className="text-xs font-semibold text-success">+12%</span>
+            <span className="text-[9px] text-muted-foreground">vs 上周</span>
           </div>
-          <span className="text-[10px] text-muted-foreground">vs 上周</span>
+          <div className="flex items-center gap-1">
+            <button className="p-1.5 rounded-md hover:bg-secondary/50 transition-colors">
+              <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
+            </button>
+            <button className="p-1.5 rounded-md hover:bg-secondary/50 transition-colors">
+              <MoreHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Last Updated */}
-      <div className="mt-4 pt-4 border-t border-border flex items-center gap-1.5 text-muted-foreground">
-        <Clock className="w-3 h-3" />
-        <span className="text-[10px]">最近更新: 今天 14:32 · 由 AI 自动更新</span>
+      {/* Subtle Footer */}
+      <div className="px-5 py-2 bg-secondary/20 border-t border-border/50 flex items-center gap-1.5 text-muted-foreground/70">
+        <Clock className="w-2.5 h-2.5" />
+        <span className="text-[9px]">更新: 今天 14:32 · AI 自动同步</span>
       </div>
     </div>
   )
@@ -153,13 +135,18 @@ function ThesisBlock() {
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Target className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Thesis</h2>
+      <div className="px-5 py-3 border-b border-border flex items-center justify-between bg-secondary/5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center">
+            <Target className="w-3.5 h-3.5 text-primary" />
+          </div>
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-foreground">Thesis</h2>
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-success/10 text-success font-medium">核心逻辑</span>
+          </div>
         </div>
         <button className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-          详细分析
+          详细
           <ChevronRight className="w-3 h-3" />
         </button>
       </div>
@@ -239,60 +226,89 @@ function TimingBlock() {
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Timing</h2>
+      <div className="px-5 py-3 border-b border-border flex items-center justify-between bg-secondary/5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center">
+            <Clock className="w-3.5 h-3.5 text-primary" />
+          </div>
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-foreground">Timing</h2>
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-warning/10 text-warning font-medium">时机</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-success/10">
-          <span className="text-[10px] font-semibold text-success">适合介入</span>
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-success/15 border border-success/20">
+          <Zap className="w-3 h-3 text-success" />
+          <span className="text-[10px] font-bold text-success">适合介入</span>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-5">
-        {/* Timing Indicators */}
-        <div className="grid grid-cols-3 gap-4 mb-5">
-          <div className="text-center p-3 bg-secondary/30 rounded-lg">
-            <div className="text-2xl font-bold text-success mb-1">72</div>
-            <div className="text-[10px] text-muted-foreground">Readiness Score</div>
+        {/* Action-Oriented Timing Metrics */}
+        <div className="grid grid-cols-4 gap-3 mb-5">
+          <div className="p-3 bg-success/5 border border-success/20 rounded-lg text-center">
+            <div className="text-xl font-bold text-success mb-0.5">72</div>
+            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">Readiness</div>
           </div>
-          <div className="text-center p-3 bg-secondary/30 rounded-lg">
-            <div className="text-2xl font-bold text-foreground mb-1">$890</div>
-            <div className="text-[10px] text-muted-foreground">Entry Zone</div>
+          <div className="p-3 bg-secondary/30 rounded-lg text-center">
+            <div className="text-xl font-bold text-foreground mb-0.5">$890</div>
+            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">Entry Zone</div>
           </div>
-          <div className="text-center p-3 bg-secondary/30 rounded-lg">
-            <div className="text-2xl font-bold text-warning mb-1">14d</div>
-            <div className="text-[10px] text-muted-foreground">Next Catalyst</div>
+          <div className="p-3 bg-secondary/30 rounded-lg text-center">
+            <div className="text-xl font-bold text-foreground mb-0.5">$1,050</div>
+            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">Target</div>
+          </div>
+          <div className="p-3 bg-warning/5 border border-warning/20 rounded-lg text-center">
+            <div className="text-xl font-bold text-warning mb-0.5">14d</div>
+            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">Catalyst</div>
           </div>
         </div>
 
-        {/* Timeline */}
+        {/* Action Recommendation */}
+        <div className="p-3 mb-5 bg-primary/5 border border-primary/20 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-primary" />
+              <span className="text-xs font-semibold text-foreground">建议操作</span>
+            </div>
+            <span className="text-xs font-bold text-primary">分 3 批在 $880-900 区间建仓</span>
+          </div>
+        </div>
+
+        {/* Catalyst Timeline */}
         <div className="relative">
-          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-border" />
-          <div className="space-y-4">
+          <div className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider mb-3">催化剂时间线</div>
+          <div className="absolute left-[7px] top-8 bottom-2 w-px bg-border/50" />
+          <div className="space-y-3">
             {[
-              { date: "2024-02-21", event: "Q4 财报发布", status: "upcoming", importance: "high" },
-              { date: "2024-03-18", event: "GTC 大会", status: "upcoming", importance: "high" },
-              { date: "2024-01-08", event: "CES 主题演讲", status: "passed", importance: "medium" },
+              { date: "2024-02-21", event: "Q4 财报发布", status: "upcoming", importance: "high", daysAway: "14d" },
+              { date: "2024-03-18", event: "GTC 大会", status: "upcoming", importance: "high", daysAway: "39d" },
+              { date: "2024-01-08", event: "CES 主题演讲", status: "passed", importance: "medium", daysAway: "已过" },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3 relative">
                 <div className={cn(
-                  "w-[15px] h-[15px] rounded-full border-2 shrink-0 z-10",
+                  "w-[14px] h-[14px] rounded-full border-2 shrink-0 z-10 mt-0.5",
                   item.status === "upcoming" 
                     ? "bg-primary/20 border-primary" 
-                    : "bg-secondary border-border"
+                    : "bg-secondary/50 border-border/50"
                 )} />
-                <div className="flex-1 -mt-0.5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-foreground">{item.event}</span>
-                    {item.importance === "high" && (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-warning/10 text-warning font-medium">
-                        重要
-                      </span>
-                    )}
+                <div className="flex-1 flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className={cn(
+                        "text-xs font-medium",
+                        item.status === "upcoming" ? "text-foreground" : "text-muted-foreground"
+                      )}>{item.event}</span>
+                      {item.importance === "high" && item.status === "upcoming" && (
+                        <span className="text-[8px] px-1 py-0.5 rounded bg-warning/10 text-warning font-semibold uppercase">重要</span>
+                      )}
+                    </div>
+                    <span className="text-[10px] text-muted-foreground">{item.date}</span>
                   </div>
-                  <span className="text-[10px] text-muted-foreground">{item.date}</span>
+                  <span className={cn(
+                    "text-[10px] font-medium",
+                    item.status === "upcoming" ? "text-primary" : "text-muted-foreground"
+                  )}>{item.daysAway}</span>
                 </div>
               </div>
             ))}
@@ -404,41 +420,39 @@ function AlertBlock() {
 
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden">
-      {/* Header - Enhanced with severity indicator */}
-      <div className="px-5 py-4 border-b border-border">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-lg bg-warning/15 flex items-center justify-center">
-                <Shield className="w-5 h-5 text-warning" />
+      {/* Header - Consistent with Decision Spine */}
+      <div className="px-5 py-3 border-b border-border flex items-center justify-between bg-secondary/5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-6 h-6 rounded bg-warning/15 flex items-center justify-center relative">
+            <Shield className="w-3.5 h-3.5 text-warning" />
+            {criticalCount > 0 && (
+              <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-danger flex items-center justify-center">
+                <span className="text-[7px] font-bold text-white">{criticalCount}</span>
               </div>
-              {criticalCount > 0 && (
-                <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-danger flex items-center justify-center">
-                  <span className="text-[9px] font-bold text-white">{criticalCount}</span>
-                </div>
-              )}
-            </div>
-            <div>
-              <h2 className="text-base font-semibold text-foreground">Risk Control</h2>
-              <p className="text-[11px] text-muted-foreground">决策纪律 · 风险预警 · 仓位管理</p>
-            </div>
+            )}
           </div>
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-2">
-              {criticalCount > 0 && (
-                <span className="text-[10px] px-2 py-1 rounded-md bg-danger/15 text-danger font-semibold animate-pulse">
-                  {criticalCount} Critical
-                </span>
-              )}
-              {highCount > 0 && (
-                <span className="text-[10px] px-2 py-1 rounded-md bg-warning/15 text-warning font-semibold">
-                  {highCount} High
-                </span>
-              )}
-            </div>
-            <span className="text-[9px] text-muted-foreground">总计 {alerts.length} 项风险</span>
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-foreground">Risk Control</h2>
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-warning/10 text-warning font-medium">风险纪律</span>
           </div>
         </div>
+        <div className="flex items-center gap-2">
+          {criticalCount > 0 && (
+            <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-danger/15 text-danger font-semibold">
+              {criticalCount} Critical
+            </span>
+          )}
+          {highCount > 0 && (
+            <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-warning/15 text-warning font-semibold">
+              {highCount} High
+            </span>
+          )}
+          <span className="text-[9px] text-muted-foreground">{alerts.length} 项</span>
+        </div>
+      </div>
+
+      {/* Risk Assessment Bar */}
+      <div className="px-5 py-3 border-b border-border/50">
 
         {/* Overall Risk Assessment Bar */}
         <div className="bg-secondary/30 rounded-lg p-3">
@@ -807,30 +821,28 @@ function HistoryBlock() {
 
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-border">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Clock className="w-4 h-4 text-primary" />
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold text-foreground">Decision History</h2>
-              <p className="text-[10px] text-muted-foreground">决策演化与状态追踪</p>
-            </div>
+      {/* Header - Consistent with Decision Spine */}
+      <div className="px-5 py-3 border-b border-border flex items-center justify-between bg-secondary/5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center">
+            <Clock className="w-3.5 h-3.5 text-primary" />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] px-2 py-1 rounded-md bg-success/15 text-success font-semibold">
-              3 关键变更
-            </span>
-            <span className="text-[10px] px-2 py-1 rounded-md bg-secondary text-muted-foreground font-medium">
-              45 天周期
-            </span>
+            <h2 className="text-sm font-semibold text-foreground">History</h2>
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">演化追踪</span>
           </div>
         </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-success/15 text-success font-semibold">
+            3 变更
+          </span>
+          <span className="text-[9px] text-muted-foreground">45d</span>
+        </div>
+      </div>
 
-        {/* Thesis Evolution Bar */}
-        <div className="bg-secondary/30 rounded-lg p-3">
+      {/* Thesis Evolution Bar */}
+      <div className="px-5 py-3 border-b border-border/50 bg-secondary/20">
+        <div className="bg-secondary/30 rounded p-2.5">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Thesis 置信度演化</span>
             <span className="text-[10px] text-primary font-semibold">
