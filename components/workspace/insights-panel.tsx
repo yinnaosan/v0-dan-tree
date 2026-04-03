@@ -33,7 +33,7 @@ const news = [
 
 export function InsightsPanel() {
   return (
-    <aside className="w-52 h-full bg-[oklch(0.07_0.003_250)] border-l border-border/10 flex flex-col">
+    <aside className="w-48 h-full bg-[oklch(0.07_0.003_250)] border-l border-border/10 flex flex-col">
       {/* Header */}
       <div className="px-3.5 py-3 border-b border-border/8 flex items-center justify-between">
         <div className="flex items-center gap-1.5">

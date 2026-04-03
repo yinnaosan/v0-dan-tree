@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils"
 export function DecisionCanvas() {
   return (
     <main className="flex-1 min-w-0 h-full bg-background overflow-y-auto">
-      <div className="max-w-3xl mx-auto px-6 py-5">
+      <div className="px-5 py-4">
         <div className="space-y-5">
           <ThesisBlock />
           <TimingBlock />
