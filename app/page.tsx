@@ -18,12 +18,12 @@ export default function WorkspacePage() {
   if (!mounted) {
     return (
       <div className="h-screen w-full flex flex-col overflow-hidden" style={{ background: '#0a0d11' }}>
-        <div className="h-14 w-full border-b border-white/[0.06] shrink-0" style={{ background: 'linear-gradient(180deg, rgba(18,22,28,0.98) 0%, rgba(14,17,23,0.98) 100%)' }} />
+        <div className="h-12 w-full border-b border-white/[0.04] shrink-0" style={{ background: 'rgba(10,13,17,0.95)' }} />
         <div className="flex-1 flex overflow-hidden">
-          <div className="w-52 h-full border-r border-white/[0.04]" style={{ background: 'linear-gradient(180deg, #0a0d11 0%, #070a0d 100%)' }} />
-          <div className="flex-1 max-w-[680px] h-full" style={{ background: 'linear-gradient(180deg, #0e1117 0%, #0a0d11 100%)' }} />
-          <div className="flex-1 min-w-[320px] h-full border-l border-white/[0.04]" style={{ background: 'linear-gradient(180deg, #12161c 0%, #0e1117 100%)' }} />
-          <div className="w-60 h-full border-l border-white/[0.04] shrink-0" style={{ background: 'linear-gradient(180deg, #0a0d11 0%, #070a0d 100%)' }} />
+          <div className="w-52 h-full border-r border-white/[0.04]" style={{ background: '#070a0d' }} />
+          <div className="flex-1 max-w-[680px] h-full" style={{ background: '#0c0f14' }} />
+          <div className="flex-1 min-w-[320px] h-full border-l border-white/[0.04]" style={{ background: '#0f1218' }} />
+          <div className="w-52 h-full border-l border-white/[0.04] shrink-0" style={{ background: '#080a0e' }} />
         </div>
       </div>
     )
