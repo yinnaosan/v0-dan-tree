@@ -17,7 +17,7 @@ export default function WorkspacePage() {
   if (!mounted) {
     return (
       <div className="h-screen w-full flex flex-col overflow-hidden bg-background">
-        <div className="h-12 w-full bg-[oklch(0.095_0.004_250)] border-b border-border/10 shrink-0" />
+        <div className="h-16 w-full bg-[oklch(0.085_0.004_250)] border-b border-border/15 shrink-0" />
         <div className="flex-1 flex overflow-hidden">
           <div className="w-52 h-full bg-sidebar border-r border-sidebar-border/40" />
           <div className="flex-1 max-w-[680px] h-full bg-background" />

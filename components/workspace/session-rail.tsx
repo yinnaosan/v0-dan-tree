@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Search, Plus, Pin, Clock, TrendingUp, AlertTriangle, Target, Lightbulb } from "lucide-react"
+import { Search, Plus, Pin, Clock, AlertTriangle, Target, Lightbulb } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface Session {
@@ -34,14 +34,8 @@ export function SessionRail() {
 
   return (
     <aside className="w-52 h-full bg-sidebar flex flex-col border-r border-sidebar-border/40">
-      {/* Brand + Search */}
-      <div className="px-3.5 pt-3.5 pb-2">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-7 h-7 rounded-lg bg-primary/15 flex items-center justify-center">
-            <TrendingUp className="w-4 h-4 text-primary" />
-          </div>
-          <span className="text-[13px] font-bold text-foreground tracking-tight">DanTree</span>
-        </div>
+      {/* Search */}
+      <div className="px-3.5 pt-3 pb-2">
         <div className="flex items-center gap-1.5">
           <div className="relative flex-1">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/30" />
