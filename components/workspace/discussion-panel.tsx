@@ -49,30 +49,30 @@ export function DiscussionPanel() {
   }
 
   return (
-    <aside className="flex-1 min-w-[280px] h-full bg-card/95 flex flex-col border-l border-border/20">
-      {/* Clean Header */}
-      <div className="px-4 py-3 border-b border-border/15 flex items-center justify-between">
+    <aside className="flex-1 min-w-[300px] h-full bg-[oklch(0.115_0.004_250)] flex flex-col border-l border-border/15">
+      {/* Header */}
+      <div className="px-5 py-3.5 border-b border-border/10 flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-semibold text-foreground">Discussion</h2>
-          <p className="text-[10px] text-muted-foreground/60">AI 辅助决策讨论</p>
+          <h2 className="text-[14px] font-bold text-foreground tracking-tight">Discussion</h2>
+          <p className="text-[11px] text-muted-foreground/45 mt-0.5">AI 辅助决策讨论</p>
         </div>
-        <button className="p-1.5 rounded-md hover:bg-secondary/30 transition-colors">
-          <MoreHorizontal className="w-3.5 h-3.5 text-muted-foreground/50" />
+        <button className="p-1.5 rounded-md hover:bg-secondary/25 transition-colors">
+          <MoreHorizontal className="w-4 h-4 text-muted-foreground/40" />
         </button>
       </div>
 
-      {/* Messages */}
+      {/* Messages - Premium Spacing */}
       <div className="flex-1 overflow-y-auto">
-        <div className="py-4">
-          {messages.map((message) => (
-            <MessageItem key={message.id} message={message} />
+        <div className="py-5">
+          {messages.map((message, index) => (
+            <MessageItem key={message.id} message={message} isLatest={index === messages.length - 1 && message.role === "assistant"} />
           ))}
         </div>
       </div>
 
-      {/* Input */}
-      <div className="p-3 border-t border-border/15">
-        <div className="relative">
+      {/* Input - ChatGPT-like Premium Feel */}
+      <div className="p-4 border-t border-border/10">
+        <div className="relative bg-secondary/20 rounded-2xl border border-border/20 focus-within:border-primary/25 focus-within:bg-secondary/25 transition-all">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -83,20 +83,18 @@ export function DiscussionPanel() {
               }
             }}
             placeholder="讨论 Thesis、Timing 或 Risk..."
-            className="w-full bg-secondary/25 rounded-xl px-3.5 py-2.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/40 resize-none focus:outline-none focus:ring-1 focus:ring-primary/20 min-h-[40px] max-h-[100px] leading-relaxed"
+            className="w-full bg-transparent px-4 py-3.5 pr-12 text-[14px] text-foreground placeholder:text-muted-foreground/35 resize-none focus:outline-none min-h-[52px] max-h-[120px] leading-relaxed"
             rows={1}
           />
           <button
             onClick={handleSend}
             disabled={!input.trim()}
             className={cn(
-              "absolute right-2 bottom-2 p-1.5 rounded-lg transition-all",
-              input.trim()
-                ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                : "bg-secondary/40 text-muted-foreground/30"
+              "absolute right-3 bottom-3 p-2 rounded-xl transition-all",
+              input.trim() ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-secondary/30 text-muted-foreground/25"
             )}
           >
-            <Send className="w-3.5 h-3.5" />
+            <Send className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -104,47 +102,40 @@ export function DiscussionPanel() {
   )
 }
 
-function MessageItem({ message }: { message: Message }) {
+function MessageItem({ message, isLatest }: { message: Message; isLatest?: boolean }) {
   const isUser = message.role === "user"
   const [showActions, setShowActions] = useState(false)
 
   return (
-    <div 
-      className={cn("px-4 py-3 group", !isUser && "bg-secondary/8")}
+    <div
+      className={cn("px-5 py-4 transition-colors", !isUser && "bg-secondary/8", isLatest && !isUser && "bg-primary/4")}
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 mb-1.5">
-        <div className={cn(
-          "w-5 h-5 rounded-md flex items-center justify-center",
-          isUser ? "bg-secondary/40" : "bg-gradient-to-br from-primary/20 to-accent/20"
-        )}>
-          {isUser ? (
-            <User className="w-3 h-3 text-foreground/60" />
-          ) : (
-            <Sparkles className="w-3 h-3 text-primary" />
-          )}
+      <div className="flex items-center gap-2.5 mb-2.5">
+        <div className={cn("w-6 h-6 rounded-lg flex items-center justify-center", isUser ? "bg-secondary/30" : "bg-primary/12")}>
+          {isUser ? <User className="w-3.5 h-3.5 text-foreground/60" /> : <Sparkles className="w-3.5 h-3.5 text-primary" />}
         </div>
-        <span className="text-xs font-medium text-foreground/70">{isUser ? "你" : "助手"}</span>
-        <span className="text-[10px] text-muted-foreground/40">{message.timestamp}</span>
-        
+        <span className="text-[12px] font-semibold text-foreground/70">{isUser ? "你" : "助手"}</span>
+        <span className="text-[11px] text-muted-foreground/35">{message.timestamp}</span>
+
         {/* Actions */}
         {!isUser && showActions && (
-          <div className="ml-auto flex items-center gap-0.5">
-            <button className="p-1 rounded hover:bg-secondary/30 transition-colors">
-              <Copy className="w-3 h-3 text-muted-foreground/40" />
+          <div className="ml-auto flex items-center gap-1">
+            <button className="p-1.5 rounded-md hover:bg-secondary/25 transition-colors">
+              <Copy className="w-3.5 h-3.5 text-muted-foreground/40" />
             </button>
-            <button className="p-1 rounded hover:bg-secondary/30 transition-colors">
-              <RefreshCw className="w-3 h-3 text-muted-foreground/40" />
+            <button className="p-1.5 rounded-md hover:bg-secondary/25 transition-colors">
+              <RefreshCw className="w-3.5 h-3.5 text-muted-foreground/40" />
             </button>
           </div>
         )}
       </div>
 
-      {/* Content */}
-      <div className="pl-7">
-        <div className="text-sm leading-[1.7] text-foreground/85">
+      {/* Content - Premium Typography */}
+      <div className="pl-[34px]">
+        <div className="text-[14px] leading-[1.8] text-foreground/85">
           {message.content.split("\n").map((line, i) => {
             const parts = line.split(/(\*\*[^*]+\*\*)/)
             return (
@@ -152,9 +143,7 @@ function MessageItem({ message }: { message: Message }) {
                 {parts.map((part, j) => {
                   if (part.startsWith("**") && part.endsWith("**")) {
                     return (
-                      <span key={j} className="font-semibold text-foreground">
-                        {part.slice(2, -2)}
-                      </span>
+                      <span key={j} className="font-semibold text-foreground">{part.slice(2, -2)}</span>
                     )
                   }
                   return part

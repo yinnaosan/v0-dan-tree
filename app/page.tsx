@@ -14,16 +14,17 @@ export default function WorkspacePage() {
     setMounted(true)
   }, [])
 
+  // Skeleton while mounting
   if (!mounted) {
     return (
       <div className="h-screen w-full flex overflow-hidden bg-background">
-        <div className="w-52 h-full bg-sidebar border-r border-border/20" />
+        <div className="w-52 h-full bg-sidebar border-r border-sidebar-border/40" />
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="h-[72px] w-full bg-card/80 border-b border-border/20" />
+          <div className="h-14 w-full bg-[oklch(0.11_0.004_250)] border-b border-border/15" />
           <div className="flex-1 flex overflow-hidden">
-            <div className="flex-1 h-full bg-background" />
-            <div className="flex-1 min-w-[280px] h-full bg-card border-l border-border/30" />
-            <div className="w-56 h-full bg-[oklch(0.065_0.003_250)] border-l border-border/10 shrink-0" />
+            <div className="flex-1 max-w-[680px] h-full bg-background" />
+            <div className="flex-1 min-w-[300px] h-full bg-[oklch(0.115_0.004_250)] border-l border-border/15" />
+            <div className="w-52 h-full bg-[oklch(0.062_0.002_250)] border-l border-border/6 shrink-0" />
           </div>
         </div>
       </div>
@@ -32,18 +33,21 @@ export default function WorkspacePage() {
 
   return (
     <div className="h-screen w-full flex overflow-hidden bg-background">
-      {/* Left Rail */}
+      {/* Column 1: Session Rail */}
       <SessionRail />
       
-      {/* Right Content Area */}
+      {/* Columns 2-4: Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Fixed Asset Header - aligned with content */}
+        {/* Fixed Global Decision Control Strip */}
         <AssetHeader />
         
         {/* Main Content */}
         <div className="flex-1 flex overflow-hidden">
+          {/* Column 2: Decision Canvas */}
           <DecisionCanvas />
+          {/* Column 3: Discussion */}
           <DiscussionPanel />
+          {/* Column 4: Insights */}
           <InsightsPanel />
         </div>
       </div>
