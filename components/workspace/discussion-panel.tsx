@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Send, Bot, User, Paperclip, MoreHorizontal, Copy, RefreshCw } from "lucide-react"
+import { Send, Bot, User, Paperclip, MoreHorizontal, Copy, RefreshCw, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface Message {
@@ -9,6 +9,7 @@ interface Message {
   role: "user" | "assistant"
   content: string
   timestamp: string
+  isKeyPoint?: boolean
 }
 
 const initialMessages: Message[] = [
@@ -17,6 +18,7 @@ const initialMessages: Message[] = [
     role: "assistant",
     content: "基于当前 NVDA 的 Thesis 分析，我注意到几个关键点需要讨论：\n\n1. **H200 产能** - 虽然需求强劲，但台积电 CoWoS 产能是否能跟上？\n\n2. **竞争格局** - AMD MI300X 和 Intel Gaudi3 的威胁程度如何评估？\n\n3. **估值锚定** - 当前 65x P/E 的合理性需要重新审视。\n\n您希望先深入讨论哪个方向？",
     timestamp: "14:28",
+    isKeyPoint: true,
   },
   {
     id: "2",
@@ -29,6 +31,7 @@ const initialMessages: Message[] = [
     role: "assistant",
     content: "从几个角度来看当前估值的合理性：\n\n**增长率支撑**\n- 数据中心业务 YoY 279% 增长\n- 预计 FY25 仍有 50%+ 增速\n- PEG 约 1.1x，增长调整后并不离谱\n\n**市场地位溢价**\n- AI 训练市场 >80% 份额\n- CUDA 生态护城河深厚\n- 领先竞品 12-18 个月\n\n**但需要注意**\n- 估值已 price in 完美执行\n- 任何增速放缓都会带来多杀多\n- 建议关注每季度 guidance 的边际变化\n\n我的建议是：估值虽高但有基本面支撑，关键是要设置好风控边界。",
     timestamp: "14:32",
+    isKeyPoint: true,
   },
 ]
 
@@ -51,28 +54,35 @@ export function DiscussionPanel() {
   }
 
   return (
-    <div className="w-[300px] h-full bg-card/80 border-l border-border flex flex-col">
+    <aside className="w-80 h-full bg-card border-l border-border/30 flex flex-col">
       {/* Header */}
-      <div className="px-4 py-2.5 border-b border-border/70 flex items-center justify-between bg-background/30">
-        <div className="flex items-center gap-2">
-          <Bot className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="text-xs font-medium text-muted-foreground">Discussion</span>
+      <div className="px-5 py-4 border-b border-border/50 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-primary/80" />
+          </div>
+          <div>
+            <span className="text-sm font-semibold text-foreground">Co-Pilot</span>
+            <span className="text-xs text-muted-foreground ml-2">讨论区</span>
+          </div>
         </div>
-        <button className="p-1 rounded-md hover:bg-secondary/50 transition-colors">
-          <MoreHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
+        <button className="p-1.5 rounded-md hover:bg-secondary/30 transition-colors">
+          <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
         </button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
-        ))}
+      {/* Messages - Comfortable spacing */}
+      <div className="flex-1 overflow-y-auto px-5 py-6">
+        <div className="space-y-8">
+          {messages.map((message) => (
+            <MessageBubble key={message.id} message={message} />
+          ))}
+        </div>
       </div>
 
-      {/* Input */}
-      <div className="p-2.5 border-t border-border/70">
-        <div className="bg-secondary/30 rounded-md p-2">
+      {/* Input - Spacious */}
+      <div className="p-4 border-t border-border/50">
+        <div className="bg-secondary/25 rounded-xl p-4">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -82,31 +92,31 @@ export function DiscussionPanel() {
                 handleSend()
               }
             }}
-            placeholder="讨论..."
-            className="w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground/50 resize-none focus:outline-none min-h-[48px]"
-            rows={2}
+            placeholder="输入问题或想法..."
+            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 resize-none focus:outline-none min-h-[60px] leading-relaxed"
+            rows={3}
           />
-          <div className="flex items-center justify-between mt-1.5">
-            <button className="p-1 rounded hover:bg-secondary/50 transition-colors">
-              <Paperclip className="w-3.5 h-3.5 text-muted-foreground/60" />
+          <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/30">
+            <button className="p-2 rounded-lg hover:bg-secondary/40 transition-colors">
+              <Paperclip className="w-4 h-4 text-muted-foreground/60" />
             </button>
             <button
               onClick={handleSend}
               disabled={!input.trim()}
               className={cn(
-                "flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-medium transition-colors",
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
                 input.trim()
-                  ? "bg-primary/80 text-primary-foreground hover:bg-primary"
-                  : "bg-secondary/50 text-muted-foreground/50 cursor-not-allowed"
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                  : "bg-secondary/40 text-muted-foreground/50 cursor-not-allowed"
               )}
             >
-              <Send className="w-3 h-3" />
+              <Send className="w-4 h-4" />
               发送
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </aside>
   )
 }
 
@@ -114,66 +124,70 @@ function MessageBubble({ message }: { message: Message }) {
   const isUser = message.role === "user"
 
   return (
-    <div className={cn("flex gap-2.5", isUser && "flex-row-reverse")}>
-      {/* Avatar */}
-      <div className={cn(
-        "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
-        isUser ? "bg-secondary" : "bg-primary/10"
-      )}>
-        {isUser ? (
-          <User className="w-3.5 h-3.5 text-secondary-foreground" />
-        ) : (
-          <Bot className="w-3.5 h-3.5 text-primary" />
-        )}
-      </div>
-
-      {/* Content */}
-      <div className={cn("flex-1 min-w-0", isUser && "flex flex-col items-end")}>
+    <div className={cn(
+      "relative",
+      message.isKeyPoint && !isUser && "pl-4 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:rounded-full before:bg-primary/50"
+    )}>
+      <div className={cn("flex gap-3", isUser && "flex-row-reverse")}>
+        {/* Avatar */}
         <div className={cn(
-          "px-3 py-2.5 rounded-lg max-w-[calc(100%-24px)]",
-          isUser
-            ? "bg-primary/10 text-foreground"
-            : "bg-secondary/50 text-foreground"
+          "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
+          isUser ? "bg-secondary/50" : "bg-primary/10"
         )}>
-          <div className="text-xs leading-relaxed whitespace-pre-wrap">
-            {message.content.split("\n").map((line, i) => {
-              // Handle bold text
-              const parts = line.split(/(\*\*[^*]+\*\*)/)
-              return (
-                <span key={i}>
-                  {parts.map((part, j) => {
-                    if (part.startsWith("**") && part.endsWith("**")) {
-                      return (
-                        <span key={j} className="font-semibold text-foreground">
-                          {part.slice(2, -2)}
-                        </span>
-                      )
-                    }
-                    return part
-                  })}
-                  {i < message.content.split("\n").length - 1 && <br />}
-                </span>
-              )
-            })}
-          </div>
-        </div>
-        
-        {/* Meta */}
-        <div className={cn(
-          "flex items-center gap-2 mt-1.5",
-          isUser && "flex-row-reverse"
-        )}>
-          <span className="text-[10px] text-muted-foreground">{message.timestamp}</span>
-          {!isUser && (
-            <div className="flex items-center gap-1">
-              <button className="p-1 rounded hover:bg-secondary transition-colors">
-                <Copy className="w-3 h-3 text-muted-foreground" />
-              </button>
-              <button className="p-1 rounded hover:bg-secondary transition-colors">
-                <RefreshCw className="w-3 h-3 text-muted-foreground" />
-              </button>
-            </div>
+          {isUser ? (
+            <User className="w-4 h-4 text-foreground/70" />
+          ) : (
+            <Bot className="w-4 h-4 text-primary/80" />
           )}
+        </div>
+
+        {/* Content */}
+        <div className={cn("flex-1 min-w-0", isUser && "flex flex-col items-end")}>
+          <div className={cn(
+            "px-4 py-3 rounded-2xl max-w-[calc(100%-20px)]",
+            isUser
+              ? "bg-primary/10 text-foreground rounded-tr-md"
+              : "bg-secondary/30 text-foreground rounded-tl-md"
+          )}>
+            <div className="text-sm leading-7 whitespace-pre-wrap">
+              {message.content.split("\n").map((line, i) => {
+                const parts = line.split(/(\*\*[^*]+\*\*)/)
+                return (
+                  <span key={i}>
+                    {parts.map((part, j) => {
+                      if (part.startsWith("**") && part.endsWith("**")) {
+                        return (
+                          <span key={j} className="font-semibold text-foreground">
+                            {part.slice(2, -2)}
+                          </span>
+                        )
+                      }
+                      return part
+                    })}
+                    {i < message.content.split("\n").length - 1 && <br />}
+                  </span>
+                )
+              })}
+            </div>
+          </div>
+          
+          {/* Meta */}
+          <div className={cn(
+            "flex items-center gap-3 mt-2",
+            isUser && "flex-row-reverse"
+          )}>
+            <span className="text-xs text-muted-foreground/60">{message.timestamp}</span>
+            {!isUser && (
+              <div className="flex items-center gap-1">
+                <button className="p-1.5 rounded-md hover:bg-secondary/30 transition-colors">
+                  <Copy className="w-3.5 h-3.5 text-muted-foreground/50" />
+                </button>
+                <button className="p-1.5 rounded-md hover:bg-secondary/30 transition-colors">
+                  <RefreshCw className="w-3.5 h-3.5 text-muted-foreground/50" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
