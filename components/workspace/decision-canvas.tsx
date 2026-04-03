@@ -10,16 +10,79 @@ import {
   Target,
   Zap,
   ChevronRight,
-  Activity
+  Activity,
+  ExternalLink
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function DecisionCanvas() {
   return (
     <main className="flex-1 min-w-0 h-full bg-background overflow-y-auto">
-      <div className="max-w-4xl mx-auto px-10 py-8">
-        {/* Decision Spine - Guided Flow */}
-        <div className="space-y-8">
+      {/* Asset Header - Like screenshot */}
+      <div className="px-8 py-5 border-b border-border/30 bg-card/50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-success/15 flex items-center justify-center border border-success/30">
+              <span className="text-lg font-bold text-success">N</span>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-bold text-foreground">NVDA</h1>
+                <span className="text-sm text-muted-foreground">NASDAQ</span>
+              </div>
+              <span className="text-sm text-muted-foreground">NVIDIA Corporation</span>
+            </div>
+          </div>
+          
+          {/* Status Strip - Dashboard style */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-success/12 border border-success/25">
+              <TrendingUp className="w-3.5 h-3.5 text-success" />
+              <span className="text-sm font-bold text-success">Bullish</span>
+            </div>
+            <span className="text-sm text-muted-foreground">Thesis 立场</span>
+            
+            <div className="flex gap-0.5 mx-2">
+              {[1,2,3,4,5].map(i => (
+                <div key={i} className={cn("w-1 h-3 rounded-sm", i <= 4 ? "bg-primary" : "bg-secondary/50")} />
+              ))}
+            </div>
+            <span className="text-sm font-semibold">4/5</span>
+            <span className="text-sm text-muted-foreground">Readiness</span>
+
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
+              <Zap className="w-3.5 h-3.5 text-primary" />
+              <span className="text-sm font-semibold text-primary">+加仓</span>
+            </div>
+
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-warning/10 border border-warning/20">
+              <AlertTriangle className="w-3.5 h-3.5 text-warning" />
+              <span className="text-sm font-semibold text-warning">Medium</span>
+            </div>
+
+            <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-success/8">
+              <ArrowUpRight className="w-3.5 h-3.5 text-success" />
+              <span className="text-sm font-bold text-success">+12%</span>
+              <span className="text-xs text-muted-foreground">vs 上周</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button className="p-2 rounded-lg hover:bg-secondary/40 transition-colors">
+              <ExternalLink className="w-4 h-4 text-muted-foreground" />
+            </button>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
+          <Clock className="w-3 h-3" />
+          <span>最近更新: 今天 14:32 · 由 AI 自动更新</span>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-8 py-6">
+        <div className="space-y-6">
           <ThesisBlock />
           <TimingBlock />
           <RiskBlock />
@@ -32,78 +95,41 @@ export function DecisionCanvas() {
 
 function ThesisBlock() {
   return (
-    <section className="bg-card rounded-2xl border border-border overflow-hidden">
-      {/* Section Header */}
-      <div className="px-8 py-6 border-b border-border/50 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Target className="w-6 h-6 text-primary" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-foreground">核心论点</h2>
-            <span className="text-base text-muted-foreground">为什么看好这个标的</span>
-          </div>
+    <section className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Target className="w-5 h-5 text-primary" />
+          <h2 className="text-base font-semibold text-foreground">Thesis</h2>
         </div>
-        <button className="flex items-center gap-2 text-base text-muted-foreground hover:text-foreground transition-colors">
-          详细
-          <ChevronRight className="w-5 h-5" />
+        <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          详细分析 <ChevronRight className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Content */}
-      <div className="px-8 py-8">
-        {/* Main Thesis - LARGE READABLE TEXT */}
-        <p className="text-xl text-foreground leading-loose mb-10">
-          NVIDIA 作为 AI 基础设施的核心供应商，在数据中心 GPU 市场占据主导地位。
-          H100/H200 产能持续扩张，云厂商 CapEx 支出强劲支撑需求。
-          长期看好 AI 训练与推理双轮驱动的增长逻辑。
+      <div className="px-6 py-5">
+        <p className="text-base text-foreground leading-relaxed mb-6">
+          NVIDIA 作为 AI 基础设施的核心供应商，在数据中心 GPU 市场占据主导地位。H100/H200 产能持续扩张，云厂商 CapEx 支出强劲支撑需求。长期看好 AI 训练与推理双轮驱动的增长逻辑。
         </p>
 
-        {/* Evidence Grid */}
-        <div className="grid grid-cols-4 gap-6 mb-10">
-          <EvidenceCard
-            label="Evidence"
-            value="Strong"
-            status="positive"
-            detail="12/15 指标正向"
-          />
-          <EvidenceCard
-            label="Gate"
-            value="Passed"
-            status="positive"
-            detail="4/4 门槛通过"
-          />
-          <EvidenceCard
-            label="Sources"
-            value="Verified"
-            status="neutral"
-            detail="8 来源确认"
-          />
-          <EvidenceCard
-            label="Stability"
-            value="High"
-            status="positive"
-            detail="稳定性 87%"
-          />
+        <div className="grid grid-cols-4 gap-4 mb-6">
+          <EvidenceCard label="Evidence" value="Strong" status="positive" detail="12/15 指标正向" />
+          <EvidenceCard label="Gate" value="Passed" status="positive" detail="4/4 门槛通过" />
+          <EvidenceCard label="Source" value="Verified" status="neutral" detail="8 来源确认" />
+          <EvidenceCard label="Fragility" value="Low" status="positive" detail="稳定性 87%" />
         </div>
 
-        {/* Key Evidence Points */}
-        <div className="pt-8 border-t border-border/50">
-          <h3 className="text-lg font-bold text-foreground mb-6">关键证据</h3>
-          <div className="space-y-5">
+        <div className="pt-5 border-t border-border/50">
+          <h3 className="text-sm font-semibold text-foreground mb-3">关键证据</h3>
+          <div className="space-y-2">
             {[
-              { text: "Q3 数据中心收入同比增长 279%，超预期", trend: "up" },
-              { text: "H200 供不应求，交付周期 6-9 个月", trend: "up" },
-              { text: "主要云厂商 2024 CapEx 指引上调 15%", trend: "up" },
-              { text: "竞品 AMD MI300X 份额仍低于预期", trend: "neutral" },
+              { icon: ArrowUpRight, text: "Q3 数据中心收入同比增长 279%" },
+              { icon: ArrowUpRight, text: "H200 供不应求，交付周期 6-9 个月" },
+              { icon: ArrowUpRight, text: "主要云厂商 2024 CapEx 指引上调" },
+              { icon: Activity, text: "竞品 AMD MI300X 份额仍低于预期", muted: true },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4">
-                {item.trend === "up" ? (
-                  <ArrowUpRight className="w-6 h-6 text-success shrink-0" />
-                ) : (
-                  <Activity className="w-6 h-6 text-muted-foreground shrink-0" />
-                )}
-                <span className="text-lg text-foreground/90">{item.text}</span>
+              <div key={i} className="flex items-center gap-3">
+                <item.icon className={cn("w-4 h-4", item.muted ? "text-muted-foreground" : "text-success")} />
+                <span className={cn("text-sm", item.muted ? "text-muted-foreground" : "text-foreground")}>{item.text}</span>
               </div>
             ))}
           </div>
@@ -121,106 +147,76 @@ function EvidenceCard({ label, value, status, detail }: {
 }) {
   return (
     <div className={cn(
-      "p-6 rounded-xl border",
+      "p-4 rounded-lg border",
       status === "positive" ? "bg-success/5 border-success/20" :
       status === "negative" ? "bg-danger/5 border-danger/20" :
       "bg-secondary/30 border-border/50"
     )}>
-      <div className="text-base text-muted-foreground mb-2">{label}</div>
+      <div className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">{label}</div>
       <div className={cn(
-        "text-2xl font-bold mb-1",
+        "text-lg font-bold mb-0.5",
         status === "positive" ? "text-success" :
         status === "negative" ? "text-danger" : "text-foreground"
-      )}>
-        {value}
-      </div>
-      <div className="text-base text-muted-foreground/80">{detail}</div>
+      )}>{value}</div>
+      <div className="text-xs text-muted-foreground">{detail}</div>
     </div>
   )
 }
 
 function TimingBlock() {
   return (
-    <section className="bg-card rounded-2xl border border-border overflow-hidden">
-      {/* Section Header */}
-      <div className="px-8 py-6 border-b border-border/50 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
-            <Clock className="w-6 h-6 text-accent" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-foreground">时机与行动</h2>
-            <span className="text-base text-muted-foreground">何时以及如何操作</span>
-          </div>
+    <section className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Clock className="w-5 h-5 text-accent" />
+          <h2 className="text-base font-semibold text-foreground">Timing</h2>
         </div>
-        <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-success/10 border border-success/20">
-          <Zap className="w-5 h-5 text-success" />
-          <span className="text-lg font-bold text-success">适合介入</span>
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-success/10 border border-success/20">
+          <span className="text-sm font-semibold text-success">适合介入</span>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="px-8 py-8">
-        {/* Key Metrics */}
-        <div className="grid grid-cols-4 gap-6 mb-10">
-          <MetricCard label="Readiness" value="72" unit="/100" highlight />
-          <MetricCard label="Entry Zone" value="$890" unit="" />
-          <MetricCard label="Target" value="$1,050" unit="" />
-          <MetricCard label="Next Catalyst" value="14" unit="天" warning />
-        </div>
-
-        {/* Action Recommendation */}
-        <div className="p-6 mb-10 rounded-xl bg-primary/8 border border-primary/20">
-          <div className="flex items-center gap-5">
-            <Zap className="w-7 h-7 text-primary" />
-            <div>
-              <span className="text-lg font-semibold text-foreground">建议操作：</span>
-              <span className="text-xl font-bold text-primary ml-3">分 3 批在 $880-900 区间建仓</span>
-            </div>
+      <div className="px-6 py-5">
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="p-4 rounded-lg bg-success/8 border border-success/20 text-center">
+            <div className="text-3xl font-bold text-success mb-1">72</div>
+            <div className="text-xs text-muted-foreground uppercase">Readiness Score</div>
+          </div>
+          <div className="p-4 rounded-lg bg-secondary/30 text-center">
+            <div className="text-3xl font-bold text-foreground mb-1">$890</div>
+            <div className="text-xs text-muted-foreground uppercase">Entry Zone</div>
+          </div>
+          <div className="p-4 rounded-lg bg-warning/8 border border-warning/20 text-center">
+            <div className="text-3xl font-bold text-warning mb-1">14d</div>
+            <div className="text-xs text-muted-foreground uppercase">Next Catalyst</div>
           </div>
         </div>
 
-        {/* Catalyst Timeline */}
         <div>
-          <h3 className="text-lg font-bold text-foreground mb-6">催化剂时间线</h3>
-          <div className="relative">
-            <div className="absolute left-3.5 top-4 bottom-4 w-px bg-border/50" />
-            <div className="space-y-5">
-              {[
-                { date: "2024-02-21", event: "Q4 财报发布", status: "upcoming", importance: "high", daysAway: "14天" },
-                { date: "2024-03-18", event: "GTC 大会", status: "upcoming", importance: "high", daysAway: "39天" },
-                { date: "2024-01-08", event: "CES 主题演讲", status: "passed", importance: "medium", daysAway: "已过" },
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-5 relative pl-8">
-                  <div className={cn(
-                    "absolute left-0 w-7 h-7 rounded-full border-2 flex items-center justify-center z-10",
-                    item.status === "upcoming" 
-                      ? "bg-primary/15 border-primary" 
-                      : "bg-secondary/40 border-border/50"
-                  )}>
-                    {item.status === "upcoming" && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
-                  </div>
-                  <div className="flex-1 flex items-center justify-between py-1">
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <span className={cn(
-                          "text-lg font-semibold",
-                          item.status === "upcoming" ? "text-foreground" : "text-muted-foreground"
-                        )}>{item.event}</span>
-                        {item.importance === "high" && item.status === "upcoming" && (
-                          <span className="text-sm px-2.5 py-1 rounded-lg bg-warning/15 text-warning font-bold">重要</span>
-                        )}
-                      </div>
-                      <span className="text-base text-muted-foreground">{item.date}</span>
-                    </div>
-                    <span className={cn(
-                      "text-lg font-bold",
-                      item.status === "upcoming" ? "text-primary" : "text-muted-foreground/50"
-                    )}>{item.daysAway}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <h3 className="text-sm font-semibold text-foreground mb-3">催化剂时间线</h3>
+          <div className="space-y-3">
+            {[
+              { date: "2024-02-21", event: "Q4 财报发布", important: true, days: "14天" },
+              { date: "2024-03-18", event: "GTC 大会", important: true, days: "39天" },
+              { date: "2024-01-08", event: "CES 主题演讲", important: false, days: "已过", passed: true },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <div className={cn(
+                  "w-2 h-2 rounded-full",
+                  item.passed ? "bg-muted-foreground/30" : "bg-primary"
+                )} />
+                <span className={cn("text-sm font-medium flex-1", item.passed ? "text-muted-foreground" : "text-foreground")}>
+                  {item.event}
+                </span>
+                {item.important && !item.passed && (
+                  <span className="text-xs px-1.5 py-0.5 rounded bg-warning/15 text-warning font-medium">重要</span>
+                )}
+                <span className="text-xs text-muted-foreground w-16">{item.date}</span>
+                <span className={cn("text-sm font-medium w-12 text-right", item.passed ? "text-muted-foreground/50" : "text-primary")}>
+                  {item.days}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -228,145 +224,77 @@ function TimingBlock() {
   )
 }
 
-function MetricCard({ label, value, unit, highlight, warning }: {
-  label: string
-  value: string
-  unit: string
-  highlight?: boolean
-  warning?: boolean
-}) {
-  return (
-    <div className={cn(
-      "p-6 rounded-xl text-center",
-      highlight ? "bg-success/8 border border-success/20" :
-      warning ? "bg-warning/8 border border-warning/20" :
-      "bg-secondary/30"
-    )}>
-      <div className={cn(
-        "text-4xl font-bold mb-2",
-        highlight ? "text-success" : warning ? "text-warning" : "text-foreground"
-      )}>
-        {value}<span className="text-lg font-semibold text-muted-foreground">{unit}</span>
-      </div>
-      <div className="text-base text-muted-foreground uppercase tracking-wider">{label}</div>
-    </div>
-  )
-}
-
 function RiskBlock() {
   const risks = [
-    {
-      severity: "high",
-      title: "估值风险",
-      description: "当前 Forward P/E 65x 处于历史 95 分位，隐含增长预期极高",
-      probability: 35,
-      mitigation: "设置 $800 止损线，分批建仓"
-    },
-    {
-      severity: "medium",
-      title: "地缘政治",
-      description: "中美半导体出口管制持续升级，H20 芯片面临潜在禁令",
-      probability: 45,
-      mitigation: "关注政策进展，设置触发规则"
-    },
-  ]
-
-  const disciplineChecklist = [
-    { label: "止损线已设定", checked: true, detail: "$800 (-10%)" },
-    { label: "仓位符合预算", checked: true, detail: "5% 组合占比" },
-    { label: "催化剂已评估", checked: true, detail: "Q4 财报前" },
-    { label: "失效条件已定义", checked: false, detail: "待完善" },
+    { severity: "high", title: "估值风险", desc: "当前 Forward P/E 65x 处于历史 95 分位", prob: 35, action: "设置 $800 止损线" },
+    { severity: "medium", title: "地缘政治", desc: "中美半导体出口管制持续升级", prob: 45, action: "关注政策进展" },
   ]
 
   return (
-    <section className="bg-card rounded-2xl border border-border overflow-hidden">
-      {/* Section Header */}
-      <div className="px-8 py-6 border-b border-border/50 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-warning/10 flex items-center justify-center relative">
-            <Shield className="w-6 h-6 text-warning" />
-            <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-danger flex items-center justify-center">
-              <span className="text-sm font-bold text-white">2</span>
-            </div>
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-foreground">风险纪律</h2>
-            <span className="text-base text-muted-foreground">必须遵守的边界</span>
-          </div>
-        </div>
+    <section className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-base px-4 py-2 rounded-lg bg-danger/10 text-danger font-bold">1 Critical</span>
-          <span className="text-base px-4 py-2 rounded-lg bg-warning/10 text-warning font-bold">1 High</span>
+          <Shield className="w-5 h-5 text-warning" />
+          <h2 className="text-base font-semibold text-foreground">Risk Discipline</h2>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs px-2 py-1 rounded bg-danger/10 text-danger font-medium">1 Critical</span>
+          <span className="text-xs px-2 py-1 rounded bg-warning/10 text-warning font-medium">1 High</span>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="px-8 py-8">
-        {/* Risk Score Bar */}
-        <div className="mb-10 p-6 rounded-xl bg-secondary/20">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-lg font-semibold text-foreground">整体风险评估</span>
-            <div className="flex items-center gap-3">
-              <span className="text-3xl font-bold text-warning">68</span>
-              <span className="text-lg text-muted-foreground">/100 中等偏高</span>
-            </div>
+      <div className="px-6 py-5">
+        <div className="mb-5 p-4 rounded-lg bg-secondary/20">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-foreground">整体风险评估</span>
+            <span className="text-lg font-bold text-warning">68<span className="text-sm text-muted-foreground font-normal">/100</span></span>
           </div>
-          <div className="h-4 rounded-full bg-secondary/50 overflow-hidden">
+          <div className="h-2 rounded-full bg-secondary/50 overflow-hidden">
             <div className="h-full rounded-full bg-warning" style={{ width: "68%" }} />
           </div>
         </div>
 
-        {/* Risk Items */}
-        <div className="space-y-5 mb-10">
+        <div className="space-y-3 mb-5">
           {risks.map((risk, i) => (
             <div key={i} className={cn(
-              "p-6 rounded-xl border",
+              "p-4 rounded-lg border",
               risk.severity === "high" ? "bg-danger/5 border-danger/20" : "bg-warning/5 border-warning/20"
             )}>
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-4">
-                  <AlertTriangle className={cn(
-                    "w-6 h-6",
-                    risk.severity === "high" ? "text-danger" : "text-warning"
-                  )} />
-                  <span className="text-lg font-bold text-foreground">{risk.title}</span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className={cn("w-4 h-4", risk.severity === "high" ? "text-danger" : "text-warning")} />
+                  <span className="text-sm font-semibold text-foreground">{risk.title}</span>
                 </div>
-                <span className={cn(
-                  "text-base px-3 py-1.5 rounded-lg font-bold",
+                <span className={cn("text-xs px-1.5 py-0.5 rounded font-medium", 
                   risk.severity === "high" ? "bg-danger/15 text-danger" : "bg-warning/15 text-warning"
-                )}>
-                  P: {risk.probability}%
-                </span>
+                )}>P: {risk.prob}%</span>
               </div>
-              <p className="text-lg text-muted-foreground mb-4 leading-relaxed">{risk.description}</p>
-              <div className="flex items-center gap-4">
-                <Shield className="w-5 h-5 text-primary" />
-                <span className="text-lg text-primary font-medium">{risk.mitigation}</span>
+              <p className="text-sm text-muted-foreground mb-2">{risk.desc}</p>
+              <div className="flex items-center gap-2 text-sm text-primary">
+                <Shield className="w-3.5 h-3.5" />
+                <span>{risk.action}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Discipline Checklist */}
-        <div className="pt-8 border-t border-border/50">
-          <h3 className="text-lg font-bold text-foreground mb-6">决策纪律检查</h3>
-          <div className="grid grid-cols-2 gap-5">
-            {disciplineChecklist.map((item, i) => (
-              <div key={i} className="flex items-center gap-5 p-5 rounded-xl bg-secondary/20">
-                <div className={cn(
-                  "w-7 h-7 rounded-full flex items-center justify-center",
-                  item.checked ? "bg-success/20" : "bg-warning/20"
-                )}>
-                  {item.checked ? (
-                    <CheckCircle2 className="w-5 h-5 text-success" />
-                  ) : (
-                    <AlertTriangle className="w-5 h-5 text-warning" />
-                  )}
-                </div>
-                <div className="flex-1">
-                  <span className="text-lg text-foreground font-medium">{item.label}</span>
-                  <span className="text-base text-muted-foreground ml-3">{item.detail}</span>
-                </div>
+        <div className="pt-5 border-t border-border/50">
+          <h3 className="text-sm font-semibold text-foreground mb-3">决策纪律检查</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { label: "止损线已设定", checked: true, detail: "$800" },
+              { label: "仓位符合预算", checked: true, detail: "5%" },
+              { label: "催化剂已评估", checked: true, detail: "Q4财报前" },
+              { label: "失效条件已定义", checked: false, detail: "待完善" },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-secondary/20">
+                {item.checked ? (
+                  <CheckCircle2 className="w-4 h-4 text-success" />
+                ) : (
+                  <AlertTriangle className="w-4 h-4 text-warning" />
+                )}
+                <span className="text-sm text-foreground">{item.label}</span>
+                <span className="text-xs text-muted-foreground ml-auto">{item.detail}</span>
               </div>
             ))}
           </div>
@@ -378,49 +306,41 @@ function RiskBlock() {
 
 function HistoryBlock() {
   const history = [
-    { date: "2024-02-07", action: "上调准备度", from: "3/5", to: "4/5", reason: "Q3 业绩超预期确认" },
+    { date: "2024-02-07", action: "上调准备度", from: "3/5", to: "4/5", reason: "Q3 业绩超预期" },
     { date: "2024-01-15", action: "新增风险点", detail: "地缘政治风险", reason: "出口管制升级" },
     { date: "2024-01-08", action: "建立 Thesis", detail: "Bullish", reason: "初始分析完成" },
   ]
 
   return (
-    <section className="bg-card rounded-2xl border border-border overflow-hidden">
-      {/* Section Header */}
-      <div className="px-8 py-6 border-b border-border/50 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-secondary/30 flex items-center justify-center">
-            <Clock className="w-6 h-6 text-muted-foreground" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-foreground">演化追踪</h2>
-            <span className="text-base text-muted-foreground">判断如何变化</span>
-          </div>
+    <section className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Clock className="w-5 h-5 text-muted-foreground" />
+          <h2 className="text-base font-semibold text-foreground">演化追踪</h2>
         </div>
-        <button className="flex items-center gap-2 text-base text-muted-foreground hover:text-foreground transition-colors">
-          全部历史
-          <ChevronRight className="w-5 h-5" />
+        <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          全部历史 <ChevronRight className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Content */}
-      <div className="px-8 py-8">
-        <div className="space-y-6">
+      <div className="px-6 py-5">
+        <div className="space-y-4">
           {history.map((item, i) => (
-            <div key={i} className="flex items-start gap-6">
-              <div className="text-base text-muted-foreground/70 w-28 pt-0.5 shrink-0">{item.date}</div>
+            <div key={i} className="flex items-start gap-4">
+              <span className="text-xs text-muted-foreground w-20 pt-0.5 shrink-0">{item.date}</span>
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="text-lg font-semibold text-foreground">{item.action}</span>
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-sm font-medium text-foreground">{item.action}</span>
                   {item.from && item.to && (
-                    <span className="text-lg text-muted-foreground">
-                      {item.from} → <span className="text-success font-semibold">{item.to}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {item.from} → <span className="text-success">{item.to}</span>
                     </span>
                   )}
                   {item.detail && !item.from && (
-                    <span className="text-lg text-primary font-semibold">{item.detail}</span>
+                    <span className="text-sm text-primary">{item.detail}</span>
                   )}
                 </div>
-                <span className="text-base text-muted-foreground">{item.reason}</span>
+                <span className="text-xs text-muted-foreground">{item.reason}</span>
               </div>
             </div>
           ))}

@@ -2,180 +2,120 @@
 
 import { 
   TrendingUp, 
-  AlertCircle,
-  CheckCircle2,
-  ArrowRight,
-  Eye,
-  Zap,
-  Link2
+  TrendingDown,
+  ExternalLink,
+  BarChart2,
+  ChevronRight
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-// Curated insights that MATTER for THIS decision
-interface DecisionInsight {
-  id: string
-  type: "supports" | "challenges" | "catalyst" | "monitor"
-  title: string
-  why: string
-  time: string
-}
-
-interface WatchItem {
-  symbol: string
-  status: "aligned" | "diverging" | "neutral"
-  signal: string
-}
-
-const curatedInsights: DecisionInsight[] = [
-  {
-    id: "1",
-    type: "supports",
-    title: "台积电产能扩张",
-    why: "验证 H200 供应链",
-    time: "2h",
-  },
-  {
-    id: "2",
-    type: "catalyst",
-    title: "微软 AI 投资 $50B+",
-    why: "提升订单能见度",
-    time: "4h",
-  },
-  {
-    id: "3",
-    type: "monitor",
-    title: "出口限制不确定性",
-    why: "影响 15% 收入",
-    time: "1d",
-  },
+const watchlist = [
+  { symbol: "AMD", name: "Advanced Micro", price: "$178.45", change: "+2.3%", up: true },
+  { symbol: "AVGO", name: "Broadcom", price: "$1,432.10", change: "-0.8%", up: false },
+  { symbol: "TSM", name: "TSMC", price: "$142.30", change: "+1.5%", up: true },
+  { symbol: "MSFT", name: "Microsoft", price: "$412.80", change: "+0.4%", up: true },
+  { symbol: "GOOGL", name: "Alphabet", price: "$155.60", change: "-1.2%", up: false },
 ]
 
-const watchItems: WatchItem[] = [
-  { symbol: "TSM", status: "aligned", signal: "+1.5%" },
-  { symbol: "AMD", status: "aligned", signal: "+2.3%" },
-  { symbol: "MSFT", status: "aligned", signal: "CapEx↑" },
+const technicals = [
+  { label: "RSI (14)", value: "58.2" },
+  { label: "MACD", value: "Bullish", highlight: true },
+  { label: "成交量", value: "+15%", highlight: true },
+  { label: "IV Rank", value: "42%" },
+]
+
+const news = [
+  { title: "NVIDIA 宣布下一代 Blackwell 架构 GPU 产能扩张计划", source: "Reuters", time: "2h" },
+  { title: "微软 Azure AI 基础设施投资将在 2024 年超过 500 亿美元", source: "Bloomberg", time: "4h" },
+  { title: "中国加速本土 AI 芯片研发，华为昇腾新品即将发布", source: "SCMP", time: "6h" },
+  { title: "分析师上调 NVDA 目标价至 $1,000，维持买入评级", source: "MS Research", time: "1d" },
 ]
 
 export function InsightsPanel() {
   return (
-    <aside className="w-52 h-full bg-[oklch(0.075_0.003_250)] border-l border-border/12 flex flex-col">
-      {/* Header - Quiet and minimal */}
-      <div className="px-4 py-5 border-b border-border/10">
-        <div className="flex items-center gap-2 mb-1">
-          <Eye className="w-4 h-4 text-muted-foreground/50" />
-          <span className="text-sm font-semibold text-foreground/70">
-            决策情报
-          </span>
+    <aside className="w-56 h-full bg-[oklch(0.075_0.003_250)] border-l border-border/12 flex flex-col">
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-border/10 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <BarChart2 className="w-4 h-4 text-muted-foreground/50" />
+          <span className="text-sm font-semibold text-foreground/80">Insights</span>
         </div>
-        <p className="text-sm text-muted-foreground/50">
-          NVDA 相关信号
-        </p>
       </div>
 
-      {/* Main Content - Curated, not stacked */}
       <div className="flex-1 overflow-y-auto">
-        
-        {/* Section 1: Thesis Check */}
+        {/* Watchlist Section */}
         <div className="p-4 border-b border-border/8">
           <span className="text-xs font-semibold text-muted-foreground/50 uppercase tracking-wider mb-3 block">
-            论点验证
-          </span>
-          <div className="space-y-3">
-            {curatedInsights.map((insight) => (
-              <InsightRow key={insight.id} insight={insight} />
-            ))}
-          </div>
-        </div>
-
-        {/* Section 2: Related Watch */}
-        <div className="p-4 border-b border-border/8">
-          <span className="text-xs font-semibold text-muted-foreground/50 uppercase tracking-wider mb-3 block">
-            关联信号
+            Watchlist
           </span>
           <div className="space-y-2">
-            {watchItems.map((item) => (
-              <WatchRow key={item.symbol} item={item} />
+            {watchlist.map((item) => (
+              <div key={item.symbol} className="flex items-center justify-between py-1 group cursor-pointer">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-foreground/80 group-hover:text-foreground">{item.symbol}</span>
+                  <div className={cn("w-1.5 h-1.5 rounded-full", item.up ? "bg-success" : "bg-danger")} />
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-medium text-foreground/70">{item.price}</div>
+                  <div className={cn("text-xs", item.up ? "text-success/70" : "text-danger/70")}>{item.change}</div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Section 3: Key Levels - Minimal */}
+        {/* Technical Signals */}
+        <div className="p-4 border-b border-border/8">
+          <span className="text-xs font-semibold text-muted-foreground/50 uppercase tracking-wider mb-3 block">
+            技术信号
+          </span>
+          <div className="grid grid-cols-2 gap-3">
+            {technicals.map((item) => (
+              <div key={item.label}>
+                <div className="text-xs text-muted-foreground/50 mb-0.5">{item.label}</div>
+                <div className={cn(
+                  "text-sm font-semibold",
+                  item.highlight ? "text-success/80" : "text-foreground/70"
+                )}>{item.value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Related News */}
         <div className="p-4">
           <span className="text-xs font-semibold text-muted-foreground/50 uppercase tracking-wider mb-3 block">
-            关键价位
+            相关资讯
           </span>
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground/60">支撑</span>
-              <span className="text-sm font-semibold text-foreground/70">$890</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground/60">阻力</span>
-              <span className="text-sm font-semibold text-foreground/70">$965</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground/60">止损</span>
-              <span className="text-sm font-semibold text-danger/70">$800</span>
-            </div>
+          <div className="space-y-3">
+            {news.map((item, i) => (
+              <div key={i} className="group cursor-pointer">
+                <div className="flex gap-2">
+                  <div className="w-1 h-1 rounded-full bg-primary/50 mt-1.5 shrink-0" />
+                  <div>
+                    <p className="text-sm text-foreground/70 leading-snug group-hover:text-foreground/90 line-clamp-2">
+                      {item.title}
+                    </p>
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <span className="text-xs text-muted-foreground/50">{item.source}</span>
+                      <span className="text-xs text-muted-foreground/30">·</span>
+                      <span className="text-xs text-muted-foreground/40">{item.time}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Footer */}
       <div className="p-3 border-t border-border/8">
-        <button className="w-full flex items-center justify-center gap-2 py-2.5 text-sm text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors rounded-lg hover:bg-secondary/10">
-          <span>完整情报</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+        <button className="w-full flex items-center justify-center gap-1 py-2 text-xs text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors">
+          <span>查看更多市场数据</span>
+          <ChevronRight className="w-3 h-3" />
         </button>
       </div>
     </aside>
-  )
-}
-
-function InsightRow({ insight }: { insight: DecisionInsight }) {
-  const typeConfig = {
-    supports: { icon: CheckCircle2, color: "text-success/70" },
-    challenges: { icon: AlertCircle, color: "text-danger/70" },
-    catalyst: { icon: Zap, color: "text-primary/70" },
-    monitor: { icon: Eye, color: "text-warning/70" },
-  }
-
-  const config = typeConfig[insight.type]
-  const Icon = config.icon
-
-  return (
-    <div className="group cursor-pointer">
-      <div className="flex items-start gap-2.5">
-        <Icon className={cn("w-4 h-4 mt-0.5 shrink-0", config.color)} />
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-foreground/75 leading-snug mb-0.5 group-hover:text-foreground/90 transition-colors">
-            {insight.title}
-          </p>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground/50">{insight.why}</span>
-            <span className="text-xs text-muted-foreground/40">·</span>
-            <span className="text-xs text-muted-foreground/40">{insight.time}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function WatchRow({ item }: { item: WatchItem }) {
-  const statusColor = {
-    aligned: "bg-success/50",
-    diverging: "bg-warning/50",
-    neutral: "bg-muted-foreground/30",
-  }
-
-  return (
-    <div className="flex items-center gap-2.5 py-1.5 group cursor-pointer">
-      <div className={cn("w-1 h-4 rounded-full shrink-0", statusColor[item.status])} />
-      <span className="text-sm font-semibold text-foreground/70 group-hover:text-foreground/90 transition-colors">
-        {item.symbol}
-      </span>
-      <span className="text-sm text-success/60 ml-auto">{item.signal}</span>
-    </div>
   )
 }
